@@ -1,0 +1,15 @@
+T__0=1
+T__1=2
+CHAR=3
+IF_KW=4
+THEN_KW=5
+ELSE_KW=6
+ESCAPED_CHAR=7
+ESCAPE=8
+SPECIAL_CHAR=9
+ESCAPE_CHAR=10
+'['=1
+']'=2
+':if'=4
+':then'=5
+':else'=6
