@@ -87,7 +87,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
         return {"type": "text", "text": text}
 
 
-def parse_ast(prompt):
+def parse_metaprompt(prompt):
     stream = InputStream(prompt)
     lexer = MetaPromptLexer(stream)
     stream = CommonTokenStream(lexer)

@@ -8,11 +8,20 @@ setup(
     author_email="klntsky@gmail.com",
     url="https://github.com/promptware/metaprompt",
     packages=find_packages(),
+    extras_require={
+        "dev": [
+            "black",
+            "flake8",
+            "pytest",
+            "mypy",
+            "pip-tools",
+            "invoke",
+        ],
+    },
     install_requires=[
         "antlr4-python3-runtime==4.13.2",
         "antlr4-tools==0.2.1",
         "install-jdk==1.1.0",
-        "invoke==2.2.0",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
