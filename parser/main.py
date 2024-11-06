@@ -8,75 +8,79 @@ from antlr4.error.ErrorListener import ErrorListener
 from parser import parse_ast
 import asyncio
 
+
 async def eval_exprs(exprs, runtime):
     for expr in exprs:
         async for chunk in eval_ast(expr, runtime):
             yield chunk
 
+
 async def eval_ast(ast, runtime):
     if isinstance(ast, list):
         async for expr in eval_exprs(ast, runtime):
             yield expr
-    elif ast['type'] == 'text':
-        yield ast['text']
-    elif ast['type'] == 'metaprompt':
-        async for expr in eval_exprs(ast['exprs'], runtime):
+    elif ast["type"] == "text":
+        yield ast["text"]
+    elif ast["type"] == "metaprompt":
+        async for expr in eval_exprs(ast["exprs"], runtime):
             yield expr
-    elif ast['type'] == 'var':
-        value = runtime.env.get(ast['name'])
+    elif ast["type"] == "var":
+        value = runtime.env.get(ast["name"])
         if value is None:
             raise ValueError(f"Failed to look up: {ast['name']}")
         else:
             yield value
-    elif ast['type'] == 'meta':
+    elif ast["type"] == "meta":
         chunks = []
-        for expr in ast['exprs']:
+        for expr in ast["exprs"]:
             async for chunk in eval_ast(expr, runtime):
                 chunks.append(chunk)
-        output = input('[$ ' + ''.join(chunks) + ']')
+        output = input("[$ " + "".join(chunks) + "]")
         yield output
-    elif ast['type'] == 'brackets':
-        yield '['
-        for expr in ast['exprs']:
+    elif ast["type"] == "brackets":
+        yield "["
+        for expr in ast["exprs"]:
             async for chunk in eval_ast(expr, runtime):
                 yield chunk
-        yield ']'
-    elif ast['type'] == 'meta':
+        yield "]"
+    elif ast["type"] == "meta":
         chunks = []
-        for expr in ast['exprs']:
+        for expr in ast["exprs"]:
             async for chunk in eval_ast(expr, runtime):
                 chunks.append(chunk)
-        output = input('[$ ' + ''.join(chunks) + ']')
+        output = input("[$ " + "".join(chunks) + "]")
         yield output
-    elif ast['type'] == 'if_then':
+    elif ast["type"] == "if_then":
         # evaluate the conditional
         condition_chunks = []
-        async for chunk in eval_ast(ast['condition'], runtime):
+        async for chunk in eval_ast(ast["condition"], runtime):
             condition_chunks.append(chunk)
-        condition = ''.join(condition_chunks)
+        condition = "".join(condition_chunks)
         #
-        prompt_result = ''
-        while prompt_result != 'yes' and prompt_result != 'no':
-            prompt_result = input('yes or no: ' + condition)
-        if prompt_result == 'yes':
-            async for chunk in eval_ast(ast['then'], runtime):
+        prompt_result = ""
+        while prompt_result != "yes" and prompt_result != "no":
+            prompt_result = input("yes or no: " + condition)
+        if prompt_result == "yes":
+            async for chunk in eval_ast(ast["then"], runtime):
                 yield chunk
         else:
-            if 'else' in ast:
-                async for chunk in eval_ast(ast['else'], runtime):
+            if "else" in ast:
+                async for chunk in eval_ast(ast["else"], runtime):
                     yield chunk
             else:
                 pass
     else:
         raise ValueError(ast)
 
+
 async def eval_metaprompt(metaprompt, config):
     env = Env(env=config.parameters)
     runtime = Runtime(config, env)
-    res = ''
+    res = ""
     async for chunk in eval_ast(metaprompt, runtime):
         res += chunk
     return res
+
 
 class Provider:
     def __init__(self):
@@ -88,18 +92,20 @@ class Provider:
     async def eval_prompt(self, model, prompt):
         pass
 
+
 class InteractiveCliProvider(Provider):
     def __init__(self):
         pass
 
     def does_support_model(self, model):
-        return model == 'interactive'
+        return model == "interactive"
 
     async def eval_prompt(self, model, prompt):
-        if model == 'interactive':
+        if model == "interactive":
             res = input(prompt)
             return res
         raise ValueError(f"Model not supported: {model}")
+
 
 class Config:
 
@@ -109,6 +115,7 @@ class Config:
 
     def meta_eval(self, prompt):
         pass
+
 
 class Env:
 
@@ -127,25 +134,23 @@ class Env:
         else:
             return None
 
+
 class Runtime:
     def __init__(self, config, env):
         self.config = config
         self.env = env
 
+
 async def main():
     # prompt = 'as[d] [:if foo asd :then] [:hi] [:if [:foo] is a [:if c2 :then then2] human :then bar :else baz]'
-    prompt = '[:asd]f[o]o[:asd][:if [:object] is an animal :then hiii]'
+    prompt = "[:asd]f[o]o[:asd][:if [:object] is an animal :then hiii]"
     ast = parse_ast(prompt)
     pprint(ast, indent=2)
-    config=Config(
-        parameters={
-            'asd': 'hello',
-            'object': 'man'
-        }
-    )
+    config = Config(parameters={"asd": "hello", "object": "man"})
     res = await eval_metaprompt(ast, config)
     print(res)
     # print(tree.toStringTree(recog=parser))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     asyncio.run(main())
