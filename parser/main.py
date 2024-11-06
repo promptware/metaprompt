@@ -4,97 +4,148 @@ from antlr4 import *
 from python_gen.src.MetaPromptLexer import MetaPromptLexer
 from python_gen.src.MetaPromptParser import MetaPromptParser
 from python_gen.src.MetaPromptVisitor import MetaPromptVisitor
+from antlr4.error.ErrorListener import ErrorListener
+from parser import parse_ast
+import asyncio
 
-class MetaPromptASTBuilder(MetaPromptVisitor):
-    def visitPrompt(self, ctx: MetaPromptParser.PromptContext):
-        exprs_node = self.visit(ctx.exprs())
-        return {'type': 'metaprompt', 'exprs': exprs_node}
+async def eval_exprs(exprs, runtime):
+    for expr in exprs:
+        async for chunk in eval_ast(expr, runtime):
+            yield chunk
 
-    def visitExprs(self, ctx: MetaPromptParser.ExprsContext):
-        exprs = []
-        for expr in ctx.expr():
-            expr_items = self.visit(expr)
-            exprs.extend(expr_items)
-        return exprs
-
-    def visitExpr(self, ctx: MetaPromptParser.ExprContext):
-        items = []
-        # The 'expr' rule is (text+? meta?)+, so we iterate over the children
-        for child in ctx.getChildren():
-            if isinstance(child, MetaPromptParser.TextContext):
-                text_node = self.visit(child)
-                items.append(text_node)
-            elif isinstance(child, MetaPromptParser.MetaContext):
-                meta_node = self.visit(child)
-                items.append(meta_node)
-            else:
-                # Ignore other types if any
-                pass
-        return items
-
-    def visitMeta(self, ctx: MetaPromptParser.MetaContext):
-        # meta: '[' meta_body ']'
-        meta_body_node = self.visit(ctx.meta_body())
-        return meta_body_node
-
-    def visitMeta_body(self, ctx: MetaPromptParser.Meta_bodyContext):
-        exprs_list = ctx.exprs()
-        if ctx.ELSE_KW() is not None:
-            # IF_KW exprs THEN_KW exprs ELSE_KW exprs
-            condition_node = self.visit(exprs_list[0])
-            then_node = self.visit(exprs_list[1])
-            else_node = self.visit(exprs_list[2])
-            return {
-                'type': 'if_then_else',
-                'condition': condition_node,
-                'then': then_node,
-                'else': else_node
-            }
-        elif ctx.IF_KW() is not None:
-            # IF_KW exprs THEN_KW exprs
-            condition_node = self.visit(exprs_list[0])
-            then_node = self.visit(exprs_list[1])
-            return {
-                'type': 'if_then',
-                'condition': condition_node,
-                'then': then_node
-            }
-        elif ctx.VAR_NAME() is not None:
-            var_name = ctx.VAR_NAME().getText()[1:]; # slice the ":"
-            return {
-                'type': 'var',
-                'name': var_name
-            }
-        elif ctx.exprs() is not None:
-            exprs = self.visit(exprs_list[0])
-            return {
-                'type': 'meta',
-                'exprs': exprs
-            }
+async def eval_ast(ast, runtime):
+    if isinstance(ast, list):
+        async for expr in eval_exprs(ast, runtime):
+            yield expr
+    elif ast['type'] == 'text':
+        yield ast['text']
+    elif ast['type'] == 'metaprompt':
+        async for expr in eval_exprs(ast['exprs'], runtime):
+            yield expr
+    elif ast['type'] == 'var':
+        value = runtime.env.get(ast['name'])
+        if value is None:
+            raise ValueError(f"Failed to look up: {ast['name']}")
         else:
-            print('ERROR!', ctx)
+            yield value
+    elif ast['type'] == 'meta':
+        chunks = []
+        for expr in ast['exprs']:
+            async for chunk in eval_ast(expr, runtime):
+                chunks.append(chunk)
+        output = input('[$ ' + ''.join(chunks) + ']')
+        yield output
+    elif ast['type'] == 'brackets':
+        yield '['
+        for expr in ast['exprs']:
+            async for chunk in eval_ast(expr, runtime):
+                yield chunk
+        yield ']'
+    elif ast['type'] == 'meta':
+        chunks = []
+        for expr in ast['exprs']:
+            async for chunk in eval_ast(expr, runtime):
+                chunks.append(chunk)
+        output = input('[$ ' + ''.join(chunks) + ']')
+        yield output
+    elif ast['type'] == 'if_then':
+        # evaluate the conditional
+        condition_chunks = []
+        async for chunk in eval_ast(ast['condition'], runtime):
+            condition_chunks.append(chunk)
+        condition = ''.join(condition_chunks)
+        #
+        prompt_result = ''
+        while prompt_result != 'yes' and prompt_result != 'no':
+            prompt_result = input('yes or no: ' + condition)
+        if prompt_result == 'yes':
+            async for chunk in eval_ast(ast['then'], runtime):
+                yield chunk
+        else:
+            if 'else' in ast:
+                async for chunk in eval_ast(ast['else'], runtime):
+                    yield chunk
+            else:
+                pass
+    else:
+        raise ValueError(ast)
 
-    def visitText(self, ctx: MetaPromptParser.TextContext):
-        # text: CHAR+
-        # Collect all CHAR tokens
-        text = ''.join([child.getText() for child in ctx.CHAR()])
-        return {'type': 'text', 'text': text}
+async def eval_metaprompt(metaprompt, config):
+    env = Env(env=config.parameters)
+    runtime = Runtime(config, env)
+    res = ''
+    async for chunk in eval_ast(metaprompt, runtime):
+        res += chunk
+    return res
 
-def parse_ast(prompt):
-    stream = InputStream(prompt)
-    lexer = MetaPromptLexer(stream)
-    stream = CommonTokenStream(lexer)
-    print(stream);
-    parser = MetaPromptParser(stream)
-    tree = parser.prompt()
-    visitor = MetaPromptASTBuilder()
-    ast = visitor.visit(tree)
-    return ast
+class Provider:
+    def __init__(self):
+        pass
 
-def main():
-    prompt = 'as[d] [:if [:foo] is a human :then bar :else baz]'
-    pprint(parse_ast(prompt), indent=2)
+    def does_support_model(self, model):
+        return False
+
+    async def eval_prompt(self, model, prompt):
+        pass
+
+class InteractiveCliProvider(Provider):
+    def __init__(self):
+        pass
+
+    def does_support_model(self, model):
+        return model == 'interactive'
+
+    async def eval_prompt(self, model, prompt):
+        if model == 'interactive':
+            res = input(prompt)
+            return res
+        raise ValueError(f"Model not supported: {model}")
+
+class Config:
+
+    def __init__(self, parameters):
+        self.parameters = parameters
+        self.if_retries = 3
+
+    def meta_eval(self, prompt):
+        pass
+
+class Env:
+
+    def __init__(self, env={}, parent=None):
+        self.env = env
+        self.parent = parent
+
+    def set(self, variable, value):
+        self.env[variable] = value
+
+    def get(self, variable):
+        if variable in self.env:
+            return self.env[variable]
+        elif self.parent is not None:
+            self.parent.lookup(variable)
+        else:
+            return None
+
+class Runtime:
+    def __init__(self, config, env):
+        self.config = config
+        self.env = env
+
+async def main():
+    # prompt = 'as[d] [:if foo asd :then] [:hi] [:if [:foo] is a [:if c2 :then then2] human :then bar :else baz]'
+    prompt = '[:asd]f[o]o[:asd][:if [:object] is an animal :then hiii]'
+    ast = parse_ast(prompt)
+    pprint(ast, indent=2)
+    config=Config(
+        parameters={
+            'asd': 'hello',
+            'object': 'man'
+        }
+    )
+    res = await eval_metaprompt(ast, config)
+    print(res)
     # print(tree.toStringTree(recog=parser))
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
