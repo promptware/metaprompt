@@ -10,23 +10,24 @@ else:
 
 def serializedATN():
     return [
-        4,1,10,57,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,1,0,1,
-        0,1,0,1,1,5,1,17,8,1,10,1,12,1,20,9,1,1,2,4,2,23,8,2,11,2,12,2,24,
+        4,1,7,59,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,1,0,1,0,
+        1,0,1,1,5,1,17,8,1,10,1,12,1,20,9,1,1,2,4,2,23,8,2,11,2,12,2,24,
         1,2,3,2,28,8,2,4,2,30,8,2,11,2,12,2,31,1,3,1,3,1,3,1,3,1,4,1,4,1,
-        4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,50,8,4,1,5,4,5,53,8,5,
-        11,5,12,5,54,1,5,1,24,0,6,0,2,4,6,8,10,0,0,56,0,12,1,0,0,0,2,18,
-        1,0,0,0,4,29,1,0,0,0,6,33,1,0,0,0,8,49,1,0,0,0,10,52,1,0,0,0,12,
-        13,3,2,1,0,13,14,5,0,0,1,14,1,1,0,0,0,15,17,3,4,2,0,16,15,1,0,0,
-        0,17,20,1,0,0,0,18,16,1,0,0,0,18,19,1,0,0,0,19,3,1,0,0,0,20,18,1,
-        0,0,0,21,23,3,10,5,0,22,21,1,0,0,0,23,24,1,0,0,0,24,25,1,0,0,0,24,
-        22,1,0,0,0,25,27,1,0,0,0,26,28,3,6,3,0,27,26,1,0,0,0,27,28,1,0,0,
-        0,28,30,1,0,0,0,29,22,1,0,0,0,30,31,1,0,0,0,31,29,1,0,0,0,31,32,
-        1,0,0,0,32,5,1,0,0,0,33,34,5,1,0,0,34,35,3,8,4,0,35,36,5,2,0,0,36,
-        7,1,0,0,0,37,38,5,4,0,0,38,39,3,2,1,0,39,40,5,5,0,0,40,41,3,2,1,
-        0,41,42,5,6,0,0,42,43,3,2,1,0,43,50,1,0,0,0,44,45,5,4,0,0,45,46,
-        3,2,1,0,46,47,5,5,0,0,47,48,3,2,1,0,48,50,1,0,0,0,49,37,1,0,0,0,
-        49,44,1,0,0,0,50,9,1,0,0,0,51,53,5,3,0,0,52,51,1,0,0,0,53,54,1,0,
-        0,0,54,52,1,0,0,0,54,55,1,0,0,0,55,11,1,0,0,0,6,18,24,27,31,49,54
+        4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,52,8,4,1,5,4,5,
+        55,8,5,11,5,12,5,56,1,5,1,24,0,6,0,2,4,6,8,10,0,0,60,0,12,1,0,0,
+        0,2,18,1,0,0,0,4,29,1,0,0,0,6,33,1,0,0,0,8,51,1,0,0,0,10,54,1,0,
+        0,0,12,13,3,2,1,0,13,14,5,0,0,1,14,1,1,0,0,0,15,17,3,4,2,0,16,15,
+        1,0,0,0,17,20,1,0,0,0,18,16,1,0,0,0,18,19,1,0,0,0,19,3,1,0,0,0,20,
+        18,1,0,0,0,21,23,3,10,5,0,22,21,1,0,0,0,23,24,1,0,0,0,24,25,1,0,
+        0,0,24,22,1,0,0,0,25,27,1,0,0,0,26,28,3,6,3,0,27,26,1,0,0,0,27,28,
+        1,0,0,0,28,30,1,0,0,0,29,22,1,0,0,0,30,31,1,0,0,0,31,29,1,0,0,0,
+        31,32,1,0,0,0,32,5,1,0,0,0,33,34,5,1,0,0,34,35,3,8,4,0,35,36,5,2,
+        0,0,36,7,1,0,0,0,37,38,5,4,0,0,38,39,3,2,1,0,39,40,5,5,0,0,40,41,
+        3,2,1,0,41,42,5,6,0,0,42,43,3,2,1,0,43,52,1,0,0,0,44,45,5,4,0,0,
+        45,46,3,2,1,0,46,47,5,5,0,0,47,48,3,2,1,0,48,52,1,0,0,0,49,52,5,
+        7,0,0,50,52,3,2,1,0,51,37,1,0,0,0,51,44,1,0,0,0,51,49,1,0,0,0,51,
+        50,1,0,0,0,52,9,1,0,0,0,53,55,5,3,0,0,54,53,1,0,0,0,55,56,1,0,0,
+        0,56,54,1,0,0,0,56,57,1,0,0,0,57,11,1,0,0,0,6,18,24,27,31,51,56
     ]
 
 class MetaPromptParser ( Parser ):
@@ -43,8 +44,7 @@ class MetaPromptParser ( Parser ):
                      "':else'" ]
 
     symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "CHAR", "IF_KW", 
-                      "THEN_KW", "ELSE_KW", "ESCAPED_CHAR", "ESCAPE", "SPECIAL_CHAR", 
-                      "ESCAPE_CHAR" ]
+                      "THEN_KW", "ELSE_KW", "VAR_NAME" ]
 
     RULE_prompt = 0
     RULE_exprs = 1
@@ -62,10 +62,7 @@ class MetaPromptParser ( Parser ):
     IF_KW=4
     THEN_KW=5
     ELSE_KW=6
-    ESCAPED_CHAR=7
-    ESCAPE=8
-    SPECIAL_CHAR=9
-    ESCAPE_CHAR=10
+    VAR_NAME=7
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -355,6 +352,9 @@ class MetaPromptParser ( Parser ):
         def ELSE_KW(self):
             return self.getToken(MetaPromptParser.ELSE_KW, 0)
 
+        def VAR_NAME(self):
+            return self.getToken(MetaPromptParser.VAR_NAME, 0)
+
         def getRuleIndex(self):
             return MetaPromptParser.RULE_meta_body
 
@@ -380,7 +380,7 @@ class MetaPromptParser ( Parser ):
         localctx = MetaPromptParser.Meta_bodyContext(self, self._ctx, self.state)
         self.enterRule(localctx, 8, self.RULE_meta_body)
         try:
-            self.state = 49
+            self.state = 51
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,4,self._ctx)
             if la_ == 1:
@@ -408,6 +408,18 @@ class MetaPromptParser ( Parser ):
                 self.state = 46
                 self.match(MetaPromptParser.THEN_KW)
                 self.state = 47
+                self.exprs()
+                pass
+
+            elif la_ == 3:
+                self.enterOuterAlt(localctx, 3)
+                self.state = 49
+                self.match(MetaPromptParser.VAR_NAME)
+                pass
+
+            elif la_ == 4:
+                self.enterOuterAlt(localctx, 4)
+                self.state = 50
                 self.exprs()
                 pass
 
@@ -460,17 +472,17 @@ class MetaPromptParser ( Parser ):
         self.enterRule(localctx, 10, self.RULE_text)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 52 
+            self.state = 54 
             self._errHandler.sync(self)
             _alt = 1
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt == 1:
-                    self.state = 51
+                    self.state = 53
                     self.match(MetaPromptParser.CHAR)
 
                 else:
                     raise NoViableAltException(self)
-                self.state = 54 
+                self.state = 56 
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,5,self._ctx)
 
