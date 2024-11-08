@@ -119,7 +119,7 @@ def extract_tokens(input_text):
     input_stream = InputStream(input_text)
     lexer = MetaPromptLexer(input_stream)
     token_stream = CommonTokenStream(lexer)
-    token_stream.fill()  # Fetches all tokens at once
+    token_stream.fill()
     tokens = []
     for token in token_stream.tokens:
         token_name = (
@@ -138,7 +138,6 @@ def extract_tokens(input_text):
 
 
 def parse_metaprompt(prompt):
-    print(extract_tokens(prompt))
     stream = InputStream(prompt)
     lexer = MetaPromptLexer(stream)
     stream = CommonTokenStream(lexer)

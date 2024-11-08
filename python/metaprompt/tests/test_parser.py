@@ -95,6 +95,6 @@ def test_dummy_meta3():
     assert result["exprs"] == [t("["), t("a")]
 
 
-# def test_dummy_meta2():
-#     result = parse_metaprompt("[[][]]")
-#     assert result["exprs"] == [t("[[][]]")]
+def test_dummy_meta2():
+    result = parse_metaprompt("[[][]]")
+    assert result["exprs"] == [t("["), t("["), t("]"), t("["), t("]"), t("]")]
