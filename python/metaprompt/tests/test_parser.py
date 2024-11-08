@@ -1,4 +1,4 @@
-from metaprompt import parse_metaprompt
+from parse_metaprompt import parse_metaprompt
 
 
 def t(text):
