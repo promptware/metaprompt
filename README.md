@@ -43,10 +43,23 @@ any other output]
 
 This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky) for updates
 
-- [ ] Finalize the initial version of the syntax
+- [ ] Finalize and specify the initial version of the syntax
 - [ ] Implement a parser
+  - [x] implement parse tree -> AST conversion
+  - [ ] implement escaping
 - [ ] Implement an evaluator that supports meta-prompting, conditionals and externally-defined variables
+  - [x] implement a 'manual' evaluator that asks the user to complete LLM inputs
+  - [ ] use LangChain classes for API provider wrappers
 - [ ] Support variable definition at runtime via a runtime system
 - [ ] Add function definitions
-- [ ] Type system? TBD
 - [ ] Add a module system
+- [ ] Add a package system
+- [ ] Type system? TBD
+
+## Notable alternatives
+
+- [llm-lang (Racket)](https://github.com/wilbowma/llm-lang) - similar in spirit. Does not support meta-prompting, uses racket as the DSL host language.
+- [genaiscript (Microsoft)](https://github.com/microsoft/genaiscript) - a JS library, does not follow the "prompt-first" approach
+- [LangChain prompt templates](https://python.langchain.com/docs/concepts/prompt_templates/) - only supports string substitution
+- [Promptify](https://www.promptify.ai/explore) - focused on API creation.
+- [Promptor](https://github.com/pikho/ppromptor) - prompt generator agent

@@ -1,8 +1,8 @@
 import sys
 from antlr4 import *
-from python_gen.src.MetaPromptLexer import MetaPromptLexer
-from python_gen.src.MetaPromptParser import MetaPromptParser
-from python_gen.src.MetaPromptVisitor import MetaPromptVisitor
+from parser.grammar.MetaPromptLexer import MetaPromptLexer
+from parser.grammar.MetaPromptParser import MetaPromptParser
+from parser.grammar.MetaPromptVisitor import MetaPromptVisitor
 from antlr4.error.ErrorListener import ErrorListener
 
 
@@ -14,7 +14,6 @@ class ThrowingErrorListener(ErrorListener):
 
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
         raise Exception(f"Syntax error at line {line}:{column} - {msg}")
-
 
 class MetaPromptASTBuilder(MetaPromptVisitor):
     def visitPrompt(self, ctx: MetaPromptParser.PromptContext):
@@ -75,8 +74,34 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             # slice the ":"
             return {"type": "var", "name": var_name}
         elif ctx.exprs() is not None:
+            # fixup the case with `[exprs]`
             exprs = self.visit(exprs_list[0])
-            return {"type": "brackets", "exprs": exprs}
+
+            ## TODO: rewrite this in a more generic fashion:
+            # join any number of adjacent type:text blocks
+
+            # if we saw "[]"
+            if len(exprs) == 0:
+                return {"type": "text", "text": "[]"}
+            else:
+                # if the first item of `exprs` in `[exprs]` parses as text,
+                if exprs[0]["type"] == "text":
+                    # prepend '[' to it
+                    exprs[0]["text"] = "[" + exprs[0]["text"]
+                else:
+                    exprs = [{"type": "text", "text": "["}] + exprs
+
+                # if the last item of `exprs` in `[exprs]` parses as text,
+                if exprs[-1]["type"] == "text":
+                    # extend it with ']'
+                    exprs[-1]["text"] = exprs[-1]["text"] + "]"
+                else:
+                    exprs.append({"type": "text", "text": "]"})
+
+                if len(exprs) == 1:
+                    return exprs[0]
+                else:
+                    return {"type": "exprs", "exprs": exprs}
         else:
             raise ValueError("Unable to build AST:", ctx)
 

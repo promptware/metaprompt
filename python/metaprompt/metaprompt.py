@@ -1,11 +1,4 @@
-import sys
-from pprint import pprint
-from antlr4 import *
-from python_gen.src.MetaPromptLexer import MetaPromptLexer
-from python_gen.src.MetaPromptParser import MetaPromptParser
-from python_gen.src.MetaPromptVisitor import MetaPromptVisitor
-from antlr4.error.ErrorListener import ErrorListener
-from parser import parse_ast
+from parse_metaprompt import parse_metaprompt
 import asyncio
 
 
@@ -37,12 +30,10 @@ async def eval_ast(ast, runtime):
                 chunks.append(chunk)
         output = input("[$ " + "".join(chunks) + "]")
         yield output
-    elif ast["type"] == "brackets":
-        yield "["
+    elif ast["type"] == "exprs":
         for expr in ast["exprs"]:
             async for chunk in eval_ast(expr, runtime):
                 yield chunk
-        yield "]"
     elif ast["type"] == "meta":
         chunks = []
         for expr in ast["exprs"]:
@@ -56,7 +47,6 @@ async def eval_ast(ast, runtime):
         async for chunk in eval_ast(ast["condition"], runtime):
             condition_chunks.append(chunk)
         condition = "".join(condition_chunks)
-        #
         prompt_result = ""
         while prompt_result != "yes" and prompt_result != "no":
             prompt_result = input("yes or no: " + condition)
@@ -142,14 +132,11 @@ class Runtime:
 
 
 async def main():
-    # prompt = 'as[d] [:if foo asd :then] [:hi] [:if [:foo] is a [:if c2 :then then2] human :then bar :else baz]'
     prompt = "[:asd]f[o]o[:asd][:if [:object] is an animal :then hiii]"
-    ast = parse_ast(prompt)
-    pprint(ast, indent=2)
+    ast = parse_metaprompt(prompt)
     config = Config(parameters={"asd": "hello", "object": "man"})
     res = await eval_metaprompt(ast, config)
     print(res)
-    # print(tree.toStringTree(recog=parser))
 
 
 if __name__ == "__main__":

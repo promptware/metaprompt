@@ -1,0 +1,17 @@
+antlr4-python3-runtime==4.13.2
+antlr4-tools==0.2.1
+black==24.10.0
+build==1.2.2.post1
+click==8.1.7
+iniconfig==2.0.0
+install-jdk==1.1.0
+invoke==2.2.0
+-e git+ssh://git@github.com/promptware/metaprompt.git@df00c8e3f57179266119d0536bd639cfb1ebf765#egg=metaprompt&subdirectory=python/metaprompt
+mypy-extensions==1.0.0
+packaging==24.2
+pathspec==0.12.1
+pip-tools==7.4.1
+platformdirs==4.3.6
+pluggy==1.5.0
+pyproject_hooks==1.2.0
+pytest==8.3.3

@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="metaprompt-parser",
+    name="metaprompt",
     version="0.0.1",
     description="https://metaprompt-lang.org/",
     author="Vladimir Kalnitsky",

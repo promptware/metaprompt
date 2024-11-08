@@ -1,5 +1,6 @@
-# Generated from src/MetaPrompt.g4 by ANTLR 4.13.2
+# Generated from ./grammar/MetaPrompt.g4 by ANTLR 4.13.2
 from antlr4 import *
+
 if "." in __name__:
     from .MetaPromptParser import MetaPromptParser
 else:
@@ -7,37 +8,32 @@ else:
 
 # This class defines a complete generic visitor for a parse tree produced by MetaPromptParser.
 
+
 class MetaPromptVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MetaPromptParser#prompt.
-    def visitPrompt(self, ctx:MetaPromptParser.PromptContext):
+    def visitPrompt(self, ctx: MetaPromptParser.PromptContext):
         return self.visitChildren(ctx)
-
 
     # Visit a parse tree produced by MetaPromptParser#exprs.
-    def visitExprs(self, ctx:MetaPromptParser.ExprsContext):
+    def visitExprs(self, ctx: MetaPromptParser.ExprsContext):
         return self.visitChildren(ctx)
-
 
     # Visit a parse tree produced by MetaPromptParser#expr.
-    def visitExpr(self, ctx:MetaPromptParser.ExprContext):
+    def visitExpr(self, ctx: MetaPromptParser.ExprContext):
         return self.visitChildren(ctx)
-
 
     # Visit a parse tree produced by MetaPromptParser#meta.
-    def visitMeta(self, ctx:MetaPromptParser.MetaContext):
+    def visitMeta(self, ctx: MetaPromptParser.MetaContext):
         return self.visitChildren(ctx)
-
 
     # Visit a parse tree produced by MetaPromptParser#meta_body.
-    def visitMeta_body(self, ctx:MetaPromptParser.Meta_bodyContext):
+    def visitMeta_body(self, ctx: MetaPromptParser.Meta_bodyContext):
         return self.visitChildren(ctx)
-
 
     # Visit a parse tree produced by MetaPromptParser#text.
-    def visitText(self, ctx:MetaPromptParser.TextContext):
+    def visitText(self, ctx: MetaPromptParser.TextContext):
         return self.visitChildren(ctx)
-
 
 
 del MetaPromptParser

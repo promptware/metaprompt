@@ -2,3 +2,5 @@
 __pycache__/
 *.pyc
 .envrc
+**/*.egg-info/
+**/.cache/
