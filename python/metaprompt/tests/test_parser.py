@@ -81,18 +81,18 @@ def test_if_nested():
 
 def test_dummy_meta():
     result = parse_metaprompt("[test]")
-    assert result["exprs"] == [t("[test]")]
+    assert result["exprs"] == [t("["), t("test"), t("]")]
 
 
 def test_dummy_meta2():
     result = parse_metaprompt("[[]]")
-    assert result["exprs"] == [t("[[]]")]
+    assert result["exprs"] == [t("["), t("["), t("]"), t("]")]
 
 
 
-def test_dummy_meta2():
-    result = parse_metaprompt("]")
-    assert result["exprs"] == [t("]")]
+def test_dummy_meta3():
+    result = parse_metaprompt("[a")
+    assert result["exprs"] == [t("["), t("a")]
 
 
 # def test_dummy_meta2():

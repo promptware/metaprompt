@@ -1,5 +1,5 @@
-T__0=1
-T__1=2
+LB=1
+RB=2
 CHAR=3
 IF_KW=4
 THEN_KW=5

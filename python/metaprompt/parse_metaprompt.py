@@ -15,6 +15,7 @@ class ThrowingErrorListener(ErrorListener):
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
         raise Exception(f"Syntax error at line {line}:{column} - {msg}")
 
+
 class MetaPromptASTBuilder(MetaPromptVisitor):
     def visitPrompt(self, ctx: MetaPromptParser.PromptContext):
         exprs_node = self.visit(ctx.exprs())
@@ -29,23 +30,25 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
 
     def visitExpr(self, ctx: MetaPromptParser.ExprContext):
         items = []
-        # The 'expr' rule is (text+? meta?)+, so we iterate over the children
-        for child in ctx.getChildren():
-            if isinstance(child, MetaPromptParser.TextContext):
-                text_node = self.visit(child)
-                items.append(text_node)
-            elif isinstance(child, MetaPromptParser.MetaContext):
-                meta_node = self.visit(child)
-                items.append(meta_node)
-            else:
-                # Ignore other types if any
-                pass
+        if ctx.text() is not None:
+            items.append(self.visit(ctx.text()))
+        if ctx.LB() is not None:
+            expr1 = self.visit(ctx.expr1())
+            if expr1["type"] == "meta":
+                items.append(expr1["meta"])
+            elif expr1["type"] == "exprs":
+                items.append({"type": "text", "text": "["})
+                for child in expr1["exprs"]:
+                    items.append(child)
+        if ctx.RB() is not None:
+            items.append({"type": "text", "text": "]"})
         return items
 
-    def visitMeta(self, ctx: MetaPromptParser.MetaContext):
-        # meta: '[' meta_body ']'
-        meta_body_node = self.visit(ctx.meta_body())
-        return meta_body_node
+    def visitExpr1(self, ctx: MetaPromptParser.Expr1Context):
+        if ctx.meta_body() is not None:
+            return {"type": "meta", "meta": self.visit(ctx.meta_body())}
+        else:
+            return {"type": "exprs", "exprs": self.visit(ctx.exprs())}
 
     def visitMeta_body(self, ctx: MetaPromptParser.Meta_bodyContext):
         exprs_list = ctx.exprs()
@@ -112,7 +115,30 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
         return {"type": "text", "text": text}
 
 
+def extract_tokens(input_text):
+    input_stream = InputStream(input_text)
+    lexer = MetaPromptLexer(input_stream)
+    token_stream = CommonTokenStream(lexer)
+    token_stream.fill()  # Fetches all tokens at once
+    tokens = []
+    for token in token_stream.tokens:
+        token_name = (
+            MetaPromptLexer.symbolicNames[token.type]
+            if hasattr(MetaPromptLexer, "symbolicNames")
+            else str(token.type)
+        )
+        tokens.append(
+            {
+                "type": token_name,
+                "text": token.text,
+            }
+        )
+
+    return tokens
+
+
 def parse_metaprompt(prompt):
+    print(extract_tokens(prompt))
     stream = InputStream(prompt)
     lexer = MetaPromptLexer(stream)
     stream = CommonTokenStream(lexer)

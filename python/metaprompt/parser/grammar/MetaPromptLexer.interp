@@ -11,8 +11,8 @@ null
 
 token symbolic names:
 null
-null
-null
+LB
+RB
 CHAR
 IF_KW
 THEN_KW
@@ -21,8 +21,8 @@ META_KW
 VAR_NAME
 
 rule names:
-T__0
-T__1
+LB
+RB
 CHAR
 IF_KW
 THEN_KW

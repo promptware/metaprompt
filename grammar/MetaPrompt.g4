@@ -1,9 +1,14 @@
 grammar MetaPrompt;
 prompt:	exprs EOF ;
 exprs: expr* ;
-expr: ((text+? | meta) meta?)+
+expr: text? LB expr1
+    | text
+    | RB
     ;
-meta: '[' meta_body ']'
+
+expr1
+    : meta_body RB
+    | exprs
     ;
 
 meta_body
@@ -11,11 +16,12 @@ meta_body
     | IF_KW exprs THEN_KW exprs
     | META_KW exprs
     | VAR_NAME
-    | exprs
     ;
 
 text: CHAR+ ;
 
+LB : '[';
+RB : ']';
 CHAR : . ;
 IF_KW : ':if' ;
 THEN_KW : ':then' ;
