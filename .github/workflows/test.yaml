@@ -29,5 +29,7 @@ jobs:
 
     - name: Run tests
       working-directory: python/metaprompt
+      env:
+        PYTHONPATH: "${{ github.workspace }}/python"
       run: |
         pytest
