@@ -6,7 +6,6 @@ click==8.1.7
 iniconfig==2.0.0
 install-jdk==1.1.0
 invoke==2.2.0
--e git+ssh://git@github.com/promptware/metaprompt.git@df00c8e3f57179266119d0536bd639cfb1ebf765#egg=metaprompt&subdirectory=python/metaprompt
 mypy-extensions==1.0.0
 packaging==24.2
 pathspec==0.12.1
