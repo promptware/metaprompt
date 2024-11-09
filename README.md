@@ -46,6 +46,7 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
 - [ ] Finalize and specify the initial version of the syntax
 - [ ] Implement a parser
   - [x] implement parse tree -> AST conversion
+  - [ ] return error throwing to the parser
   - [ ] implement escaping
 - [ ] Implement an evaluator that supports meta-prompting, conditionals and externally-defined variables
   - [x] implement a 'manual' evaluator that asks the user to complete LLM inputs
