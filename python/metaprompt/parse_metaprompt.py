@@ -67,44 +67,32 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             # IF_KW exprs THEN_KW exprs
             condition_node = self.visit(exprs_list[0])
             then_node = self.visit(exprs_list[1])
-            return {"type": "if_then", "condition": condition_node, "then": then_node}
-        elif ctx.META_KW() is not None:
-            # [$ exprs]
-            exprs_node = self.visit(ctx.exprs())
-            return {"type": "meta", "exprs": exprs_node}
+            return {
+                "type": "if_then_else",
+                "condition": condition_node,
+                "then": then_node,
+                "else": [],
+            }
         elif ctx.VAR_NAME() is not None:
             var_name = ctx.VAR_NAME().getText()[1:]
-            # slice the ":"
-            return {"type": "var", "name": var_name}
-        elif ctx.exprs() is not None:
-            # fixup the case with `[exprs]`
-            exprs = self.visit(exprs_list[0])
-
-            ## TODO: rewrite this in a more generic fashion:
-            # join any number of adjacent type:text blocks
-
-            # if we saw "[]"
-            if len(exprs) == 0:
-                return {"type": "text", "text": "[]"}
+            if ctx.EQ_KW() is not None:
+                # [:var_name= value]
+                exprs = []
+                for expr in ctx.exprs():
+                    expr_items = self.visit(expr)
+                    exprs.extend(expr_items)
+                return {"type": "assign", "name": var_name, "exprs": exprs}
             else:
-                # if the first item of `exprs` in `[exprs]` parses as text,
-                if exprs[0]["type"] == "text":
-                    # prepend '[' to it
-                    exprs[0]["text"] = "[" + exprs[0]["text"]
-                else:
-                    exprs = [{"type": "text", "text": "["}] + exprs
+                # slice the ":"
+                return {"type": "var", "name": var_name}
 
-                # if the last item of `exprs` in `[exprs]` parses as text,
-                if exprs[-1]["type"] == "text":
-                    # extend it with ']'
-                    exprs[-1]["text"] = exprs[-1]["text"] + "]"
-                else:
-                    exprs.append({"type": "text", "text": "]"})
-
-                if len(exprs) == 1:
-                    return exprs[0]
-                else:
-                    return {"type": "exprs", "exprs": exprs}
+        elif ctx.META_KW() is not None:
+            # [$ exprs]
+            exprs = []
+            for expr in ctx.exprs():
+                expr_items = self.visit(expr)
+                exprs.extend(expr_items)
+            return {"type": "meta", "exprs": exprs}
         else:
             raise ValueError("Unable to build AST:", ctx)
 

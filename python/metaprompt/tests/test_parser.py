@@ -1,4 +1,4 @@
-from parse_metaprompt import parse_metaprompt
+from parse_metaprompt import parse_metaprompt, extract_tokens
 
 
 def t(text):
@@ -6,12 +6,7 @@ def t(text):
 
 
 def if_then(c, then_):
-    return {
-        "type": "if_then",
-        "condition": c,
-        "then": then_,
-    }
-
+    return if_then_else(c, then_, [])
 
 def if_then_else(c, then_, else_):
     return {
@@ -57,11 +52,10 @@ def test_meta_text2():
 def test_if():
     result = parse_metaprompt("[:if foo :then bar]")
     assert result["exprs"] == [
-        {
-            "type": "if_then",
-            "condition": [{"type": "text", "text": " foo "}],
-            "then": [{"type": "text", "text": " bar"}],
-        }
+        if_then(
+            [{"type": "text", "text": " foo "}],
+            [{"type": "text", "text": " bar"}],
+        )
     ]
 
 
@@ -98,3 +92,8 @@ def test_dummy_meta3():
 def test_dummy_meta2():
     result = parse_metaprompt("[[][]]")
     assert result["exprs"] == [t("["), t("["), t("]"), t("["), t("]"), t("]")]
+
+
+def test_meta_dollar():
+    result = parse_metaprompt("[$ foo]")
+    assert result["exprs"] == [{'type': 'meta', 'exprs': [ {'type': 'text', 'text': " foo"}]}]

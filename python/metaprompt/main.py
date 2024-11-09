@@ -1,11 +1,37 @@
 from parse_metaprompt import parse_metaprompt
 import asyncio
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import HumanMessage
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from the .env file
+load_dotenv()
+
+# Access the OpenAI API key from the environment
+openai_api_key = os.getenv("OPENAI_API_KEY")
+
+
+def llm_input(prompt):
+    chat_model = ChatOpenAI(
+        openai_api_key=openai_api_key, temperature=0.7, model_name="gpt-3.5-turbo"
+    )
+    messages = [HumanMessage(content=prompt)]
+    response = chat_model(messages)
+    print(f"Prompt: {prompt}\nOutput: {response}\n-----------------------------")
+    return response.content
 
 
 async def eval_exprs(exprs, runtime):
     for expr in exprs:
         async for chunk in eval_ast(expr, runtime):
             yield chunk
+
+
+IF_PROMPT = """Please determine if the following statement is true.
+Do not write any other output, answer just "true" or "false".
+The statement:
+"""
 
 
 async def eval_ast(ast, runtime):
@@ -28,39 +54,37 @@ async def eval_ast(ast, runtime):
         for expr in ast["exprs"]:
             async for chunk in eval_ast(expr, runtime):
                 chunks.append(chunk)
-        output = input("[$ " + "".join(chunks) + "]")
+        output = llm_input("".join(chunks))
         yield output
     elif ast["type"] == "exprs":
         for expr in ast["exprs"]:
             async for chunk in eval_ast(expr, runtime):
                 yield chunk
-    elif ast["type"] == "meta":
-        chunks = []
-        for expr in ast["exprs"]:
-            async for chunk in eval_ast(expr, runtime):
-                chunks.append(chunk)
-        output = input("[$ " + "".join(chunks) + "]")
-        yield output
-    elif ast["type"] == "if_then":
+    elif ast["type"] == "if_then_else":
         # evaluate the conditional
         condition_chunks = []
         async for chunk in eval_ast(ast["condition"], runtime):
             condition_chunks.append(chunk)
         condition = "".join(condition_chunks)
         prompt_result = ""
-        while prompt_result != "yes" and prompt_result != "no":
-            prompt_result = input("yes or no: " + condition)
-        if prompt_result == "yes":
+        MAX_RETRIES = 3
+        retries = 0
+        prompt = IF_PROMPT + condition
+        while prompt_result != "true" and prompt_result != "false":
+            prompt_result = llm_input(prompt).strip()
+            retries += 1
+            if retries >= MAX_RETRIES:
+                raise ValueError(
+                    "Failed to answer :if prompt: " + prompt + "\nOutput: " + prompt_result
+                )
+        if prompt_result == "true":
             async for chunk in eval_ast(ast["then"], runtime):
                 yield chunk
-        else:
-            if "else" in ast:
-                async for chunk in eval_ast(ast["else"], runtime):
-                    yield chunk
-            else:
-                pass
+        else:  # false
+            async for chunk in eval_ast(ast["else"], runtime):
+                yield chunk
     else:
-        raise ValueError(ast)
+        raise ValueError("Runtime AST evaluation error: " + str(ast))
 
 
 async def eval_metaprompt(metaprompt, config):
@@ -132,11 +156,26 @@ class Runtime:
 
 
 async def main():
-    prompt = "[:asd]f[o]o[:asd][:if [:object] is an animal :then hiii]"
+    # prompt = "[:asd]f[o]o[:asd][:if [:object] is a human :then hiii]"
+    #    prompt = """
+    #    Write me a poem about [:subject]
+
+    # [:if [:subject] is a human
+    #    :then
+    #   Use jokingly exaggerated style
+    # :else
+    #   Include some references to [$ List some people who have any
+    #   relation to [:subject], comma-separated
+    #    ]
+    #  ]
+    #    """
+    prompt = """
+    """
     ast = parse_metaprompt(prompt)
-    config = Config(parameters={"asd": "hello", "object": "man"})
+    config = Config(parameters={"subject": "Saint Petersburg"})
     res = await eval_metaprompt(ast, config)
-    print(res)
+    print(llm_input(res))
+    # print(ast)
 
 
 if __name__ == "__main__":
