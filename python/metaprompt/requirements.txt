@@ -32,7 +32,6 @@ langchain-core==0.3.15
 langchain-text-splitters==0.3.2
 langsmith==0.1.142
 marshmallow==3.23.1
-metaprompt==0.0.1
 multidict==6.1.0
 mypy-extensions==1.0.0
 numpy==1.26.4
