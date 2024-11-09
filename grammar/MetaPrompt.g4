@@ -1,14 +1,15 @@
 grammar MetaPrompt;
 
 prompt:	exprs EOF ;
-exprs: expr* ;
-expr: text? LB expr1
+exprs: expr*? ;
+expr: LB expr1 RB
     | text
     | RB
+    | LB
     ;
 
 expr1
-    : meta_body RB
+    : meta_body
     | exprs
     ;
 

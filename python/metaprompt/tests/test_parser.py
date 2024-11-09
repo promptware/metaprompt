@@ -97,3 +97,34 @@ def test_dummy_meta2():
 def test_meta_dollar():
     result = parse_metaprompt("[$ foo]")
     assert result["exprs"] == [{'type': 'meta', 'exprs': [ {'type': 'text', 'text': " foo"}]}]
+
+
+def test_meta_dollar2():
+    result = parse_metaprompt("[$ foo][$ foo]")
+    assert result["exprs"] == [
+        {'type': 'meta', 'exprs': [ {'type': 'text', 'text': " foo"}]},
+        {'type': 'meta', 'exprs': [ {'type': 'text', 'text': " foo"}]},
+    ]
+
+
+def test_meta_dollar2():
+    result = parse_metaprompt("[$ foo]]")
+    assert result["exprs"] == [
+        {'type': 'meta', 'exprs': [ {'type': 'text', 'text': " foo"}]},
+        t("]")
+    ]
+
+
+def test_assign():
+    result = parse_metaprompt("[:foo=bar]")
+    assert result["exprs"] == [{'type': 'assign', 'name': 'foo', 'exprs': [ {'type': 'text', 'text': "bar"}]}]
+
+
+def test_assign_trailing_bracket():
+    result = parse_metaprompt("[:foo=bar]]")
+    assert result["exprs"] == [
+        {'type': 'assign', 'name': 'foo',
+         'exprs': [ {'type': 'text', 'text': "bar"}]
+         },
+        t(']')
+    ]

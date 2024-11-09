@@ -32,7 +32,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
         items = []
         if ctx.text() is not None:
             items.append(self.visit(ctx.text()))
-        if ctx.LB() is not None:
+        if ctx.expr1() is not None:
             expr1 = self.visit(ctx.expr1())
             if expr1["type"] == "meta":
                 items.append(expr1["meta"])
@@ -40,8 +40,12 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 items.append({"type": "text", "text": "["})
                 for child in expr1["exprs"]:
                     items.append(child)
-        if ctx.RB() is not None:
-            items.append({"type": "text", "text": "]"})
+                items.append({"type": "text", "text": "]"})
+        else:
+            if ctx.RB() is not None:
+                items.append({"type": "text", "text": "]"})
+            if ctx.LB() is not None:
+                items.append({"type": "text", "text": "["})
         return items
 
     def visitExpr1(self, ctx: MetaPromptParser.Expr1Context):

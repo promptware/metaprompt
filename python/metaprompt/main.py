@@ -75,7 +75,10 @@ async def eval_ast(ast, runtime):
             retries += 1
             if retries >= MAX_RETRIES:
                 raise ValueError(
-                    "Failed to answer :if prompt: " + prompt + "\nOutput: " + prompt_result
+                    "Failed to answer :if prompt: "
+                    + prompt
+                    + "\nOutput: "
+                    + prompt_result
                 )
         if prompt_result == "true":
             async for chunk in eval_ast(ast["then"], runtime):
