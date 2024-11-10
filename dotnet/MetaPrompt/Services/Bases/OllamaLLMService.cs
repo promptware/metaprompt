@@ -1,45 +1,56 @@
-﻿using MetaPrompt.Services.Interfaces;
+﻿using Microsoft.Extensions.AI;
 using OllamaSharp;
+using OllamaSharp.MicrosoftAi;
 using OllamaSharp.Models;
-using System;
+using System.Text.Json;
 using System.Text;
 using System.Threading.Tasks;
+using MetaPrompt.Services.Interfaces;
 
-namespace MetaPrompt.Services.Bases
+public class OllamaLLMService : ILLMService
 {
-    public class OllamaLLMService : ILLMService
+    private readonly OllamaApiClient _ollama;
+
+    public OllamaLLMService(OllamaApiClient ollama)
     {
-        private readonly OllamaApiClient _ollama;
+        _ollama = ollama;
+    }
 
-        public OllamaLLMService(OllamaApiClient ollama)
+    public async Task<string> GetResponseAsync(string systemPrompt, string prompt, float temperature)
+    {
+        Console.WriteLine("Prompt: " + systemPrompt + prompt);
+
+        var options = new ChatOptions
         {
-            _ollama = ollama;
+            Temperature = temperature  // Установка температуры
+        };
+
+        var request = AbstractionMapper.ToOllamaSharpChatRequest(new List<ChatMessage>
+        {
+            new ChatMessage
+            {
+                Role = ChatRole.System,
+                Text = systemPrompt
+            },
+            new ChatMessage
+            {
+                Role = ChatRole.User,
+                Text = prompt
+            }
+        }, options, stream: true, JsonSerializerOptions.Default);
+
+        // Отправляем запрос и обрабатываем ответ
+        var response = new StringBuilder();
+        await foreach (var result in _ollama.ChatAsync(request))
+        {
+            if (result != null)
+            {
+                response.Append(result.Message?.Content);
+            }
         }
 
-        public async Task<string> GetResponseAsync(string prompt)
-        {
-            Console.WriteLine("Promt: " + prompt);
-            var generateRequest = new GenerateRequest { Prompt = prompt };
-            var fullResponse = new StringBuilder();
+        Console.WriteLine("FullResponse: " + response);
 
-            try
-            {
-                await foreach (var response in _ollama.GenerateAsync(generateRequest))
-                {
-                    if (response != null)
-                    {
-                        // Use the correct field for response content
-                        fullResponse.Append(response.Response);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error generating response: {ex.Message}");
-            }
-
-            Console.WriteLine("FullResponse: " + fullResponse);
-            return fullResponse.ToString();
-        }
+        return response.ToString();
     }
 }

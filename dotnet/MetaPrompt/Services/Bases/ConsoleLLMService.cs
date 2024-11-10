@@ -9,9 +9,9 @@ namespace MetaPrompt.Services.Bases
 {
     internal class ConsoleLLMService : ILLMService
     {
-        public Task<string> GetResponseAsync(string prompt)
+        public Task<string> GetResponseAsync(string system, string prompt, float temperature)
         {
-            Console.WriteLine($"Prompt to LLM: {prompt}");
+            Console.WriteLine($"Prompt to LLM: {system} {prompt}");
             Console.Write("LLM Response: ");
             string response = Console.ReadLine();
             return Task.FromResult(response);

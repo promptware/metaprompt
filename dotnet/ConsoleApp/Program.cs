@@ -24,7 +24,7 @@ try
         new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.1"));
 
     string result = await metaPromptEvaluator.EvaluateAsync(ast);
-    Console.WriteLine("Final Result:");
+    Console.WriteLine("\n\nFinal Result:");
     Console.WriteLine(result);
 }
 catch (Exception ex)

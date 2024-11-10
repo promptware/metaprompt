@@ -95,7 +95,7 @@ namespace MetaPrompt
                 }
 
                 string metaPrompt = string.Join("", chunks);
-                string output = await _llmService.GetResponseAsync(metaPrompt);
+                string output = await _llmService.GetResponseAsync("", metaPrompt);
                 yield return output;
             }
             else if (ast["type"].ToString() == "if_then_else")
@@ -117,11 +117,19 @@ namespace MetaPrompt
 
                 string promptResult = "";
                 int retries = 0;
-                string prompt = "Please determine if the following statement is true or false:\n" + condition;
+                string systemPromt = "Please respond with either \"true\" or \"false\" only. No additional information or explanation is needed. Based on the statement provided, determine if it is true or false.";
 
-                while (promptResult != "true" && promptResult != "false" && retries < _runtime.Config.IfRetries)
+                while (promptResult != "true" && promptResult != "false")
                 {
-                    promptResult = (await _llmService.GetResponseAsync(prompt)).Trim();
+                    if (retries > _runtime.Config.IfRetries)
+                    {
+                        throw new Exception($"Failed to determine condition after retries. \n systemPromt - {systemPromt} promt - {condition} result - {promptResult}");
+                    }
+
+                    promptResult = (await _llmService.GetResponseAsync(systemPromt, condition, 0)).Trim();
+
+                    promptResult = promptResult.ToLower();
+
                     retries++;
                 }
 

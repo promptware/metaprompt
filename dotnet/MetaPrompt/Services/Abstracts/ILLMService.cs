@@ -8,6 +8,6 @@ namespace MetaPrompt.Services.Interfaces
 {
     public interface ILLMService
     {
-        Task<string> GetResponseAsync(string prompt);
+        Task<string> GetResponseAsync(string systemPromt, string prompt, float temperature = 0.5f);
     }
 }
