@@ -19,7 +19,7 @@ var config = new ConfigModel(new Dictionary<string, string> { { "subject", "Sain
 
 try
 {
-    MetaPromptEvaluator metaPromptEvaluator = new MetaPromptEvaluator(config);
+    MetaPromptEvaluator metaPromptEvaluator = new ConsoleMetaPromptEvaluator(config);
     string result = await metaPromptEvaluator.EvaluateAsync(ast);
     Console.WriteLine("Final Result:");
     Console.WriteLine(result);
