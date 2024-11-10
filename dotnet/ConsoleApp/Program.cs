@@ -16,7 +16,10 @@ Write me a poem about [:subject]
 
 var ast = ParseMetaprompt.Parse(prompt);
 
-var config = new ConfigModel(new Dictionary<string, string> { { "subject", "Saint Petersburg" } });
+var config = new ConfigModel(new Dictionary<string, Func<string>>
+{
+    { "subject", () => "Saint Petersburg" }
+});
 
 try
 {

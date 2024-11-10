@@ -8,12 +8,12 @@ namespace MetaPrompt.Models
 {
     public class ConfigModel
     {
-        public Dictionary<string, string> Parameters { get; }
+        public EnvModel Env { get; private set; }
         public int IfRetries { get; set; } = 3;
 
-        public ConfigModel(Dictionary<string, string> parameters)
+        public ConfigModel(Dictionary<string, Func<string>> parameters)
         {
-            Parameters = parameters;
+            Env = new EnvModel(parameters);
         }
     }
 }

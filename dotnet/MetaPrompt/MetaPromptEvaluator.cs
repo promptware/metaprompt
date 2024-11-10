@@ -19,18 +19,15 @@ namespace MetaPrompt
 
         public async Task<string> EvaluateAsync(Dictionary<string, object> metaprompt, ConfigModel config)
         {
-            var env = new EnvModel(config.Parameters);
-            var runtime = new RuntimeModel(config, env);
-
             string result = "";
-            await foreach (var chunk in EvalAst(metaprompt, config, env, runtime))
+            await foreach (var chunk in EvalAst(metaprompt, config))
             {
                 result += chunk;
             }
             return result;
         }
 
-        private async IAsyncEnumerable<string> EvalAst(Dictionary<string, object> ast, ConfigModel config, EnvModel env, RuntimeModel runtime)
+        private async IAsyncEnumerable<string> EvalAst(Dictionary<string, object> ast, ConfigModel config)
         {
             if (!ast.ContainsKey("type"))
             {
@@ -47,7 +44,7 @@ namespace MetaPrompt
                 {
                     foreach (var expr in exprsList)
                     {
-                        await foreach (var chunk in EvalAst(expr, config, env, runtime))
+                        await foreach (var chunk in EvalAst(expr, config))
                         {
                             yield return chunk;
                         }
@@ -60,7 +57,7 @@ namespace MetaPrompt
                 {
                     foreach (var expr in exprsList)
                     {
-                        await foreach (var chunk in EvalAst(expr, config, env, runtime))
+                        await foreach (var chunk in EvalAst(expr, config))
                         {
                             yield return chunk;
                         }
@@ -69,7 +66,7 @@ namespace MetaPrompt
             }
             else if (ast["type"].ToString() == "var")
             {
-                string value = runtime.Env.Get(ast["name"].ToString());
+                string value = config.Env.Get(ast["name"].ToString());
                 if (value == null)
                 {
                     throw new Exception($"Variable not found: {ast["name"]}");
@@ -84,7 +81,7 @@ namespace MetaPrompt
                 {
                     foreach (var expr in exprsList)
                     {
-                        await foreach (var chunk in EvalAst(expr, config, env, runtime))
+                        await foreach (var chunk in EvalAst(expr, config))
                         {
                             chunks.Add(chunk);
                         }
@@ -103,7 +100,7 @@ namespace MetaPrompt
                 {
                     foreach (var expr in conditionExprs)
                     {
-                        await foreach (var chunk in EvalAst(expr, config, env, runtime))
+                        await foreach (var chunk in EvalAst(expr, config))
                         {
                             conditionChunks.Add(chunk);
                         }
@@ -136,7 +133,7 @@ namespace MetaPrompt
                     {
                         foreach (var expr in thenExprsList)
                         {
-                            await foreach (var chunk in EvalAst(expr, config, env, runtime))
+                            await foreach (var chunk in EvalAst(expr, config))
                             {
                                 yield return chunk;
                             }
@@ -149,7 +146,7 @@ namespace MetaPrompt
                     {
                         foreach (var expr in elseExprsList)
                         {
-                            await foreach (var chunk in EvalAst(expr, config, env, runtime))
+                            await foreach (var chunk in EvalAst(expr, config))
                             {
                                 yield return chunk;
                             }
