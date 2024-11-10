@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using Antlr4.Runtime;
 using NUnit.Framework;
 
@@ -73,6 +74,76 @@ public class MetapromptTests
             Text("asd")
         }, result["exprs"]);
     }
+
+
+    [Test]
+    public void TestComplexPromptWithConditionalAndMeta()
+    {
+        string prompt = @"
+Write me a poem about [:subject]
+
+[:if [:subject] is a human
+    :then
+    Use jokingly exaggerated style
+:else
+    Include some references to [$ List some people who have any
+    relation to [:subject], comma-separated
+    ]
+]";
+
+        var expectedAST = new Dictionary<string, object>
+    {
+        {"type", "metaprompt"},
+        {"exprs", new List<Dictionary<string, object>>
+            {
+                new Dictionary<string, object> { { "type", "text" }, { "text", "\r\nWrite me a poem about " } },
+                new Dictionary<string, object> { { "type", "var" }, { "name", "subject" } },
+                new Dictionary<string, object> { { "type", "text" }, { "text", "\r\n\r\n" } },
+                new Dictionary<string, object>
+                {
+                    { "type", "if_then_else" },
+                    { "condition", new List<Dictionary<string, object>>
+                        {
+                            new Dictionary<string, object> { { "type", "text" }, { "text", " " } },
+                            new Dictionary<string, object> { { "type", "var" }, { "name", "subject" } },
+                            new Dictionary<string, object> { { "type", "text" }, { "text", " is a human\r\n    " } }
+                        }
+                    },
+                    { "then", new List<Dictionary<string, object>>
+                        {
+                            new Dictionary<string, object> { { "type", "text" }, { "text", "\r\n    Use jokingly exaggerated style\r\n" } }
+                        }
+                    },
+                    { "else", new List<Dictionary<string, object>>
+                        {
+                            new Dictionary<string, object> { { "type", "text" }, { "text", "\r\n    Include some references to " } },
+                            new Dictionary<string, object>
+                            {
+                                { "type", "meta" },
+                                { "exprs", new List<Dictionary<string, object>>
+                                    {
+                                        new Dictionary<string, object> { { "type", "text" }, { "text", " List some people who have any\r\n    relation to " } },
+                                        new Dictionary<string, object> { { "type", "var" }, { "name", "subject" } },
+                                        new Dictionary<string, object> { { "type", "text" }, { "text", ", comma-separated\r\n    " } }
+                                    }
+                                }
+                            },
+                            new Dictionary<string, object> { { "type", "text" }, { "text", "\r\n" } }
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+        var resultAST = ParseMetaprompt.Parse(prompt);
+
+        var expectedJson = JsonSerializer.Serialize(expectedAST, new JsonSerializerOptions { WriteIndented = true });
+        var actualJson = JsonSerializer.Serialize(resultAST, new JsonSerializerOptions { WriteIndented = true });
+
+        Assert.That(resultAST, Is.EqualTo(expectedAST), $"AST does not match the expected structure.\nExpected: {expectedJson}\nActual: {actualJson}");
+    }
+
 
     [Test]
     public void TestIf()
