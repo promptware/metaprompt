@@ -11,7 +11,7 @@ namespace MetaPrompt
 {
     public class OllamaMetaPromptEvaluator : MetaPromptEvaluator
     {
-        public OllamaMetaPromptEvaluator(ConfigModel config, OllamaApiClient ollama) : base(config, new OllamaLLMService(ollama))
+        public OllamaMetaPromptEvaluator(OllamaApiClient ollama) : base(new OllamaLLMService(ollama))
         {
         }
     }

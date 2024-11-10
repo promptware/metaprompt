@@ -10,7 +10,7 @@ namespace MetaPrompt
 {
     public class ConsoleMetaPromptEvaluator : MetaPromptEvaluator
     {
-        public ConsoleMetaPromptEvaluator(ConfigModel config) : base(config, new ConsoleLLMService())
+        public ConsoleMetaPromptEvaluator() : base(new ConsoleLLMService())
         {
         }
     }

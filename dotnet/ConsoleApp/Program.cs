@@ -20,10 +20,10 @@ var config = new ConfigModel(new Dictionary<string, string> { { "subject", "Sain
 
 try
 {
-    MetaPromptEvaluator metaPromptEvaluator = new OllamaMetaPromptEvaluator(config, 
+    MetaPromptEvaluator metaPromptEvaluator = new OllamaMetaPromptEvaluator(
         new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.1"));
 
-    string result = await metaPromptEvaluator.EvaluateAsync(ast);
+    string result = await metaPromptEvaluator.EvaluateAsync(ast, config);
     Console.WriteLine("\n\nFinal Result:");
     Console.WriteLine(result);
 }

@@ -10,30 +10,27 @@ namespace MetaPrompt
 {
     public class MetaPromptEvaluator
     {
-        private readonly ConfigModel _config;
-        private readonly EnvModel _env;
-        private readonly RuntimeModel _runtime;
         private readonly ILLMService _llmService;
 
-        public MetaPromptEvaluator(ConfigModel config, ILLMService llmService)
+        public MetaPromptEvaluator(ILLMService llmService)
         {
             _llmService = llmService;
-            _config = config;
-            _env = new EnvModel(config.Parameters);
-            _runtime = new RuntimeModel(config, _env);
         }
 
-        public async Task<string> EvaluateAsync(Dictionary<string, object> metaprompt)
+        public async Task<string> EvaluateAsync(Dictionary<string, object> metaprompt, ConfigModel config)
         {
+            var env = new EnvModel(config.Parameters);
+            var runtime = new RuntimeModel(config, env);
+
             string result = "";
-            await foreach (var chunk in EvalAst(metaprompt))
+            await foreach (var chunk in EvalAst(metaprompt, config, env, runtime))
             {
                 result += chunk;
             }
             return result;
         }
 
-        private async IAsyncEnumerable<string> EvalAst(Dictionary<string, object> ast)
+        private async IAsyncEnumerable<string> EvalAst(Dictionary<string, object> ast, ConfigModel config, EnvModel env, RuntimeModel runtime)
         {
             if (!ast.ContainsKey("type"))
             {
@@ -50,7 +47,7 @@ namespace MetaPrompt
                 {
                     foreach (var expr in exprsList)
                     {
-                        await foreach (var chunk in EvalAst(expr))
+                        await foreach (var chunk in EvalAst(expr, config, env, runtime))
                         {
                             yield return chunk;
                         }
@@ -63,7 +60,7 @@ namespace MetaPrompt
                 {
                     foreach (var expr in exprsList)
                     {
-                        await foreach (var chunk in EvalAst(expr))
+                        await foreach (var chunk in EvalAst(expr, config, env, runtime))
                         {
                             yield return chunk;
                         }
@@ -72,7 +69,7 @@ namespace MetaPrompt
             }
             else if (ast["type"].ToString() == "var")
             {
-                string value = _runtime.Env.Get(ast["name"].ToString());
+                string value = runtime.Env.Get(ast["name"].ToString());
                 if (value == null)
                 {
                     throw new Exception($"Variable not found: {ast["name"]}");
@@ -87,7 +84,7 @@ namespace MetaPrompt
                 {
                     foreach (var expr in exprsList)
                     {
-                        await foreach (var chunk in EvalAst(expr))
+                        await foreach (var chunk in EvalAst(expr, config, env, runtime))
                         {
                             chunks.Add(chunk);
                         }
@@ -106,7 +103,7 @@ namespace MetaPrompt
                 {
                     foreach (var expr in conditionExprs)
                     {
-                        await foreach (var chunk in EvalAst(expr))
+                        await foreach (var chunk in EvalAst(expr, config, env, runtime))
                         {
                             conditionChunks.Add(chunk);
                         }
@@ -121,7 +118,7 @@ namespace MetaPrompt
 
                 while (promptResult != "true" && promptResult != "false")
                 {
-                    if (retries > _runtime.Config.IfRetries)
+                    if (retries > config.IfRetries)
                     {
                         throw new Exception($"Failed to determine condition after retries. \n systemPromt - {systemPromt} promt - {condition} result - {promptResult}");
                     }
@@ -139,7 +136,7 @@ namespace MetaPrompt
                     {
                         foreach (var expr in thenExprsList)
                         {
-                            await foreach (var chunk in EvalAst(expr))
+                            await foreach (var chunk in EvalAst(expr, config, env, runtime))
                             {
                                 yield return chunk;
                             }
@@ -152,7 +149,7 @@ namespace MetaPrompt
                     {
                         foreach (var expr in elseExprsList)
                         {
-                            await foreach (var chunk in EvalAst(expr))
+                            await foreach (var chunk in EvalAst(expr, config, env, runtime))
                             {
                                 yield return chunk;
                             }
