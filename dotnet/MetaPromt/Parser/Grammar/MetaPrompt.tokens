@@ -1,0 +1,16 @@
+LB=1
+RB=2
+EQ_KW=3
+META_KW=4
+CHAR=5
+IF_KW=6
+THEN_KW=7
+ELSE_KW=8
+VAR_NAME=9
+'['=1
+']'=2
+'='=3
+'$'=4
+':if'=6
+':then'=7
+':else'=8
