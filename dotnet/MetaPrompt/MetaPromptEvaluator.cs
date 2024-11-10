@@ -1,4 +1,5 @@
 ﻿using MetaPrompt.Models;
+using MetaPrompt.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,11 @@ namespace MetaPrompt
         private readonly ConfigModel _config;
         private readonly EnvModel _env;
         private readonly RuntimeModel _runtime;
+        private readonly ILLMService _llmService;
 
-        public MetaPromptEvaluator(ConfigModel config)
+        public MetaPromptEvaluator(ConfigModel config, ILLMService llmService)
         {
+            _llmService = llmService;
             _config = config;
             _env = new EnvModel(config.Parameters);
             _runtime = new RuntimeModel(config, _env);
@@ -92,7 +95,7 @@ namespace MetaPrompt
                 }
 
                 string metaPrompt = string.Join("", chunks);
-                string output = LlmInput(metaPrompt);
+                string output = await _llmService.GetResponseAsync(metaPrompt);
                 yield return output;
             }
             else if (ast["type"].ToString() == "if_then_else")
@@ -118,7 +121,7 @@ namespace MetaPrompt
 
                 while (promptResult != "true" && promptResult != "false" && retries < _runtime.Config.IfRetries)
                 {
-                    promptResult = LlmInput(prompt).Trim();
+                    promptResult = (await _llmService.GetResponseAsync(prompt)).Trim();
                     retries++;
                 }
 
@@ -149,13 +152,6 @@ namespace MetaPrompt
                     }
                 }
             }
-        }
-
-        string LlmInput(string prompt)
-        {
-            Console.WriteLine($"Prompt to user: {prompt}");
-            Console.Write("User Input: ");
-            return Console.ReadLine();
         }
     }
 }
