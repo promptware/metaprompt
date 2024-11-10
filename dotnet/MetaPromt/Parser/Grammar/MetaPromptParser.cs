@@ -104,6 +104,12 @@ public partial class MetaPromptParser : Parser {
 			IMetaPromptListener typedListener = listener as IMetaPromptListener;
 			if (typedListener != null) typedListener.ExitPrompt(this);
 		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IMetaPromptVisitor<TResult> typedVisitor = visitor as IMetaPromptVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitPrompt(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -151,6 +157,12 @@ public partial class MetaPromptParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IMetaPromptListener typedListener = listener as IMetaPromptListener;
 			if (typedListener != null) typedListener.ExitExprs(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IMetaPromptVisitor<TResult> typedVisitor = visitor as IMetaPromptVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitExprs(this);
+			else return visitor.VisitChildren(this);
 		}
 	}
 
@@ -214,6 +226,12 @@ public partial class MetaPromptParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IMetaPromptListener typedListener = listener as IMetaPromptListener;
 			if (typedListener != null) typedListener.ExitExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IMetaPromptVisitor<TResult> typedVisitor = visitor as IMetaPromptVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitExpr(this);
+			else return visitor.VisitChildren(this);
 		}
 	}
 
@@ -292,6 +310,12 @@ public partial class MetaPromptParser : Parser {
 			IMetaPromptListener typedListener = listener as IMetaPromptListener;
 			if (typedListener != null) typedListener.ExitExpr1(this);
 		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IMetaPromptVisitor<TResult> typedVisitor = visitor as IMetaPromptVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitExpr1(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -362,6 +386,12 @@ public partial class MetaPromptParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IMetaPromptListener typedListener = listener as IMetaPromptListener;
 			if (typedListener != null) typedListener.ExitMeta_body(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IMetaPromptVisitor<TResult> typedVisitor = visitor as IMetaPromptVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitMeta_body(this);
+			else return visitor.VisitChildren(this);
 		}
 	}
 
@@ -462,6 +492,12 @@ public partial class MetaPromptParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IMetaPromptListener typedListener = listener as IMetaPromptListener;
 			if (typedListener != null) typedListener.ExitText(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IMetaPromptVisitor<TResult> typedVisitor = visitor as IMetaPromptVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitText(this);
+			else return visitor.VisitChildren(this);
 		}
 	}
 
