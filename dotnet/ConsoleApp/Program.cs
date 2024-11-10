@@ -1,5 +1,6 @@
 ﻿using MetaPrompt;
 using MetaPrompt.Models;
+using OllamaSharp;
 
 string prompt = @"
 Write me a poem about [:subject]
@@ -19,7 +20,9 @@ var config = new ConfigModel(new Dictionary<string, string> { { "subject", "Sain
 
 try
 {
-    MetaPromptEvaluator metaPromptEvaluator = new ConsoleMetaPromptEvaluator(config);
+    MetaPromptEvaluator metaPromptEvaluator = new OllamaMetaPromptEvaluator(config, 
+        new OllamaApiClient(new Uri("http://localhost:11434"), "llama3.1"));
+
     string result = await metaPromptEvaluator.EvaluateAsync(ast);
     Console.WriteLine("Final Result:");
     Console.WriteLine(result);
