@@ -37,16 +37,12 @@ namespace MetaPrompt
                 throw new Exception("AST node does not contain 'type' key.");
             }
 
-            Console.WriteLine($"Evaluating AST node of type: {ast["type"]}");
-
             if (ast["type"].ToString() == "text")
             {
-                Console.WriteLine($"Text node: {ast["text"]}");
                 yield return ast["text"].ToString();
             }
             else if (ast["type"].ToString() == "metaprompt")
             {
-                Console.WriteLine("Processing 'metaprompt' node...");
                 if (ast["exprs"] is List<Dictionary<string, object>> exprsList)
                 {
                     foreach (var expr in exprsList)
@@ -56,15 +52,10 @@ namespace MetaPrompt
                             yield return chunk;
                         }
                     }
-                }
-                else
-                {
-                    Console.WriteLine("Error: 'exprs' is not a list of expressions.");
                 }
             }
             else if (ast["type"].ToString() == "exprs")
             {
-                Console.WriteLine("Processing 'exprs' node...");
                 if (ast["exprs"] is List<Dictionary<string, object>> exprsList)
                 {
                     foreach (var expr in exprsList)
@@ -74,16 +65,11 @@ namespace MetaPrompt
                             yield return chunk;
                         }
                     }
-                }
-                else
-                {
-                    Console.WriteLine("Error: 'exprs' is not a list of expressions.");
                 }
             }
             else if (ast["type"].ToString() == "var")
             {
                 string value = _runtime.Env.Get(ast["name"].ToString());
-                Console.WriteLine($"Variable '{ast["name"]}' resolved to: {value}");
                 if (value == null)
                 {
                     throw new Exception($"Variable not found: {ast["name"]}");
@@ -92,7 +78,6 @@ namespace MetaPrompt
             }
             else if (ast["type"].ToString() == "meta")
             {
-                Console.WriteLine("Processing 'meta' node...");
                 List<string> chunks = new List<string>();
 
                 if (ast["exprs"] is List<Dictionary<string, object>> exprsList)
@@ -105,19 +90,13 @@ namespace MetaPrompt
                         }
                     }
                 }
-                else
-                {
-                    Console.WriteLine("Error: 'exprs' is not a list of expressions.");
-                }
 
                 string metaPrompt = string.Join("", chunks);
-                Console.WriteLine($"Meta-prompt generated: {metaPrompt}");
                 string output = LlmInput(metaPrompt);
                 yield return output;
             }
             else if (ast["type"].ToString() == "if_then_else")
             {
-                Console.WriteLine("Processing 'if_then_else' node...");
                 List<string> conditionChunks = new List<string>();
 
                 if (ast["condition"] is List<Dictionary<string, object>> conditionExprs)
@@ -132,7 +111,6 @@ namespace MetaPrompt
                 }
 
                 string condition = string.Join("", conditionChunks);
-                Console.WriteLine($"Condition evaluated to: {condition}");
 
                 string promptResult = "";
                 int retries = 0;
@@ -141,13 +119,11 @@ namespace MetaPrompt
                 while (promptResult != "true" && promptResult != "false" && retries < _runtime.Config.IfRetries)
                 {
                     promptResult = LlmInput(prompt).Trim();
-                    Console.WriteLine($"User input for condition check: {promptResult} (Attempt {retries})");
                     retries++;
                 }
 
                 if (promptResult == "true")
                 {
-                    Console.WriteLine("Executing 'then' block...");
                     if (ast["then"] is List<Dictionary<string, object>> thenExprsList)
                     {
                         foreach (var expr in thenExprsList)
@@ -158,14 +134,9 @@ namespace MetaPrompt
                             }
                         }
                     }
-                    else
-                    {
-                        Console.WriteLine("Error: 'then' block is missing or has an incorrect format.");
-                    }
                 }
                 else
                 {
-                    Console.WriteLine("Executing 'else' block...");
                     if (ast["else"] is List<Dictionary<string, object>> elseExprsList)
                     {
                         foreach (var expr in elseExprsList)
@@ -176,15 +147,7 @@ namespace MetaPrompt
                             }
                         }
                     }
-                    else
-                    {
-                        Console.WriteLine("Error: 'else' block is missing or has an incorrect format.");
-                    }
                 }
-            }
-            else
-            {
-                Console.WriteLine($"Unknown node type: {ast["type"]}");
             }
         }
 
