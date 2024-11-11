@@ -83,13 +83,13 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 "then": then_node,
                 "else": [],
             }
-        elif ctx.INCLUDE() is not None:
-            module_name = ctx.INCLUDE().getText().removeprefix(':include').strip()
+        elif ctx.USE() is not None:
+            module_name = ctx.USE().getText().removeprefix(':use').strip()
             parameters = {}
             if ctx.parameters() is not None:
                 parameters = self.visit(ctx.parameters())
             return {
-                "type": "include",
+                "type": "use",
                 "module_name": module_name,
                 "parameters": parameters
             }

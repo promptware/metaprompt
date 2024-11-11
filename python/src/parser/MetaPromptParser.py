@@ -49,7 +49,7 @@ class MetaPromptParser ( Parser ):
                      "<INVALID>", "':if'", "':then'", "':else'" ]
 
     symbolicNames = [ "<INVALID>", "LB", "RB", "EQ_KW", "META_KW", "CHAR", 
-                      "INCLUDE", "IF_KW", "THEN_KW", "ELSE_KW", "VAR_NAME" ]
+                      "USE", "IF_KW", "THEN_KW", "ELSE_KW", "VAR_NAME" ]
 
     RULE_prompt = 0
     RULE_exprs = 1
@@ -68,7 +68,7 @@ class MetaPromptParser ( Parser ):
     EQ_KW=3
     META_KW=4
     CHAR=5
-    INCLUDE=6
+    USE=6
     IF_KW=7
     THEN_KW=8
     ELSE_KW=9
@@ -371,8 +371,8 @@ class MetaPromptParser ( Parser ):
         def ELSE_KW(self):
             return self.getToken(MetaPromptParser.ELSE_KW, 0)
 
-        def INCLUDE(self):
-            return self.getToken(MetaPromptParser.INCLUDE, 0)
+        def USE(self):
+            return self.getToken(MetaPromptParser.USE, 0)
 
         def parameters(self):
             return self.getTypedRuleContext(MetaPromptParser.ParametersContext,0)
@@ -447,7 +447,7 @@ class MetaPromptParser ( Parser ):
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 48
-                self.match(MetaPromptParser.INCLUDE)
+                self.match(MetaPromptParser.USE)
                 self.state = 50
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)

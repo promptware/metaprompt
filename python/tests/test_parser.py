@@ -23,9 +23,9 @@ def meta(exprs):
         'exprs': exprs
     }
 
-def include(module_name, parameters):
+def use(module_name, parameters):
     return {
-        'type': 'include',
+        'type': 'use',
         'module_name': module_name,
         'parameters': parameters
     }
@@ -156,22 +156,22 @@ def test_assign_trailing_bracket():
         }
     ]
 
-def test_include_1():
-    result = parse_metaprompt("[:include foo]")
+def test_use_1():
+    result = parse_metaprompt("[:use foo]")
     assert result["exprs"] == [
         {
-            'type': 'include',
+            'type': 'use',
             'module_name': 'foo',
             'parameters': {}
         }
     ]
 
 
-def test_include_2():
-    result = parse_metaprompt("[:include foo :asd=hey :foo=bar]")
+def test_use_2():
+    result = parse_metaprompt("[:use foo :asd=hey :foo=bar]")
     assert result["exprs"] == [
         {
-            'type': 'include',
+            'type': 'use',
             'module_name': 'foo',
             'parameters': {
                 'asd': [ { 'type': 'text', 'text': 'hey ' } ],
@@ -181,28 +181,28 @@ def test_include_2():
     ]
 
 
-def test_include_3():
-    result = parse_metaprompt("[:include\nfoo\n]")
+def test_use_3():
+    result = parse_metaprompt("[:use\nfoo\n]")
     assert result["exprs"] == [
         {
-            'type': 'include',
+            'type': 'use',
             'module_name': 'foo',
             'parameters': {}
         }
     ]
 
 
-def test_include_nested():
+def test_use_nested():
     result = parse_metaprompt(
-        "[:include foo :asd=[:include bar] hiii :foo=bar]"
+        "[:use foo :asd=[:use bar] hiii :foo=bar]"
     )
     assert result["exprs"] == [
         {
-            'type': 'include',
+            'type': 'use',
             'module_name': 'foo',
             'parameters': {
                 'asd': [
-                    include('bar', {}),
+                    use('bar', {}),
                     { 'type': 'text', 'text': ' hiii ' }
                 ],
                 'foo': [ { 'type': 'text', 'text': 'bar' } ]

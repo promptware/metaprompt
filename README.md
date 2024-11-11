@@ -55,7 +55,7 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [ ] `[!assertion]`
   - [x] `[:if ... :then ... :else ...]`
   - [x] `[$ meta-prompt]`
-  - [x] `[:include module :param1=value1]`
+  - [x] `[:use module :param1=value1]`
   - [ ] `[# comments]`
 - [ ] Implement an evaluator
   - [x] meta-prompting
@@ -64,7 +64,9 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [x] implement a 'manual' evaluator that asks the user to complete LLM inputs
   - [ ] API provider wrapper classes
     - [x] OpenAI
-    - [ ] dynamic model switching
+    - [ ] Anthropic
+    - [ ] llama
+  - [ ] dynamic model switching
 - [ ] Runtime system
   - [x] Support variable definition at runtime
   - [ ] exceptions
@@ -76,7 +78,6 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [ ] enable function scopes
 - [ ] Add a module system
 - [ ] Add a package system
-- [ ] Type system? TBD
 
 ## Notable sources of inspiration
 
