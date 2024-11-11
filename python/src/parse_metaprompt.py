@@ -54,6 +54,12 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
         else:
             return {"type": "exprs", "exprs": self.visit(ctx.exprs())}
 
+    def visitParameters(self, ctx: MetaPromptParser.ParametersContext):
+        parameters = {}
+        for (name, exprs) in zip(ctx.VAR_NAME(), ctx.exprs()):
+            parameters[name.getText()[1:]] = self.visit(exprs)
+        return parameters
+
     def visitMeta_body(self, ctx: MetaPromptParser.Meta_bodyContext):
         exprs_list = ctx.exprs()
         if ctx.ELSE_KW() is not None:
@@ -76,6 +82,16 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 "condition": condition_node,
                 "then": then_node,
                 "else": [],
+            }
+        elif ctx.INCLUDE() is not None:
+            module_name = ctx.INCLUDE().getText().removeprefix(':include').strip()
+            parameters = {}
+            if ctx.parameters() is not None:
+                parameters = self.visit(ctx.parameters())
+            return {
+                "type": "include",
+                "module_name": module_name,
+                "parameters": parameters
             }
         elif ctx.VAR_NAME() is not None:
             var_name = ctx.VAR_NAME().getText()[1:]

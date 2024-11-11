@@ -34,6 +34,11 @@ class MetaPromptVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by MetaPromptParser#parameters.
+    def visitParameters(self, ctx:MetaPromptParser.ParametersContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by MetaPromptParser#text.
     def visitText(self, ctx:MetaPromptParser.TextContext):
         return self.visitChildren(ctx)

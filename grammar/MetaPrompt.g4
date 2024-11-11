@@ -16,9 +16,14 @@ expr1
 meta_body
     : IF_KW exprs THEN_KW exprs ELSE_KW exprs
     | IF_KW exprs THEN_KW exprs
+    | INCLUDE parameters?
     | META_KW exprs
     | VAR_NAME EQ_KW exprs
     | VAR_NAME
+    ;
+
+parameters
+    : (VAR_NAME EQ_KW exprs)+
     ;
 
 text: CHAR+ ;
@@ -28,6 +33,8 @@ RB : ']';
 EQ_KW : '=' ;
 META_KW : '$' ;
 CHAR : . ;
+INCLUDE : ':include' WS+ [a-zA-Z/_.-]+ WS*;
+fragment WS : ' '|'\n';
 IF_KW : ':if' ;
 THEN_KW : ':then' ;
 ELSE_KW : ':else' ;

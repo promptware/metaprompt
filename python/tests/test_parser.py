@@ -23,6 +23,13 @@ def meta(exprs):
         'exprs': exprs
     }
 
+def include(module_name, parameters):
+    return {
+        'type': 'include',
+        'module_name': module_name,
+        'parameters': parameters
+    }
+
 def test_empty():
     result = parse_metaprompt("")
     assert result["exprs"] == []
@@ -146,5 +153,59 @@ def test_assign_trailing_bracket():
                     [ t(" hi ") ]
                 )
             ]
+        }
+    ]
+
+def test_include_1():
+    result = parse_metaprompt("[:include foo]")
+    assert result["exprs"] == [
+        {
+            'type': 'include',
+            'module_name': 'foo',
+            'parameters': {}
+        }
+    ]
+
+
+def test_include_2():
+    result = parse_metaprompt("[:include foo :asd=hey :foo=bar]")
+    assert result["exprs"] == [
+        {
+            'type': 'include',
+            'module_name': 'foo',
+            'parameters': {
+                'asd': [ { 'type': 'text', 'text': 'hey ' } ],
+                'foo': [ { 'type': 'text', 'text': 'bar' } ]
+            }
+        }
+    ]
+
+
+def test_include_3():
+    result = parse_metaprompt("[:include\nfoo\n]")
+    assert result["exprs"] == [
+        {
+            'type': 'include',
+            'module_name': 'foo',
+            'parameters': {}
+        }
+    ]
+
+
+def test_include_nested():
+    result = parse_metaprompt(
+        "[:include foo :asd=[:include bar] hiii :foo=bar]"
+    )
+    assert result["exprs"] == [
+        {
+            'type': 'include',
+            'module_name': 'foo',
+            'parameters': {
+                'asd': [
+                    include('bar', {}),
+                    { 'type': 'text', 'text': ' hiii ' }
+                ],
+                'foo': [ { 'type': 'text', 'text': 'bar' } ]
+            }
         }
     ]
