@@ -70,8 +70,8 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [ ] exceptions
     - [ ] throwing exceptions
     - [ ] recovering from exceptions
-- [ ] Utils
-  - [ ] Unbound variable auto discovery to turn metaprompts into interfaces
+- Utils
+  - [x] Unbound variable auto discovery to turn metaprompts into interfaces
 - [ ] Add function definitions
   - [ ] enable function scopes
 - [ ] Add a module system
