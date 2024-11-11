@@ -5,8 +5,8 @@ using OllamaSharp;
 string prompt = @"
 Write me a poem about [:subject]
 
-[:if [:subject] is a human
-    :then
+[:if [:subject] is a human 
+:then
     Use jokingly exaggerated style
 :else
     Include some references to [$ List some people who have any
@@ -16,9 +16,9 @@ Write me a poem about [:subject]
 
 var ast = ParseMetaprompt.Parse(prompt);
 
-var config = new ConfigModel(new Dictionary<string, Func<string>>
+var config = new ConfigModel(new Dictionary<string, Func<EnvParameterContext, string>>
 {
-    { "subject", () => "Saint Petersburg" }
+    { "subject", GetSubject }
 });
 
 try
@@ -33,4 +33,9 @@ try
 catch (Exception ex)
 {
     Console.WriteLine($"Error during evaluation: {ex.Message}");
+}
+
+string GetSubject(EnvParameterContext envParameter) // Надо добавить вывод переменной которую он требует
+{
+    return "Saint Petersburg";
 }
