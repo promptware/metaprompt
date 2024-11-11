@@ -15,12 +15,6 @@ load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
 
-config = Config(
-    providers = OpenAIProvider(api_key=openai_api_key),
-    model = "gpt-3.5-turbo",
-    parameters = { "subject": "chair" }
-)
-
 prompt = """
 [$
   Write me a poem about [:subject]
@@ -37,6 +31,14 @@ prompt = """
 """
 
 async def main ():
+    subject = input("What or who do you want to write a poem about: ")
+
+    config = Config(
+        providers = OpenAIProvider(api_key=openai_api_key),
+        model = "gpt-3.5-turbo",
+        parameters = { "subject": subject }
+    )
+
     async for chunk in stream_metaprompt(prompt, config):
         print(chunk, end='')
 
