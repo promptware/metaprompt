@@ -1,4 +1,4 @@
-# Generated from ./grammar/MetaPrompt.g4 by ANTLR 4.13.2
+# Generated from MetaPrompt.g4 by ANTLR 4.13.2
 from antlr4 import *
 if "." in __name__:
     from .MetaPromptParser import MetaPromptParser

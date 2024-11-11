@@ -1,8 +1,8 @@
 import sys
 from antlr4 import *
-from parser.grammar.MetaPromptLexer import MetaPromptLexer
-from parser.grammar.MetaPromptParser import MetaPromptParser
-from parser.grammar.MetaPromptVisitor import MetaPromptVisitor
+from parser.MetaPromptLexer import MetaPromptLexer
+from parser.MetaPromptParser import MetaPromptParser
+from parser.MetaPromptVisitor import MetaPromptVisitor
 from antlr4.error.ErrorListener import ErrorListener
 
 

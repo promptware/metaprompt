@@ -49,6 +49,7 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [ ] return error throwing to the parser
   - [ ] implement escaping
   - [x] `[:variable]`
+  - [ ] `[!assertion]`
   - [x] `[:if ... :then ... :else ...]`
   - [x] `[$ meta-prompt]`
   - [ ] `[# comments]`
@@ -62,6 +63,9 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
     - [ ] dynamic model switching
 - [ ] Runtime system
   - [ ] Support variable definition at runtime
+  - [ ] exceptions
+    - [ ] throwing exceptions
+    - [ ] recovering from exceptions
 - [ ] Add function definitions
 - [ ] Add a module system
 - [ ] Add a package system
