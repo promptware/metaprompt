@@ -39,6 +39,10 @@ async def eval_ast(ast, runtime):
             raise ValueError(f"Failed to look up: {ast['name']}")
         else:
             yield value
+    elif ast["type"] == "include":
+        parameters = ast["parameters"]
+        module_name = ast["module_name"]
+        raise NotImplementedError("[:include ...] not implemented yet")
     elif ast["type"] == "assign":
         var_name = ast["name"]
         value = await _collect_exprs(ast['exprs'], runtime)

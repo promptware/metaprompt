@@ -33,7 +33,7 @@ RB : ']';
 EQ_KW : '=' ;
 META_KW : '$' ;
 CHAR : . ;
-INCLUDE : ':include' WS+ [a-zA-Z/_.-]+ WS*;
+INCLUDE : ':include' WS+ [a-zA-Z0-9/_.-]+ WS*;
 fragment WS : ' '|'\n';
 IF_KW : ':if' ;
 THEN_KW : ':then' ;

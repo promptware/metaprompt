@@ -55,6 +55,7 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [ ] `[!assertion]`
   - [x] `[:if ... :then ... :else ...]`
   - [x] `[$ meta-prompt]`
+  - [x] `[:include module :param1=value1]`
   - [ ] `[# comments]`
 - [ ] Implement an evaluator
   - [x] meta-prompting
