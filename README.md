@@ -48,10 +48,20 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [x] implement parse tree -> AST conversion
   - [ ] return error throwing to the parser
   - [ ] implement escaping
-- [ ] Implement an evaluator that supports meta-prompting, conditionals and externally-defined variables
+  - [x] `[:variable]`
+  - [x] `[:if ... :then ... :else ...]`
+  - [x] `[$ meta-prompt]`
+  - [ ] `[# comments]`
+- [ ] Implement an evaluator
+  - [x] meta-prompting
+  - [x] conditionals
+  - [x] externally-defined variables
   - [x] implement a 'manual' evaluator that asks the user to complete LLM inputs
-  - [ ] use LangChain classes for API provider wrappers
-- [ ] Support variable definition at runtime via a runtime system
+  - [ ] API provider wrapper classes
+    - [x] OpenAI
+    - [ ] dynamic model switching
+- [ ] Runtime system
+  - [ ] Support variable definition at runtime
 - [ ] Add function definitions
 - [ ] Add a module system
 - [ ] Add a package system
