@@ -51,7 +51,7 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [x] implement parse tree -> AST conversion
   - [ ] return error throwing to the parser
   - [ ] implement escaping
-  - [x] `[:variable]`
+  - [x] `[:variable]` and `[:variable=some value]`
   - [ ] `[!assertion]`
   - [x] `[:if ... :then ... :else ...]`
   - [x] `[$ meta-prompt]`
@@ -65,18 +65,19 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
     - [x] OpenAI
     - [ ] dynamic model switching
 - [ ] Runtime system
-  - [ ] Support variable definition at runtime
+  - [x] Support variable definition at runtime
   - [ ] exceptions
     - [ ] throwing exceptions
     - [ ] recovering from exceptions
 - [ ] Utils
   - [ ] Unbound variable auto discovery to turn metaprompts into interfaces
 - [ ] Add function definitions
+  - [ ] enable function scopes
 - [ ] Add a module system
 - [ ] Add a package system
 - [ ] Type system? TBD
 
-## Notable alternatives
+## Notable sources of inspiration
 
 - [llm-lang (Racket)](https://github.com/wilbowma/llm-lang) - similar in spirit. Does not support meta-prompting, uses racket as the DSL host language.
 - [genaiscript (Microsoft)](https://github.com/microsoft/genaiscript) - a JS library, does not follow the "prompt-first" approach
