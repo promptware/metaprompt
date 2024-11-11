@@ -83,6 +83,6 @@ async def stream_eval_metaprompt(metaprompt, config: Config) -> AsyncGenerator[s
 
 async def eval_metaprompt(metaprompt, config: Config):
     res = ""
-    async for chunk in steam_eval_metaprompt(metaprompt, config):
+    async for chunk in stream_eval_metaprompt(metaprompt, config):
         res += chunk
     return res
