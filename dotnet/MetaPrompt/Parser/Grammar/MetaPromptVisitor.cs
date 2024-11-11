@@ -62,6 +62,12 @@ public interface IMetaPromptVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitMeta_body([NotNull] MetaPromptParser.Meta_bodyContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="MetaPromptParser.parameters"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParameters([NotNull] MetaPromptParser.ParametersContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="MetaPromptParser.text"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

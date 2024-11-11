@@ -81,6 +81,16 @@ public interface IMetaPromptListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitMeta_body([NotNull] MetaPromptParser.Meta_bodyContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaPromptParser.parameters"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParameters([NotNull] MetaPromptParser.ParametersContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaPromptParser.parameters"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParameters([NotNull] MetaPromptParser.ParametersContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaPromptParser.text"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

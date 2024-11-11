@@ -96,6 +96,18 @@ public partial class MetaPromptBaseListener : IMetaPromptListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitMeta_body([NotNull] MetaPromptParser.Meta_bodyContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="MetaPromptParser.parameters"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterParameters([NotNull] MetaPromptParser.ParametersContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="MetaPromptParser.parameters"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitParameters([NotNull] MetaPromptParser.ParametersContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="MetaPromptParser.text"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
