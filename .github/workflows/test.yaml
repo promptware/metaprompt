@@ -24,12 +24,12 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r python/metaprompt/requirements.txt  # If you have a requirements file
+        pip install -r python/requirements.txt  # If you have a requirements file
         pip install pytest
 
     - name: Run tests
-      working-directory: python/metaprompt
+      working-directory: python/
       env:
-        PYTHONPATH: "${{ github.workspace }}/python/metaprompt/src"
+        PYTHONPATH: "${{ github.workspace }}/python/src"
       run: |
         pytest
