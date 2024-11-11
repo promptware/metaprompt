@@ -16,18 +16,9 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 
 
 prompt = """
-[$
-  Write me a poem about [:subject]
-  [:if [:subject] is a human
-   :then
-     Use jokingly exaggerated style
-   :else
-     Include some references to
-     [$ List some people who have any relation to [:subject],
-       comma-separated
-     ]
-  ]
-]
+[:foo=bar]
+[:baz=[:foo][:foo]]
+[:baz]
 """
 
 async def main ():
@@ -35,12 +26,9 @@ async def main ():
     print(prompt)
     print("--------------------")
 
-    subject = input("What or who do you want to write a poem about: ")
-
     config = Config(
         providers = OpenAIProvider(api_key=openai_api_key),
         model = "gpt-3.5-turbo",
-        parameters = { "subject": subject }
     )
 
     async for chunk in stream_metaprompt(prompt, config):

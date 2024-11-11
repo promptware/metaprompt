@@ -3,7 +3,10 @@ from eval import eval_metaprompt, stream_eval_metaprompt
 from parse_metaprompt import parse_metaprompt
 
 
-async def metaprompt(prompt: str, config: Config):
+async def metaprompt(
+        prompt: str,
+        config: Config = Config()
+):
     ast = parse_metaprompt(prompt)
     res = await eval_metaprompt(ast, config)
     return res

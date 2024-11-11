@@ -40,7 +40,7 @@ any other output]
 ```
 
 
-See [`python/metaprompt/examples/`](./python/examples/) for more.
+See [`python/examples/`](./python/examples/) for more.
 
 ## Project status
 

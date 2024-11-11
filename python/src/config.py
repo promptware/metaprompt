@@ -5,11 +5,11 @@ class Config:
 
     def __init__(
         self,
-        providers: ProviderConfig,  # TODO: add List[ProviderConfig] option
-        model: str,
+        providers: ProviderConfig | None = None,  # TODO: add List[ProviderConfig] option
+        model: str | None = None,
         parameters: Dict[str, str] = {},
     ):
-        self.providers = providers
+        self.providers = providers or ProviderConfig()
         self.parameters = parameters
         self.model = model
         # TODO: add logger

@@ -9,6 +9,13 @@ async def _eval_exprs(exprs, runtime):
         async for chunk in eval_ast(expr, runtime):
             yield chunk
 
+async def _collect_exprs(exprs, runtime):
+    res = ""
+    for expr in exprs:
+        async for chunk in eval_ast(expr, runtime):
+            res += chunk
+    return res
+
 
 IF_PROMPT = """Please determine if the following statement is true.
 Do not write any other output, answer just "true" or "false".
@@ -18,6 +25,7 @@ The statement:
 
 async def eval_ast(ast, runtime):
     if isinstance(ast, list):
+        # TODO: is this case needed?
         async for expr in _eval_exprs(ast, runtime):
             yield expr
     elif ast["type"] == "text":
@@ -31,6 +39,10 @@ async def eval_ast(ast, runtime):
             raise ValueError(f"Failed to look up: {ast['name']}")
         else:
             yield value
+    elif ast["type"] == "assign":
+        var_name = ast["name"]
+        value = await _collect_exprs(ast['exprs'], runtime)
+        runtime.set_variable(var_name, value)
     elif ast["type"] == "meta":
         chunks = []
         for expr in ast["exprs"]:

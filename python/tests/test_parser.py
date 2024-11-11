@@ -17,6 +17,12 @@ def if_then_else(c, then_, else_):
     }
 
 
+def meta(exprs):
+    return {
+        'type': 'meta',
+        'exprs': exprs
+    }
+
 def test_empty():
     result = parse_metaprompt("")
     assert result["exprs"] == []
@@ -127,4 +133,18 @@ def test_assign_trailing_bracket():
          'exprs': [ {'type': 'text', 'text': "bar"}]
          },
         t(']')
+    ]
+
+
+def test_assign_trailing_bracket():
+    result = parse_metaprompt("[:foo=[$ hi ]]")
+    assert result["exprs"] == [
+        {
+            'type': 'assign', 'name': 'foo',
+            'exprs': [
+                meta(
+                    [ t(" hi ") ]
+                )
+            ]
+        }
     ]

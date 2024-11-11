@@ -10,6 +10,9 @@ class Runtime:
     def get_current_model(self):
         return self.model_stack[-1]
 
+    def set_variable(self, var_name, value):
+        self.env.set(var_name, value)
+
     def _get_llm_provider(self):
         model_name = self.get_current_model()
         if model_name not in self.config.providers:
