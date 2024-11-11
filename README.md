@@ -39,6 +39,9 @@ any other output]
 ]
 ```
 
+
+See [`python/metaprompt/examples/`](./python/metaprompt/examples/) for more.
+
 ## Project status
 
 This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky) for updates
