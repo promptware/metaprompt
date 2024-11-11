@@ -66,6 +66,8 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [ ] exceptions
     - [ ] throwing exceptions
     - [ ] recovering from exceptions
+- [ ] Utils
+  - [ ] Unbound variable auto discovery to turn metaprompts into interfaces
 - [ ] Add function definitions
 - [ ] Add a module system
 - [ ] Add a package system

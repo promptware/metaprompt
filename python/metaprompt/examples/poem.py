@@ -31,6 +31,9 @@ prompt = """
 """
 
 async def main ():
+    print("The metaprompt you are about to execute:")
+    print(prompt)
+
     subject = input("What or who do you want to write a poem about: ")
 
     config = Config(
