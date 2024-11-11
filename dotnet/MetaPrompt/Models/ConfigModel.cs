@@ -11,7 +11,7 @@ namespace MetaPrompt.Models
         public EnvModel Env { get; private set; }
         public int IfRetries { get; set; } = 3;
 
-        public ConfigModel(Dictionary<string, Func<EnvParameterContext, string>> parameters)
+        public ConfigModel(Dictionary<string, VariableConfig> parameters)
         {
             Env = new EnvModel(parameters);
         }

@@ -16,9 +16,9 @@ Write me a poem about [:subject]
 
 var ast = ParseMetaprompt.Parse(prompt);
 
-var config = new ConfigModel(new Dictionary<string, Func<EnvParameterContext, string>>
+var config = new ConfigModel(new Dictionary<string, VariableConfig>
 {
-    { "subject", GetSubject }
+    { "subject", new VariableConfig(GetSubject, true)}
 });
 
 try
@@ -35,7 +35,7 @@ catch (Exception ex)
     Console.WriteLine($"Error during evaluation: {ex.Message}");
 }
 
-string GetSubject(EnvParameterContext envParameter) // Надо добавить вывод переменной которую он требует
+string GetSubject(VariableParameterContext envParameter) // Надо добавить вывод переменной которую он требует
 {
     return "Saint Petersburg";
 }
