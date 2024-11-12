@@ -12,7 +12,10 @@ class OpenAIProvider(ProviderConfig):
     def __init__(self, api_key: str = None, models=None, *args, **kwargs):
         super().__init__(self, *args, **kwargs)
         openai.api_key = api_key or os.getenv("OPENAI_API_KEY")
-        models = models or [model.id for model in openai.models.list().data]
+        models = models or [
+            model.id for model in openai.models.list().data
+            if "gpt" in model.id
+        ]
         for model_name in models:
             self.add(
                 model_name,

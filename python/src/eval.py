@@ -59,11 +59,12 @@ async def eval_ast(ast, runtime):
             evaluated_parameters[parameter] = await _collect_exprs(
                 parameters[parameter], runtime
             )
+        if "MODEL" not in evaluated_parameters:
+            evaluated_parameters["MODEL"] = old_env.get("MODEL")
         runtime.env = Env(evaluated_parameters)
         async for expr in eval_ast(loaded_ast, runtime):
             yield expr
         runtime.env = old_env
-
     elif ast["type"] == "assign":
         var_name = ast["name"]
         value = await _collect_exprs(ast["exprs"], runtime)

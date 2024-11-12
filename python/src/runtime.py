@@ -8,11 +8,11 @@ class Runtime:
     def __init__(self, config, env):
         self.config = config
         self.env = env
-        self.model_stack = [config.model]
+        self.env.set("MODEL", config.model)
         self.cwd = os.getcwd()
 
     def get_current_model(self):
-        return self.model_stack[-1]
+        return self.env.get("MODEL")
 
     def set_variable(self, var_name, value):
         self.env.set(var_name, value)
