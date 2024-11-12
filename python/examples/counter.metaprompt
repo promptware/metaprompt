@@ -1,0 +1,7 @@
+.[:if [:number] is zero or less
+ :then done!
+ :else
+   [:use ./counter
+    :number=[$ subtract one from [:number].
+    just give me the resulting number, no other output]]
+]

@@ -24,7 +24,7 @@ class Runtime:
             )
 
             if os.path.isfile(file_path):
-                with open(file_path, "utf-8") as file:
+                with open(file_path, "r") as file:
                     content = file.read()
                     ast = parse_metaprompt(content)
                     return ast

@@ -3,7 +3,6 @@ from provider_config import ProviderConfig
 
 import openai
 import os
-from abc import ABC
 from typing import AsyncGenerator
 
 

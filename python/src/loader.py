@@ -3,12 +3,13 @@ def _discover_variables(ast):
         for node in ast:
             yield from _discover_variables(node)
     elif isinstance(ast, dict):
-        if ast["type"] == "comment":
-            return
-        elif ast["type"] == "var":
-            yield {"type": "var", "name": ast["name"]}
-        elif ast["type"] == "assign":
-            yield {"type": "assign", "name": ast["name"]}
+        if "type" in ast:
+            if ast["type"] == "comment":
+                return
+            elif ast["type"] == "var":
+                yield {"type": "var", "name": ast["name"]}
+            elif ast["type"] == "assign":
+                yield {"type": "assign", "name": ast["name"]}
         for key in ast:
             yield from _discover_variables(ast[key])
 

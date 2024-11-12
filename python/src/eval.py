@@ -54,7 +54,12 @@ async def eval_ast(ast, runtime):
                 )
         old_env = runtime.env
         # TODO: persist some variables?
-        runtime.env = Env(parameters)
+        evaluated_parameters = {}
+        for parameter in parameters:
+            evaluated_parameters[parameter] = await _collect_exprs(
+                parameters[parameter], runtime
+            )
+        runtime.env = Env(evaluated_parameters)
         async for expr in eval_ast(loaded_ast, runtime):
             yield expr
         runtime.env = old_env
@@ -81,6 +86,7 @@ async def eval_ast(ast, runtime):
         async for chunk in eval_ast(ast["condition"], runtime):
             condition_chunks.append(chunk)
         condition = "".join(condition_chunks)
+        print(condition)
         prompt_result = ""
         MAX_RETRIES = 3
         retries = 0
