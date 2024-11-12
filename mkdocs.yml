@@ -8,7 +8,7 @@ site_url: "https://docs.metaprompt-lang.org"
 
 # Theme
 theme:
-  name: material
+  name: mkdocs
 
 markdown_extensions:
   - toc:
