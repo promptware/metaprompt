@@ -1,0 +1,5 @@
+1. I am [:use ./whoami] - default
+2. I am [:use ./whoami :MODEL=gpt-4o] - override MODEL in a submodule
+3. I am [:use ./whoami] - the model hasn't changed
+4. I am [:MODEL=gpt-4o][:use ./whoami] - change current model in this module
+5. I am [:use ./whoami] - the model stays the same until the end of the file.
