@@ -33,3 +33,21 @@ jobs:
         PYTHONPATH: "${{ github.workspace }}/python/src"
       run: |
         pytest
+
+    - name: Check build
+      working-directory: python/
+      env:
+        PYTHONPATH: "${{ github.workspace }}/python/src"
+      run: |
+        pip install twine
+        python setup.py sdist bdist_wheel
+        twine check dist/*
+
+    - name: Install and run
+      working-directory: python/
+      env:
+        PYTHONPATH: "${{ github.workspace }}/python/src"
+      run: |
+
+        pip install -e .
+        metaprompt

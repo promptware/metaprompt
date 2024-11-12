@@ -57,7 +57,7 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [x] `[$ meta-prompt]`
   - [x] `[:use module :param1=value1]`
   - [ ] `[:model model-id ...]` for dynamic model selection
-  - [ ] `[# comments]`
+  - [x] `[# comments]`
   - [ ] `[:status some-status]` - to show during prompt evaluation
   - [ ] `[:call ffi-function :param1=foo :param2=bar]`
 - [ ] Implement an evaluator

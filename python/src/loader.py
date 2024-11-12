@@ -1,9 +1,11 @@
-def discover_variables(ast):
+def _discover_variables(ast):
     if isinstance(ast, list):
         for node in ast:
-            yield from discover_variables(node)
+            yield from _discover_variables(node)
     elif isinstance(ast, dict):
-        if ast["type"] == "var":
+        if ast["type"] == "comment":
+            return
+        elif ast["type"] == "var":
             yield {
                 'type': 'var',
                 'name': ast['name']
@@ -14,12 +16,12 @@ def discover_variables(ast):
                 "name": ast["name"]
             }
         for key in ast:
-            yield from discover_variables(ast[key])
+            yield from _discover_variables(ast[key])
 
 def extract_variables(ast):
     variables = set()
     assigned = set()
-    for item in discover_variables(ast):
+    for item in _discover_variables(ast):
         match item:
             case { 'name': name, 'type': "var" }:
                 if name not in assigned:
