@@ -29,5 +29,5 @@ class InteractiveLLMProvider(BaseLLMProvider):
         Yields:
             str: Chunks of the response as they're received.
         """
-        output = input("[interactive]: " + prompt)
+        output = input("[Q]: " + prompt + "\n[A]: ")
         yield output

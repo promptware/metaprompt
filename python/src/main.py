@@ -34,6 +34,13 @@ def parse_arguments():
     )
 
     parser.add_argument(
+        "--model",
+        type=str,
+        help="LLM id to use",
+        default="interactive" # TODO: use dynamic model selection
+    )
+
+    parser.add_argument(
         "--set",
         action=ParseSetAction,
         dest="variables",
@@ -55,7 +62,7 @@ async def main():
                 content = file.read()
                 metaprompt = parse_metaprompt(content)
                 env = Env(env=config.parameters)
-                config.model = "gpt-3.5-turbo"
+                config.model = args.model or "interactive"
                 runtime = Runtime(config, env)
                 runtime.cwd = os.path.dirname(file_path)
                 async for chunk in eval_ast(metaprompt, runtime):

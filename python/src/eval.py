@@ -91,9 +91,6 @@ async def eval_ast(ast, runtime):
         retries = 0
         prompt = IF_PROMPT + condition
         while prompt_result != "true" and prompt_result != "false":
-            prompt_result = await runtime.invoke(prompt)
-            prompt_result = prompt_result.strip()
-            retries += 1
             if retries >= MAX_RETRIES:
                 raise ValueError(
                     "Failed to answer :if prompt: "
@@ -101,6 +98,9 @@ async def eval_ast(ast, runtime):
                     + "\nOutput: "
                     + prompt_result
                 )
+            prompt_result = await runtime.invoke(prompt)
+            prompt_result = prompt_result.strip()
+            retries += 1
         if prompt_result == "true":
             async for chunk in eval_ast(ast["then"], runtime):
                 yield chunk
