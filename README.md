@@ -46,7 +46,7 @@ See [`python/examples/`](./python/examples/) for more.
 
 This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky) for updates
 
-- [ ] Finalize and specify the initial version of the syntax
+- [ ] Specify the initial version of the syntax
 - [ ] Implement a parser
   - [x] implement parse tree -> AST conversion
   - [ ] return error throwing to the parser
@@ -56,7 +56,10 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [x] `[:if ... :then ... :else ...]`
   - [x] `[$ meta-prompt]`
   - [x] `[:use module :param1=value1]`
+  - [ ] `[:model model-id ...]` for dynamic model selection
   - [ ] `[# comments]`
+  - [ ] `[:status some-status]` - to show during prompt evaluation
+  - [ ] `[:call ffi-function :param1=foo :param2=bar]`
 - [ ] Implement an evaluator
   - [x] meta-prompting
   - [x] conditionals
@@ -72,12 +75,22 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [ ] exceptions
     - [ ] throwing exceptions
     - [ ] recovering from exceptions
+- [ ] FFI
+  - [ ] syntax
+  - [ ] API
+  - [ ] standard library
 - Utils
   - [x] Unbound variable auto discovery to turn metaprompts into interfaces
 - [ ] Add function definitions
   - [ ] enable function scopes
 - [ ] Add a module system
+  - [x] syntax
+  - [x] runtime
+  - [ ] tests
 - [ ] Add a package system
+  - [ ] specify package format
+  - [ ] create a package registry
+  - [ ] package installer
 
 ## Notable sources of inspiration
 

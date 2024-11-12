@@ -46,6 +46,8 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 items.append({"type": "text", "text": "]"})
             if ctx.LB() is not None:
                 items.append({"type": "text", "text": "["})
+            if ctx.COMMENT_KW() is not None:
+                items.append({"type": "text", "text": "#"})
         return items
 
     def visitExpr1(self, ctx: MetaPromptParser.Expr1Context):
@@ -82,6 +84,12 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 "condition": condition_node,
                 "then": then_node,
                 "else": [],
+            }
+        elif ctx.COMMENT_KW() is not None:
+            exprs = self.visit(exprs_list[0])
+            return {
+                "type": "comment",
+                "exprs": exprs
             }
         elif ctx.USE() is not None:
             module_name = ctx.USE().getText().removeprefix(':use').strip()

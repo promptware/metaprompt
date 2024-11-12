@@ -2,6 +2,7 @@ from config import Config
 from env import Env
 from runtime import Runtime
 from typing import AsyncGenerator
+from loader import extract_variables
 
 async def _eval_exprs(exprs, runtime):
     """A helper for eval_ast"""
@@ -42,7 +43,20 @@ async def eval_ast(ast, runtime):
     elif ast["type"] == "use":
         parameters = ast["parameters"]
         module_name = ast["module_name"]
-        raise NotImplementedError("[:use ...] not implemented yet")
+        loaded_ast = runtime.load_module(module_name)
+        required_variables = extract_variables(loaded_ast)
+        for required in required_variables:
+            if required not in parameters:
+                raise ImportError(
+                    f"Module {module_name} requires {required} as a parameter, but it was not provided"
+                )
+        old_env = runtime.env
+        # TODO: persist some variables?
+        runtime.env = Env(parameters)
+        async for expr in eval_ast(loaded_ast, runtime):
+            yield expr
+        runtime.env = old_env
+
     elif ast["type"] == "assign":
         var_name = ast["name"]
         value = await _collect_exprs(ast['exprs'], runtime)

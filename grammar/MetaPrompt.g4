@@ -6,6 +6,7 @@ expr: LB expr1 RB
     | text
     | RB
     | LB
+    | COMMENT_KW
     ;
 
 expr1
@@ -18,6 +19,7 @@ meta_body
     | IF_KW exprs THEN_KW exprs
     | USE parameters?
     | META_KW exprs
+    | COMMENT_KW exprs
     | VAR_NAME EQ_KW exprs
     | VAR_NAME
     ;
@@ -32,6 +34,7 @@ LB : '[';
 RB : ']';
 EQ_KW : '=' ;
 META_KW : '$' ;
+COMMENT_KW : '#' ;
 CHAR : . ;
 USE : ':use' WS+ [a-zA-Z0-9/_.-]+ WS*;
 fragment WS : ' '|'\n';

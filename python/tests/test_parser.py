@@ -5,6 +5,9 @@ def t(text):
     return {"type": "text", "text": text}
 
 
+def comment(exprs):
+    return {"type": "comment", "exprs": exprs}
+
 def if_then(c, then_):
     return if_then_else(c, then_, [])
 
@@ -38,6 +41,16 @@ def test_empty():
 def test_text():
     result = parse_metaprompt("asd")
     assert result["exprs"] == [{"text": "asd", "type": "text"}]
+
+
+def test_comment():
+    result = parse_metaprompt("[# asd ]")
+    assert result["exprs"] == [comment([{"text": " asd ", "type": "text"}])]
+
+
+def test_absence_of_comment():
+    result = parse_metaprompt("# asd")
+    assert result["exprs"] == [t("#"), t(" asd")]
 
 
 def test_meta():
@@ -204,6 +217,28 @@ def test_use_nested():
                 'asd': [
                     use('bar', {}),
                     { 'type': 'text', 'text': ' hiii ' }
+                ],
+                'foo': [ { 'type': 'text', 'text': 'bar' } ]
+            }
+        }
+    ]
+
+
+def test_use_nested_2():
+    result = parse_metaprompt(
+        "[:use foo :asd=[hiiii [:use bar :qux=asd]] hiii :foo=bar]"
+    )
+    assert result["exprs"] == [
+        {
+            'type': 'use',
+            'module_name': 'foo',
+            'parameters': {
+                'asd': [
+                    t('['),
+                    t('hiiii '),
+                    use('bar', {'qux': [t('asd')]}),
+                    t(']'),
+                    { 'type': 'text', 'text': ' hiii ' },
                 ],
                 'foo': [ { 'type': 'text', 'text': 'bar' } ]
             }
