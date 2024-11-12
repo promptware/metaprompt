@@ -1,9 +1,20 @@
 from setuptools import setup, find_packages
+import pathlib
+
+# Read the README file
+here = pathlib.Path(__file__).parent.resolve()
+long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="metaprompt",
     version="0.0.1",
     description="A template engine for LLM prompts",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    author="Vladimir Kalnitsky",
+    author_email="klntsky@gmail.com",
+    url="https://metaprompt-lang.org",
+    license="Unlicense",
     packages=find_packages("src"),
     package_dir={"": "src"},
     install_requires=[
