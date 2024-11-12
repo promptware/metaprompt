@@ -1,4 +1,5 @@
-.[:if [:number] is zero or less
+counter is: [:number]
+[:if [:number] is zero or less
  :then done!
  :else
    [:use ./counter
