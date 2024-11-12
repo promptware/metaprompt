@@ -5,6 +5,8 @@ site_description: "MetaPrompt is a template engine for LLM prompts with support 
 
 # Site URL (optional, useful for SEO and deployment)
 site_url: "https://docs.metaprompt-lang.org"
+edit_uri: blob/main/docs/
+repo_url: https://github.com/promptware/metaprompt
 
 # Theme
 theme:
@@ -45,7 +47,5 @@ plugins:
 #   - stylesheets/custom.css
 
 site_dir: site
-
-repo_url: https://github.com/promptware/metaprompt
 
 docs_dir: docs
