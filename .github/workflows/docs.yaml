@@ -26,8 +26,8 @@ jobs:
       - name: Build MkDocs site
         run: mkdocs build --clean
 
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.3.3
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          branch: gh-pages
-          folder: site
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
