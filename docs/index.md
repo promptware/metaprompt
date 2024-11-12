@@ -1,2 +1,0 @@
-- [Module system](./modules.md)
-- [Syntax](./syntax.md)
