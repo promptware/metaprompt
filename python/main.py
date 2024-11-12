@@ -11,13 +11,18 @@ load_dotenv()
 # Access the OpenAI API key from the environment
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
+
 def llm_input(prompt):
     chat_model = ChatOpenAI(
-        openai_api_key=openai_api_key, temperature=0.7, model_name="gpt-3.5-turbo"
+        openai_api_key=openai_api_key,
+        temperature=0.7,
+        model_name="gpt-3.5-turbo",
     )
     messages = [HumanMessage(content=prompt)]
     response = chat_model(messages)
-    print(f"Prompt: {prompt}\nOutput: {response.content}\n-----------------------------")
+    print(
+        f"Prompt: {prompt}\nOutput: {response.content}\n-----------------------------"
+    )
     return response.content
 
 
@@ -38,9 +43,7 @@ class InteractiveCliProvider(Provider):
 async def main():
     providers = [
         openai_provider(
-            ['gpt-3.5-turbo'],
-            openai_api_key=openai_api_key,
-            temperature=0.7
+            ["gpt-3.5-turbo"], openai_api_key=openai_api_key, temperature=0.7
         )
     ]
     prompt = """
@@ -58,6 +61,7 @@ async def main():
     config = Config(parameters={"subject": "Saint Petersburg"})
     res = await eval_metaprompt(ast, config)
     print(llm_input(res))
+
 
 if __name__ == "__main__":
     asyncio.run(main())

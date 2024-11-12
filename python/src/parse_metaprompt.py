@@ -58,7 +58,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
 
     def visitParameters(self, ctx: MetaPromptParser.ParametersContext):
         parameters = {}
-        for (name, exprs) in zip(ctx.VAR_NAME(), ctx.exprs()):
+        for name, exprs in zip(ctx.VAR_NAME(), ctx.exprs()):
             parameters[name.getText()[1:]] = self.visit(exprs)
         return parameters
 
@@ -87,19 +87,16 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             }
         elif ctx.COMMENT_KW() is not None:
             exprs = self.visit(exprs_list[0])
-            return {
-                "type": "comment",
-                "exprs": exprs
-            }
+            return {"type": "comment", "exprs": exprs}
         elif ctx.USE() is not None:
-            module_name = ctx.USE().getText().removeprefix(':use').strip()
+            module_name = ctx.USE().getText().removeprefix(":use").strip()
             parameters = {}
             if ctx.parameters() is not None:
                 parameters = self.visit(ctx.parameters())
             return {
                 "type": "use",
                 "module_name": module_name,
-                "parameters": parameters
+                "parameters": parameters,
             }
         elif ctx.VAR_NAME() is not None:
             var_name = ctx.VAR_NAME().getText()[1:]

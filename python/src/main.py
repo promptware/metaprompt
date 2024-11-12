@@ -1,6 +1,7 @@
 import argparse
 import os
 
+
 class ParseSetAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         var_dict = getattr(namespace, self.dest, {})
@@ -11,20 +12,19 @@ class ParseSetAction(argparse.Action):
         var_dict[name] = value
         setattr(namespace, self.dest, var_dict)
 
+
 def parse_arguments():
     """
     Parse command-line arguments.
     """
     parser = argparse.ArgumentParser(
         description="MetaPrompt is a template engine for LLM prompts that supports writing prompts with prompts. Visit https://metaprompt-lang.org/ for more info.",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
     # Adding positional arguments
     parser.add_argument(
-        "INPUT_FILES",
-        nargs="*",
-        help="A list of metaprompt files."
+        "INPUT_FILES", nargs="*", help="A list of metaprompt files."
     )
 
     parser.add_argument(
@@ -38,14 +38,16 @@ def parse_arguments():
     # Parsing arguments
     return parser.parse_args()
 
+
 def main():
     args = parse_arguments()
     print(args)
     for file_path in args.INPUT_FILES:
         if os.path.isfile(file_path):
-            with open(file_path, 'utf-8') as file:
+            with open(file_path, "utf-8") as file:
                 content = file.read()
                 ast = parse_metaprompt(content)
+
 
 if __name__ == "__main__":
     main()

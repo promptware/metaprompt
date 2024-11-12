@@ -4,11 +4,13 @@ from runtime import Runtime
 from typing import AsyncGenerator
 from loader import extract_variables
 
+
 async def _eval_exprs(exprs, runtime):
     """A helper for eval_ast"""
     for expr in exprs:
         async for chunk in eval_ast(expr, runtime):
             yield chunk
+
 
 async def _collect_exprs(exprs, runtime):
     res = ""
@@ -59,7 +61,7 @@ async def eval_ast(ast, runtime):
 
     elif ast["type"] == "assign":
         var_name = ast["name"]
-        value = await _collect_exprs(ast['exprs'], runtime)
+        value = await _collect_exprs(ast["exprs"], runtime)
         runtime.set_variable(var_name, value)
     elif ast["type"] == "meta":
         chunks = []
@@ -104,7 +106,9 @@ async def eval_ast(ast, runtime):
         raise ValueError("Runtime AST evaluation error: " + str(ast))
 
 
-async def stream_eval_metaprompt(metaprompt, config: Config) -> AsyncGenerator[str, None]:
+async def stream_eval_metaprompt(
+    metaprompt, config: Config
+) -> AsyncGenerator[str, None]:
     env = Env(env=config.parameters)
     runtime = Runtime(config, env)
     async for chunk in eval_ast(metaprompt, runtime):

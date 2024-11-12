@@ -23,8 +23,8 @@ setup(
         ],
     },
     entry_points={
-        'console_scripts': [
-            'metaprompt=main:main',
+        "console_scripts": [
+            "metaprompt=main:main",
         ],
     },
 )

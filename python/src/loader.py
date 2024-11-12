@@ -6,26 +6,21 @@ def _discover_variables(ast):
         if ast["type"] == "comment":
             return
         elif ast["type"] == "var":
-            yield {
-                'type': 'var',
-                'name': ast['name']
-            }
+            yield {"type": "var", "name": ast["name"]}
         elif ast["type"] == "assign":
-            yield {
-                "type": "assign",
-                "name": ast["name"]
-            }
+            yield {"type": "assign", "name": ast["name"]}
         for key in ast:
             yield from _discover_variables(ast[key])
+
 
 def extract_variables(ast):
     variables = set()
     assigned = set()
     for item in _discover_variables(ast):
         match item:
-            case { 'name': name, 'type': "var" }:
+            case {"name": name, "type": "var"}:
                 if name not in assigned:
                     variables.add(name)
-            case { 'name': name, 'type': "assign" }:
+            case {"name": name, "type": "assign"}:
                 assigned.add(name)
     return variables

@@ -3,6 +3,7 @@ from parse_metaprompt import parse_metaprompt
 from typing import AsyncGenerator
 import os
 
+
 class Runtime:
     def __init__(self, config, env):
         self.config = config
@@ -17,21 +18,20 @@ class Runtime:
         self.env.set(var_name, value)
 
     def load_module(self, module_name):
-        if module_name.startswith('./') or module_name.startswith('../'):
+        if module_name.startswith("./") or module_name.startswith("../"):
             file_path = os.path.abspath(
-                os.path.join(
-                    self.cwd,
-                    module_name + ".metaprompt"
-                )
+                os.path.join(self.cwd, module_name + ".metaprompt")
             )
 
             if os.path.isfile(file_path):
-                with open(file_path, 'utf-8') as file:
+                with open(file_path, "utf-8") as file:
                     content = file.read()
                     ast = parse_metaprompt(content)
                     return ast
             else:
-                raise ImportError(f"Module {module_name} not found at {file_path}")
+                raise ImportError(
+                    f"Module {module_name} not found at {file_path}"
+                )
         else:
             raise ValueError(
                 "Package system not implemented yet. Use [:use ./relative/import] to import ./relative/import.metaprompt"
@@ -42,7 +42,7 @@ class Runtime:
         if model_name not in self.config.providers:
             raise ValueError(f"Model not available: {model_name}")
 
-        provider : BaseLLMProvider = self.config.providers[model_name]
+        provider: BaseLLMProvider = self.config.providers[model_name]
         return provider
 
     async def invoke(self, prompt: str) -> str:

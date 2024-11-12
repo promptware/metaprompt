@@ -22,10 +22,16 @@ jobs:
         python-version: '3.x'  # Specify your Python version, like '3.9'
 
     - name: Install dependencies
+      working-directory: python/
       run: |
         python -m pip install --upgrade pip
-        pip install -r python/requirements.txt  # If you have a requirements file
-        pip install pytest
+        pip install .
+        pip install .[dev]
+
+    - name: Check formatting
+      working-directory: python/
+      run: |
+        invoke check
 
     - name: Run tests
       working-directory: python/
@@ -43,11 +49,9 @@ jobs:
         python setup.py sdist bdist_wheel
         twine check dist/*
 
-    - name: Install and run
+    - name: Run the binary
       working-directory: python/
       env:
         PYTHONPATH: "${{ github.workspace }}/python/src"
       run: |
-
-        pip install -e .
         metaprompt
