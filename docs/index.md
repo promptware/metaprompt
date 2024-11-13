@@ -1,24 +1,55 @@
 # Overview
 
-Metaprompt is a language for prompt automation, structuring and reuse.
+Metaprompt is a template language for LLM prompt automation, reuse and structuring, with support for writing prompts with prompts.
 
-One one side, it is very similar to a template engine like Jinja or EJS. The twist is, metaprompt expansion depends on LLM outputs of LLM queries, that are formed in natural language.
+It adds a number of syntactic constructs to plaintext prompts:
+
+- variables
+- conditionals
+- function calls
+- meta-prompting operator
+- etc.
+
+These constructs get expanded at run time, producing textual output.
+
+# Project status
+
+**!!! This is an early work-in-progress !!!**
+
+Not all of the described features have been implemented.
+
+[The repository README](https://github.com/promptware/metaprompt) will give you more details.
 
 # Use cases
 
 ## Templating
 
-The most basic use case of metaprompt is substituting parameter values instead of variable names embedded in a prompt.
+MetaPrompt's basic use case is substituting parameter values instead of variable names embedded in a prompt.
 
-## Prompt organization
+Example:
 
-A module system and a package system allow anyone to assign identities to promps and package them as callable functions.
+```metaprompt
+Write me a poem about [:subject] in the style of [:style]
+```
 
 ## Meta-prompting
 
-Meta-prompting is a technique of asking an LLM to create/modify an LLM prompt.
+Meta-prompting is a technique of asking an LLM to create/modify/expand an LLM prompt.
 
 - Dynamically crafting task-specific prompts based on a set of high level principles
 - Modifying prompts to increase accuracy
 - Securing inputs from prompt injection attacks
 - Selecting the most suitable model based on prompt contents
+
+Quick example:
+
+```metaprompt
+[$ You are an LLM prompt engineer.
+  Improve this prompt by adding specific instructions:
+  [:prompt]
+]
+```
+
+## Prompt structuring
+
+A module system and a package system enable prompt reuse and publishing.
