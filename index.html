@@ -70,21 +70,44 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
-<p>Metaprompt is a language for prompt automation, structuring and reuse.</p>
-<p>One one side, it is very similar to a template engine like Jinja or EJS. The twist is, metaprompt expansion depends on LLM outputs of LLM queries, that are formed in natural language.</p>
+<p>Metaprompt is a template language for LLM prompt automation, reuse and structuring, with support for writing prompts with prompts.</p>
+<p>It adds a number of syntactic constructs to plaintext prompts:</p>
+<ul>
+<li>variables</li>
+<li>conditionals</li>
+<li>function calls</li>
+<li>meta-prompting operator</li>
+<li>etc.</li>
+</ul>
+<p>These constructs get expanded at run time, producing textual output.</p>
+<h1 id="project-status">Project status<a class="headerlink" href="#project-status" title="Permanent link">&para;</a></h1>
+<p><strong>!!! This is an early work-in-progress !!!</strong></p>
+<p>Not all of the described features have been implemented.</p>
+<p><a href="https://github.com/promptware/metaprompt">The repository README</a> will give you more details.</p>
 <h1 id="use-cases">Use cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h1>
 <h2 id="templating">Templating<a class="headerlink" href="#templating" title="Permanent link">&para;</a></h2>
-<p>The most basic use case of metaprompt is substituting parameter values instead of variable names embedded in a prompt.</p>
-<h2 id="prompt-organization">Prompt organization<a class="headerlink" href="#prompt-organization" title="Permanent link">&para;</a></h2>
-<p>A module system and a package system allow anyone to assign identities to promps and package them as callable functions.</p>
+<p>MetaPrompt's basic use case is substituting parameter values instead of variable names embedded in a prompt.</p>
+<p>Example:</p>
+<pre class="codehilite"><code class="language-metaprompt">Write me a poem about [:subject] in the style of [:style]
+</code></pre>
+
 <h2 id="meta-prompting">Meta-prompting<a class="headerlink" href="#meta-prompting" title="Permanent link">&para;</a></h2>
-<p>Meta-prompting is a technique of asking an LLM to create/modify an LLM prompt.</p>
+<p>Meta-prompting is a technique of asking an LLM to create/modify/expand an LLM prompt.</p>
 <ul>
 <li>Dynamically crafting task-specific prompts based on a set of high level principles</li>
 <li>Modifying prompts to increase accuracy</li>
 <li>Securing inputs from prompt injection attacks</li>
 <li>Selecting the most suitable model based on prompt contents</li>
 </ul>
+<p>Quick example:</p>
+<pre class="codehilite"><code class="language-metaprompt">[$ You are an LLM prompt engineer.
+  Improve this prompt by adding specific instructions:
+  [:prompt]
+]
+</code></pre>
+
+<h2 id="prompt-structuring">Prompt structuring<a class="headerlink" href="#prompt-structuring" title="Permanent link">&para;</a></h2>
+<p>A module system and a package system enable prompt reuse and publishing.</p>
               
             </div>
           </div><footer>
@@ -132,5 +155,5 @@
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2024-11-12 21:32:28.327155+00:00
+Build Date UTC : 2024-11-13 17:12:39.457311+00:00
 -->
