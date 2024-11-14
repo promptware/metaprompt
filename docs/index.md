@@ -52,13 +52,15 @@ Quick example:
 
 A module system and a package system enable parameterized prompt reuse and publishing.
 
+`hello.metaprompt`:
+
 ```metaprompt
-# hello.metaprompt:
 Hello, [:what]!
 ```
 
+`main.metaprompt`:
+
 ```metaprompt
-# main.metaprompt:
 [:use ./hello :what=world]
 ```
 
