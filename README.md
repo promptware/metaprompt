@@ -93,8 +93,6 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [x] Unbound variable auto discovery
   - [ ] Machinery to turn metaprompts into interfaces (parameters become form fields)
     - [ ] static validation?
-- [ ] Add function definitions
-  - [ ] enable function scopes
 - [ ] Add a module system
   - [x] syntax
   - [x] module loading at runtime
