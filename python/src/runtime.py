@@ -12,7 +12,7 @@ class Runtime:
         self.cwd = os.getcwd()
 
     def get_current_model(self):
-        return self.env.get("MODEL")
+        return self.env.get("MODEL").strip()
 
     def set_variable(self, var_name, value):
         self.env.set(var_name, value)

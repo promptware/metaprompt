@@ -30,9 +30,9 @@ MetaPrompt's basic use case is substituting parameter values instead of variable
 Write me a poem about [:subject] in the style of [:style]
 ```
 
-## Meta-prompting
+## Prompt rewriting
 
-Meta-prompting is a technique of asking an LLM to create/modify/expand an LLM prompt.
+Prompt rewriting is a technique of asking an LLM to create/modify/expand an LLM prompt.
 
 - Dynamically crafting task-specific prompts based on a set of high level principles
 - Modifying prompts to increase accuracy
