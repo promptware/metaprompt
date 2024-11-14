@@ -45,6 +45,10 @@
     </ul>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="syntax/">Syntax</a>
+                </li>
+              </ul>
       </div>
     </div>
     </nav>
@@ -107,18 +111,21 @@
 
 <h2 id="prompt-structuring">Prompt structuring<a class="headerlink" href="#prompt-structuring" title="Permanent link">&para;</a></h2>
 <p>A module system and a package system enable parameterized prompt reuse and publishing.</p>
-<pre class="codehilite"><code class="language-metaprompt"># hello.metaprompt:
-Hello, [:what]!
+<p><code>hello.metaprompt</code>:</p>
+<pre class="codehilite"><code class="language-metaprompt">Hello, [:what]!
 </code></pre>
 
-<pre class="codehilite"><code class="language-metaprompt"># main.metaprompt:
-[:use ./hello :what=world]
+<p><code>main.metaprompt</code>:</p>
+<pre class="codehilite"><code class="language-metaprompt">[:use ./hello :what=world]
 </code></pre>
 
 <p><code>main.metaprompt</code> will evaluate to <code>Hello, world!</code></p>
               
             </div>
           </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="syntax/" class="btn btn-neutral float-right" title="Syntax">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
 
   <hr/>
 
@@ -145,6 +152,8 @@ Hello, [:what]!
     
     
     
+      <span><a href="syntax/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
   </span>
 </div>
     <script src="js/jquery-3.6.0.min.js"></script>
@@ -163,5 +172,5 @@ Hello, [:what]!
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2024-11-14 11:32:59.209482+00:00
+Build Date UTC : 2024-11-14 12:08:51.472845+00:00
 -->
