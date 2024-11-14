@@ -111,7 +111,7 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
 
 ### To consider
 
-- dynamic module loading vs. static module loading: dynamic is lazy, so skips unneeded modules, but static loading guarantees absence of runtime errors due to module resultion failures (which saves costs)
+- dynamic module loading vs. static module loading: dynamic is lazy, so skips unneeded modules, but static loading guarantees absence of runtime errors due to module resolution failures (which saves costs)
 - exception system. how to pass payloads with exceptions
 - turning exceptions into continuations in spirit of [hurl](https://hurl.wtf)
 

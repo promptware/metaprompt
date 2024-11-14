@@ -66,7 +66,7 @@ def print_models(config):
     print("Use --model to specify the default model.")
 
 
-async def main():
+async def _main():
     args = parse_arguments()
     config = load_config()
 
@@ -88,5 +88,8 @@ async def main():
                     print(chunk, end="")
 
 
+def main():
+    asyncio.run(_main())
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
