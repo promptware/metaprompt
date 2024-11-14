@@ -7,6 +7,8 @@ expr: LB expr1 RB
     | RB
     | LB
     | COMMENT_KW
+    | META_KW
+    | EQ_KW
     ;
 
 expr1

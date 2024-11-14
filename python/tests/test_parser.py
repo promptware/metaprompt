@@ -38,9 +38,17 @@ def test_empty():
     assert result["exprs"] == []
 
 
-def test_text():
+def test_text_0():
     result = parse_metaprompt("asd")
     assert result["exprs"] == [{"text": "asd", "type": "text"}]
+
+def test_text_1():
+    result = parse_metaprompt("$$")
+    assert result["exprs"] == [t("$"), t("$")]
+
+def test_text_2():
+    result = parse_metaprompt("$=")
+    assert result["exprs"] == [t("$"), t("=")]
 
 
 def test_comment():

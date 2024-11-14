@@ -46,7 +46,7 @@ prompt parameter automatically.
 
 First, the following text will be fed to an LLM:
 
-```
+```metaprompt
 Please determine if the following statement is true.
 Do not write any other output, answer just "true" or "false".
 The statement: the sky is sometimes blue
@@ -86,7 +86,7 @@ How are [:who] feeling today?
 
 ## File imports
 
-This expression will include `./relative-import.metaprompt` file (relative to the directory of the file, NOT to the current working dir).
+The following expression will include `./relative-import.metaprompt` file (relative to the directory of the file, NOT to the current working dir):
 
 ```metaprompt
 [:use ./relative-import]

@@ -17,6 +17,8 @@ class ThrowingErrorListener(ErrorListener):
 
 
 class MetaPromptASTBuilder(MetaPromptVisitor):
+    # TODO: consider joining text pieces
+    # see test_text_1 for an example.
     def visitPrompt(self, ctx: MetaPromptParser.PromptContext):
         exprs_node = self.visit(ctx.exprs())
         return {"type": "metaprompt", "exprs": exprs_node}
@@ -48,6 +50,10 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 items.append({"type": "text", "text": "["})
             if ctx.COMMENT_KW() is not None:
                 items.append({"type": "text", "text": "#"})
+            elif ctx.META_KW() is not None:
+                items.append({"type": "text", "text": "$"})
+            elif ctx.EQ_KW() is not None:
+                items.append({"type": "text", "text": "="})
         return items
 
     def visitExpr1(self, ctx: MetaPromptParser.Expr1Context):
