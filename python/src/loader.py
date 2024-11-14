@@ -4,6 +4,10 @@ def _discover_variables(ast):
             yield from _discover_variables(node)
     elif isinstance(ast, dict):
         if "type" in ast:
+            # TODO: evaluate both :if branches in parallel, to cover this case:
+            # [:if foo :then [:bar=baz] :else [:bar]]
+            #  -- [:bar] should be unbound here, because it is unbound in the
+            # first branch
             if ast["type"] == "comment":
                 return
             elif ast["type"] == "var":

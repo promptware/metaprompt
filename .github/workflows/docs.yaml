@@ -24,7 +24,9 @@ jobs:
           pip install mkdocs
 
       - name: Build MkDocs site
-        run: mkdocs build --clean
+        run: |
+          mkdocs build --clean
+          echo 'docs.metaprompt-lang.org' > ./site/CNAME
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

@@ -37,10 +37,14 @@ def parse_arguments():
         "--model",
         type=str,
         help="LLM id to use",
-        default="interactive" # TODO: use dynamic model selection
+        default="interactive",  # TODO: use dynamic model selection
     )
 
-    parser.add_argument("--list-models", action="store_true", help="List available LLMs for use with --model, based on the available LLM providers")
+    parser.add_argument(
+        "--list-models",
+        action="store_true",
+        help="List available LLMs for use with --model, based on the available LLM providers",
+    )
 
     parser.add_argument(
         "--set",
@@ -54,17 +58,22 @@ def parse_arguments():
     return parser.parse_args()
 
 
+def print_models(config):
+    print("Available models:")
+    print()
+    print("\n".join(["- " + key for key in sorted(config.providers)]))
+    print()
+    print("Use --model to specify the default model.")
+
+
 async def main():
     args = parse_arguments()
     config = load_config()
 
     if args.list_models:
-        print("Available models:")
-        print()
-        print("\n".join(["- " + key for key in config.providers]))
-        print()
-        print("Use --model to specify")
+        print_models(config)
         return
+
     config.parameters = dict(args.variables or {})
     for file_path in args.INPUT_FILES:
         if os.path.isfile(file_path):

@@ -56,7 +56,6 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [x] `[:if ... :then ... :else ...]`
   - [x] `[$ meta-prompt]`
   - [x] `[:use module :param1=value1]`
-  - [ ] `[:model model-id ...]` for dynamic model selection
   - [x] `[# comments]`
   - [ ] `[:status some-status]` - to show during prompt evaluation
   - [ ] `[:call ffi-function :param1=foo :param2=bar]`
@@ -69,28 +68,53 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
     - [x] OpenAI
     - [ ] Anthropic
     - [ ] llama
-  - [ ] dynamic model switching
 - [ ] Runtime system
   - [x] Support variable definition at runtime
+  - [x] dynamic model switching (via `MODEL` variable - [example](./python/examples/model-change.metaprompt))
   - [ ] exceptions
     - [ ] throwing exceptions
     - [ ] recovering from exceptions
+  - [ ] LLM output validation?
+    - [ ] via regexps?
+    - [ ] via parsing?
 - [ ] FFI
-  - [ ] syntax
+  - [ ] syntax - preferably via `[:use @ffi-function :param1=foo :param2=bar]`
+  - [ ] how to throw exceptions from FFI
   - [ ] API
   - [ ] standard library
+    - [ ] text processing
+    - [ ] shell access
+    - [ ] running executables
+    - [ ] file system access
+      - [ ] isolation?
+    - [ ] HTTP stack
 - Utils
-  - [x] Unbound variable auto discovery to turn metaprompts into interfaces
+  - [x] Unbound variable auto discovery
+  - [ ] Machinery to turn metaprompts into interfaces (parameters become form fields)
+    - [ ] static validation?
 - [ ] Add function definitions
   - [ ] enable function scopes
 - [ ] Add a module system
   - [x] syntax
-  - [x] runtime
+  - [x] module loading at runtime
+  - [ ] preload modules on startup - is needed?
+  - [ ] module caching
   - [ ] tests
 - [ ] Add a package system
   - [ ] specify package format
   - [ ] create a package registry
-  - [ ] package installer
+  - [ ] on-the-fly package installer
+
+## Architecture decisions
+
+- functions, files, and modules are essentially the same - invoked with `[:use ...]`
+- metaprompt parameters are just variables that are not bound before first use - this and the above decision allow to get rid of function syntax entirely
+
+### To consider
+
+- dynamic module loading vs. static module loading: dynamic is lazy, so skips unneeded modules, but static loading guarantees absence of runtime errors due to module resultion failures (which saves costs)
+- exception system. how to pass payloads with exceptions
+- turning exceptions into continuations in spirit of [hurl](https://hurl.wtf)
 
 ## Notable sources of inspiration
 
