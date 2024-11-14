@@ -109,7 +109,7 @@ prompt parameter automatically.
 
 <p><code>:if</code> expressions will be expanded at runtime.</p>
 <p>First, the following text will be fed to an LLM:</p>
-<pre class="codehilite"><code>Please determine if the following statement is true.
+<pre class="codehilite"><code class="language-metaprompt">Please determine if the following statement is true.
 Do not write any other output, answer just &quot;true&quot; or &quot;false&quot;.
 The statement: the sky is sometimes blue
 </code></pre>
@@ -137,7 +137,7 @@ How are [:who] feeling today?
 </code></pre>
 
 <h2 id="file-imports">File imports<a class="headerlink" href="#file-imports" title="Permanent link">&para;</a></h2>
-<p>This expression will include <code>./relative-import.metaprompt</code> file (relative to the directory of the file, NOT to the current working dir).</p>
+<p>The following expression will include <code>./relative-import.metaprompt</code> file (relative to the directory of the file, NOT to the current working dir):</p>
 <pre class="codehilite"><code class="language-metaprompt">[:use ./relative-import]
 </code></pre>
 
