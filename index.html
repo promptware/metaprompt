@@ -86,8 +86,7 @@
 <p><a href="https://github.com/promptware/metaprompt">The repository README</a> will give you more details.</p>
 <h1 id="use-cases">Use cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h1>
 <h2 id="templating">Templating<a class="headerlink" href="#templating" title="Permanent link">&para;</a></h2>
-<p>MetaPrompt's basic use case is substituting parameter values instead of variable names embedded in a prompt.</p>
-<p>Example:</p>
+<p>MetaPrompt's basic use case is substituting parameter values instead of variable names embedded in a prompt:</p>
 <pre class="codehilite"><code class="language-metaprompt">Write me a poem about [:subject] in the style of [:style]
 </code></pre>
 
@@ -107,7 +106,16 @@
 </code></pre>
 
 <h2 id="prompt-structuring">Prompt structuring<a class="headerlink" href="#prompt-structuring" title="Permanent link">&para;</a></h2>
-<p>A module system and a package system enable prompt reuse and publishing.</p>
+<p>A module system and a package system enable parameterized prompt reuse and publishing.</p>
+<pre class="codehilite"><code class="language-metaprompt"># hello.metaprompt:
+Hello, [:what]!
+</code></pre>
+
+<pre class="codehilite"><code class="language-metaprompt"># main.metaprompt:
+[:use ./hello :what=world]
+</code></pre>
+
+<p><code>main.metaprompt</code> will evaluate to <code>Hello, world!</code></p>
               
             </div>
           </div><footer>
@@ -155,5 +163,5 @@
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2024-11-14 11:29:14.193928+00:00
+Build Date UTC : 2024-11-14 11:32:59.209482+00:00
 -->
