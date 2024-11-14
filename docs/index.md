@@ -24,9 +24,7 @@ Not all of the described features have been implemented.
 
 ## Templating
 
-MetaPrompt's basic use case is substituting parameter values instead of variable names embedded in a prompt.
-
-Example:
+MetaPrompt's basic use case is substituting parameter values instead of variable names embedded in a prompt:
 
 ```metaprompt
 Write me a poem about [:subject] in the style of [:style]
@@ -52,4 +50,16 @@ Quick example:
 
 ## Prompt structuring
 
-A module system and a package system enable prompt reuse and publishing.
+A module system and a package system enable parameterized prompt reuse and publishing.
+
+```metaprompt
+# hello.metaprompt:
+Hello, [:what]!
+```
+
+```metaprompt
+# main.metaprompt:
+[:use ./hello :what=world]
+```
+
+`main.metaprompt` will evaluate to `Hello, world!`
