@@ -84,7 +84,7 @@ Normally, you would not need escaping, e.g. `[:foo` will evaluate to `[:foo` as 
 
 `\\[:foo]` → (text `\\`) (variable `foo`)
 
-`\[some text` -> (text `[some text`) - note that in this case the `\` character disappears, although escaping does not happen because `[some text` not a special MetaPrompt construct.
+`\[some text` -> (text `[some text`) - note that in this case the `\` character disappears, although escaping does not happen because `[some text` is not a special MetaPrompt construct.
 
 # Modules
 
