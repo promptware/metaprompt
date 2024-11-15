@@ -15,13 +15,12 @@ def build(c):
 
 @task
 def check(c):
-    c.run("black --check *.py src/*.py")
+    c.run("black --check *.py src/*.py tests/*.py")
 
 
 @task
 def format(c):
-    c.run("black *.py")
-    c.run("black src/*.py")
+    c.run("black *.py src/*.py tests/*.py")
 
 
 @task

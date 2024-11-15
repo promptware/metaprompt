@@ -8,8 +8,10 @@ def t(text):
 def comment(exprs):
     return {"type": "comment", "exprs": exprs}
 
+
 def if_then(c, then_):
     return if_then_else(c, then_, [])
+
 
 def if_then_else(c, then_, else_):
     return {
@@ -21,17 +23,12 @@ def if_then_else(c, then_, else_):
 
 
 def meta(exprs):
-    return {
-        'type': 'meta',
-        'exprs': exprs
-    }
+    return {"type": "meta", "exprs": exprs}
+
 
 def use(module_name, parameters):
-    return {
-        'type': 'use',
-        'module_name': module_name,
-        'parameters': parameters
-    }
+    return {"type": "use", "module_name": module_name, "parameters": parameters}
+
 
 def test_empty():
     result = parse_metaprompt("")
@@ -42,37 +39,46 @@ def test_text_0():
     result = parse_metaprompt("asd")
     assert result["exprs"] == [{"text": "asd", "type": "text"}]
 
+
 def test_text_1():
     result = parse_metaprompt("$$")
     assert result["exprs"] == [t("$"), t("$")]
+
 
 def test_text_2():
     result = parse_metaprompt("$=")
     assert result["exprs"] == [t("$"), t("=")]
 
+
 def test_escaping():
     result = parse_metaprompt("\\")
     assert result["exprs"] == [t("\\")]
+
 
 def test_escaping_1():
     result = parse_metaprompt("\\[")
     assert result["exprs"] == [t("[")]
 
+
 def test_escaping_2():
     result = parse_metaprompt("\\[:foo]")
     assert result["exprs"] == [t("["), t(":foo"), t("]")]
+
 
 def test_escaping_3():
     result = parse_metaprompt("\\[:foo")
     assert result["exprs"] == [t("["), t(":foo")]
 
+
 def test_escaping_4():
     result = parse_metaprompt("\\\\[")
     assert result["exprs"] == [t("\\"), t("[")]
 
+
 def test_escaping_5():
     result = parse_metaprompt("\\  \\")
     assert result["exprs"] == [t("\\  \\")]
+
 
 def test_comment():
     result = parse_metaprompt("[# asd ]")
@@ -140,7 +146,6 @@ def test_dummy_meta2():
     assert result["exprs"] == [t("["), t("["), t("]"), t("]")]
 
 
-
 def test_dummy_meta3():
     result = parse_metaprompt("[a")
     assert result["exprs"] == [t("["), t("a")]
@@ -153,61 +158,61 @@ def test_dummy_meta2():
 
 def test_meta_dollar():
     result = parse_metaprompt("[$ foo]")
-    assert result["exprs"] == [{'type': 'meta', 'exprs': [ {'type': 'text', 'text': " foo"}]}]
+    assert result["exprs"] == [
+        {"type": "meta", "exprs": [{"type": "text", "text": " foo"}]}
+    ]
 
 
 def test_meta_dollar2():
     result = parse_metaprompt("[$ foo][$ foo]")
     assert result["exprs"] == [
-        {'type': 'meta', 'exprs': [ {'type': 'text', 'text': " foo"}]},
-        {'type': 'meta', 'exprs': [ {'type': 'text', 'text': " foo"}]},
+        {"type": "meta", "exprs": [{"type": "text", "text": " foo"}]},
+        {"type": "meta", "exprs": [{"type": "text", "text": " foo"}]},
     ]
 
 
 def test_meta_dollar2():
     result = parse_metaprompt("[$ foo]]")
     assert result["exprs"] == [
-        {'type': 'meta', 'exprs': [ {'type': 'text', 'text': " foo"}]},
-        t("]")
+        {"type": "meta", "exprs": [{"type": "text", "text": " foo"}]},
+        t("]"),
     ]
 
 
 def test_assign():
     result = parse_metaprompt("[:foo=bar]")
-    assert result["exprs"] == [{'type': 'assign', 'name': 'foo', 'exprs': [ {'type': 'text', 'text': "bar"}]}]
+    assert result["exprs"] == [
+        {
+            "type": "assign",
+            "name": "foo",
+            "exprs": [{"type": "text", "text": "bar"}],
+        }
+    ]
 
 
 def test_assign_trailing_bracket():
     result = parse_metaprompt("[:foo=bar]]")
     assert result["exprs"] == [
-        {'type': 'assign', 'name': 'foo',
-         'exprs': [ {'type': 'text', 'text': "bar"}]
-         },
-        t(']')
+        {
+            "type": "assign",
+            "name": "foo",
+            "exprs": [{"type": "text", "text": "bar"}],
+        },
+        t("]"),
     ]
 
 
 def test_assign_trailing_bracket():
     result = parse_metaprompt("[:foo=[$ hi ]]")
     assert result["exprs"] == [
-        {
-            'type': 'assign', 'name': 'foo',
-            'exprs': [
-                meta(
-                    [ t(" hi ") ]
-                )
-            ]
-        }
+        {"type": "assign", "name": "foo", "exprs": [meta([t(" hi ")])]}
     ]
+
 
 def test_use_1():
     result = parse_metaprompt("[:use foo]")
     assert result["exprs"] == [
-        {
-            'type': 'use',
-            'module_name': 'foo',
-            'parameters': {}
-        }
+        {"type": "use", "module_name": "foo", "parameters": {}}
     ]
 
 
@@ -215,12 +220,12 @@ def test_use_2():
     result = parse_metaprompt("[:use foo :asd=hey :foo=bar]")
     assert result["exprs"] == [
         {
-            'type': 'use',
-            'module_name': 'foo',
-            'parameters': {
-                'asd': [ { 'type': 'text', 'text': 'hey ' } ],
-                'foo': [ { 'type': 'text', 'text': 'bar' } ]
-            }
+            "type": "use",
+            "module_name": "foo",
+            "parameters": {
+                "asd": [{"type": "text", "text": "hey "}],
+                "foo": [{"type": "text", "text": "bar"}],
+            },
         }
     ]
 
@@ -228,29 +233,20 @@ def test_use_2():
 def test_use_3():
     result = parse_metaprompt("[:use\nfoo\n]")
     assert result["exprs"] == [
-        {
-            'type': 'use',
-            'module_name': 'foo',
-            'parameters': {}
-        }
+        {"type": "use", "module_name": "foo", "parameters": {}}
     ]
 
 
 def test_use_nested():
-    result = parse_metaprompt(
-        "[:use foo :asd=[:use bar] hiii :foo=bar]"
-    )
+    result = parse_metaprompt("[:use foo :asd=[:use bar] hiii :foo=bar]")
     assert result["exprs"] == [
         {
-            'type': 'use',
-            'module_name': 'foo',
-            'parameters': {
-                'asd': [
-                    use('bar', {}),
-                    { 'type': 'text', 'text': ' hiii ' }
-                ],
-                'foo': [ { 'type': 'text', 'text': 'bar' } ]
-            }
+            "type": "use",
+            "module_name": "foo",
+            "parameters": {
+                "asd": [use("bar", {}), {"type": "text", "text": " hiii "}],
+                "foo": [{"type": "text", "text": "bar"}],
+            },
         }
     ]
 
@@ -261,17 +257,17 @@ def test_use_nested_2():
     )
     assert result["exprs"] == [
         {
-            'type': 'use',
-            'module_name': 'foo',
-            'parameters': {
-                'asd': [
-                    t('['),
-                    t('hiiii '),
-                    use('bar', {'qux': [t('asd')]}),
-                    t(']'),
-                    { 'type': 'text', 'text': ' hiii ' },
+            "type": "use",
+            "module_name": "foo",
+            "parameters": {
+                "asd": [
+                    t("["),
+                    t("hiiii "),
+                    use("bar", {"qux": [t("asd")]}),
+                    t("]"),
+                    {"type": "text", "text": " hiii "},
                 ],
-                'foo': [ { 'type': 'text', 'text': 'bar' } ]
-            }
+                "foo": [{"type": "text", "text": "bar"}],
+            },
         }
     ]

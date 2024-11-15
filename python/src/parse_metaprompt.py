@@ -16,10 +16,13 @@ class ThrowingErrorListener(ErrorListener):
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
         raise Exception(f"Syntax error at line {line}:{column} - {msg}")
 
-_pattern = r'\\([\[\\])'
+
+_pattern = r"\\([\[\\])"
+
 
 def _process_escaping(string):
     return re.sub(_pattern, lambda match: match.group(1), string)
+
 
 class MetaPromptASTBuilder(MetaPromptVisitor):
     # TODO: consider joining text pieces
@@ -137,7 +140,9 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
     def visitText(self, ctx: MetaPromptParser.TextContext):
         # text: CHAR+
         # Collect all CHAR tokens
-        text = "".join([_process_escaping(child.getText()) for child in ctx.CHAR()])
+        text = "".join(
+            [_process_escaping(child.getText()) for child in ctx.CHAR()]
+        )
         return {"type": "text", "text": text}
 
 
