@@ -24,9 +24,32 @@ def _process_escaping(string):
     return re.sub(_pattern, lambda match: match.group(1), string)
 
 
+def _join_text_pieces(children):
+    """Joins multiple consequent text chunks into one:
+    '[' 'foo' ']' -> '[foo]'
+    (workaround for generated parser implementation details)
+    """
+    buf = None
+    res = []
+    for child in children:
+        if buf is None:
+            if child["type"] == "text":
+                buf = child
+            else:
+                res.append(child)
+        else:
+            if child["type"] == "text":
+                buf["text"] += child["text"]
+            else:
+                res.append(buf)
+                buf = None
+                res.append(child)
+    if buf is not None:
+        res.append(buf)
+    return res
+
+
 class MetaPromptASTBuilder(MetaPromptVisitor):
-    # TODO: consider joining text pieces
-    # see test_text_1 for an example.
     def visitPrompt(self, ctx: MetaPromptParser.PromptContext):
         exprs_node = self.visit(ctx.exprs())
         return {"type": "metaprompt", "exprs": exprs_node}
@@ -36,35 +59,36 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
         for expr in ctx.expr():
             expr_items = self.visit(expr)
             exprs.extend(expr_items)
-        return exprs
+        return _join_text_pieces(exprs)
 
     def visitExpr(self, ctx: MetaPromptParser.ExprContext):
-        items = []
+        exprs = []
         if ctx.text() is not None:
-            items.append(self.visit(ctx.text()))
+            exprs.append(self.visit(ctx.text()))
         if ctx.expr1() is not None:
             expr1 = self.visit(ctx.expr1())
             if expr1["type"] == "meta":
-                items.append(expr1["meta"])
+                exprs.append(expr1["meta"])
             elif expr1["type"] == "exprs":
-                items.append({"type": "text", "text": "["})
+                exprs.append({"type": "text", "text": "["})
                 for child in expr1["exprs"]:
-                    items.append(child)
-                items.append({"type": "text", "text": "]"})
+                    exprs.append(child)
+                exprs.append({"type": "text", "text": "]"})
         else:
             if ctx.RB() is not None:
-                items.append({"type": "text", "text": "]"})
+                exprs.append({"type": "text", "text": "]"})
             if ctx.LB() is not None:
-                items.append({"type": "text", "text": "["})
+                exprs.append({"type": "text", "text": "["})
             if ctx.COMMENT_KW() is not None:
-                items.append({"type": "text", "text": "#"})
+                exprs.append({"type": "text", "text": "#"})
             elif ctx.META_KW() is not None:
-                items.append({"type": "text", "text": "$"})
+                exprs.append({"type": "text", "text": "$"})
             elif ctx.EQ_KW() is not None:
-                items.append({"type": "text", "text": "="})
+                exprs.append({"type": "text", "text": "="})
             elif ctx.VAR_NAME() is not None:
-                items.append({"type": "text", "text": ctx.VAR_NAME().getText()})
-        return items
+                exprs.append({"type": "text", "text": ctx.VAR_NAME().getText()})
+
+        return _join_text_pieces(exprs)
 
     def visitExpr1(self, ctx: MetaPromptParser.Expr1Context):
         if ctx.meta_body() is not None:
@@ -115,6 +139,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 "parameters": parameters,
             }
         elif ctx.VAR_NAME() is not None:
+            # slice the ":"
             var_name = ctx.VAR_NAME().getText()[1:]
             if ctx.EQ_KW() is not None:
                 # [:var_name= value]
@@ -122,9 +147,12 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 for expr in ctx.exprs():
                     expr_items = self.visit(expr)
                     exprs.extend(expr_items)
-                return {"type": "assign", "name": var_name, "exprs": exprs}
+                return {
+                    "type": "assign",
+                    "name": var_name,
+                    "exprs": _join_text_pieces(exprs),
+                }
             else:
-                # slice the ":"
                 return {"type": "var", "name": var_name}
 
         elif ctx.META_KW() is not None:
@@ -133,7 +161,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             for expr in ctx.exprs():
                 expr_items = self.visit(expr)
                 exprs.extend(expr_items)
-            return {"type": "meta", "exprs": exprs}
+            return {"type": "meta", "exprs": _join_text_pieces(exprs)}
         else:
             raise ValueError("Unable to build AST:", ctx)
 

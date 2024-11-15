@@ -42,12 +42,12 @@ def test_text_0():
 
 def test_text_1():
     result = parse_metaprompt("$$")
-    assert result["exprs"] == [t("$"), t("$")]
+    assert result["exprs"] == [t("$$")]
 
 
 def test_text_2():
     result = parse_metaprompt("$=")
-    assert result["exprs"] == [t("$"), t("=")]
+    assert result["exprs"] == [t("$=")]
 
 
 def test_escaping():
@@ -62,17 +62,17 @@ def test_escaping_1():
 
 def test_escaping_2():
     result = parse_metaprompt("\\[:foo]")
-    assert result["exprs"] == [t("["), t(":foo"), t("]")]
+    assert result["exprs"] == [t("[:foo]")]
 
 
 def test_escaping_3():
     result = parse_metaprompt("\\[:foo")
-    assert result["exprs"] == [t("["), t(":foo")]
+    assert result["exprs"] == [t("[:foo")]
 
 
 def test_escaping_4():
     result = parse_metaprompt("\\\\[")
-    assert result["exprs"] == [t("\\"), t("[")]
+    assert result["exprs"] == [t("\\[")]
 
 
 def test_escaping_5():
@@ -87,7 +87,7 @@ def test_comment():
 
 def test_absence_of_comment():
     result = parse_metaprompt("# asd")
-    assert result["exprs"] == [t("#"), t(" asd")]
+    assert result["exprs"] == [t("# asd")]
 
 
 def test_meta():
@@ -138,43 +138,46 @@ def test_if_nested():
 
 def test_dummy_meta():
     result = parse_metaprompt("[test]")
-    assert result["exprs"] == [t("["), t("test"), t("]")]
+    assert result["exprs"] == [t("[test]")]
 
 
 def test_dummy_meta2():
     result = parse_metaprompt("[[]]")
-    assert result["exprs"] == [t("["), t("["), t("]"), t("]")]
+    assert result["exprs"] == [t("[[]]")]
 
 
 def test_dummy_meta3():
     result = parse_metaprompt("[a")
-    assert result["exprs"] == [t("["), t("a")]
+    assert result["exprs"] == [t("[a")]
 
 
-def test_dummy_meta2():
+def test_dummy_meta4():
     result = parse_metaprompt("[[][]]")
-    assert result["exprs"] == [t("["), t("["), t("]"), t("["), t("]"), t("]")]
+    assert result["exprs"] == [t("[[][]]")]
+
+
+def test_meta2():
+    result = parse_metaprompt("[$ []]")
+    assert result["exprs"] == [meta([t(" []")])]
 
 
 def test_meta_dollar():
     result = parse_metaprompt("[$ foo]")
-    assert result["exprs"] == [
-        {"type": "meta", "exprs": [{"type": "text", "text": " foo"}]}
-    ]
+    assert result["exprs"] == [meta([t(" foo")])]
 
 
 def test_meta_dollar2():
     result = parse_metaprompt("[$ foo][$ foo]")
     assert result["exprs"] == [
-        {"type": "meta", "exprs": [{"type": "text", "text": " foo"}]},
-        {"type": "meta", "exprs": [{"type": "text", "text": " foo"}]},
+        meta([t(" foo")]),
+        meta([t(" foo")]),
     ]
 
 
 def test_meta_dollar2():
     result = parse_metaprompt("[$ foo]]")
     assert result["exprs"] == [
-        {"type": "meta", "exprs": [{"type": "text", "text": " foo"}]},
+        meta([t(" foo")]),
         t("]"),
     ]
 
@@ -211,22 +214,19 @@ def test_assign_trailing_bracket():
 
 def test_use_1():
     result = parse_metaprompt("[:use foo]")
-    assert result["exprs"] == [
-        {"type": "use", "module_name": "foo", "parameters": {}}
-    ]
+    assert result["exprs"] == [use("foo", {})]
 
 
 def test_use_2():
     result = parse_metaprompt("[:use foo :asd=hey :foo=bar]")
     assert result["exprs"] == [
-        {
-            "type": "use",
-            "module_name": "foo",
-            "parameters": {
-                "asd": [{"type": "text", "text": "hey "}],
-                "foo": [{"type": "text", "text": "bar"}],
+        use(
+            "foo",
+            {
+                "asd": [t("hey ")],
+                "foo": [t("bar")],
             },
-        }
+        )
     ]
 
 
@@ -244,8 +244,8 @@ def test_use_nested():
             "type": "use",
             "module_name": "foo",
             "parameters": {
-                "asd": [use("bar", {}), {"type": "text", "text": " hiii "}],
-                "foo": [{"type": "text", "text": "bar"}],
+                "asd": [use("bar", {}), t(" hiii ")],
+                "foo": [t("bar")],
             },
         }
     ]
@@ -261,11 +261,9 @@ def test_use_nested_2():
             "module_name": "foo",
             "parameters": {
                 "asd": [
-                    t("["),
-                    t("hiiii "),
+                    t("[hiiii "),
                     use("bar", {"qux": [t("asd")]}),
-                    t("]"),
-                    {"type": "text", "text": " hiii "},
+                    t("] hiii "),
                 ],
                 "foo": [{"type": "text", "text": "bar"}],
             },
