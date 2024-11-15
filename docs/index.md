@@ -2,15 +2,13 @@
 
 Metaprompt is a template language for LLM prompt automation, reuse and structuring, with support for writing prompts with prompts.
 
-It adds a number of syntactic constructs to plaintext prompts:
+It adds a number of syntactic constructs to plaintext prompts, that get expanded at run time, producing textual output:
 
 - variables
 - conditionals
+- LLM calls
 - function calls
-- meta-prompting operator
 - etc.
-
-These constructs get expanded at run time, producing textual output.
 
 # Project status
 
@@ -36,14 +34,14 @@ Prompt rewriting is a technique of asking an LLM to create/modify/expand an LLM 
 
 - Dynamically crafting task-specific prompts based on a set of high level principles
 - Modifying prompts to increase accuracy
-- Securing inputs from prompt injection attacks
-- Selecting the most suitable model based on prompt contents
+- Securing inputs from prompt injection attacks and for content moderation
+- Selecting the most suitable model based for a task
 
 Quick example:
 
 ```metaprompt
 [$ You are an LLM prompt engineer.
-  Improve this prompt by adding specific instructions:
+  Improve this prompt by adding specific details:
   [:prompt]
 ]
 ```
@@ -52,16 +50,12 @@ Quick example:
 
 A module system and a package system enable parameterized prompt reuse and publishing.
 
-`hello.metaprompt`:
+## Knowledge base maintenance
 
-```metaprompt
-Hello, [:what]!
-```
+Organize your knowledge base in the form of multiple documents loaded conditionally on demand.
 
-`main.metaprompt`:
+# Links
 
-```metaprompt
-[:use ./hello :what=world]
-```
-
-`main.metaprompt` will evaluate to `Hello, world!`
+- [GitHub repo](https://github.com/promptware/metaprompt)
+- [Documentation](https://docs.metaprompt-lang.org/)
+- [Author's twitter](https://x.com/klntsky)
