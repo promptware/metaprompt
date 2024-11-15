@@ -50,6 +50,29 @@ def test_text_2():
     result = parse_metaprompt("$=")
     assert result["exprs"] == [t("$"), t("=")]
 
+def test_escaping():
+    result = parse_metaprompt("\\")
+    assert result["exprs"] == [t("\\")]
+
+def test_escaping_1():
+    result = parse_metaprompt("\\[")
+    assert result["exprs"] == [t("[")]
+
+def test_escaping_2():
+    result = parse_metaprompt("\\[:foo]")
+    assert result["exprs"] == [t("["), t(":foo"), t("]")]
+
+def test_escaping_3():
+    result = parse_metaprompt("\\[:foo")
+    assert result["exprs"] == [t("["), t(":foo")]
+
+def test_escaping_4():
+    result = parse_metaprompt("\\\\[")
+    assert result["exprs"] == [t("\\"), t("[")]
+
+def test_escaping_5():
+    result = parse_metaprompt("\\  \\")
+    assert result["exprs"] == [t("\\  \\")]
 
 def test_comment():
     result = parse_metaprompt("[# asd ]")

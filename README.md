@@ -49,8 +49,8 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
 - [ ] Specify the initial version of the syntax
 - [ ] Implement a parser
   - [x] implement parse tree -> AST conversion
-  - [ ] return error throwing to the parser
-  - [ ] implement escaping
+  - [x] return error throwing to the parser
+  - [x] implement escaping
   - [x] `[:variable]` and `[:variable=some value]`
   - [ ] `[!assertion]`
   - [x] `[:if ... :then ... :else ...]`

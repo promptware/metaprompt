@@ -9,6 +9,7 @@ expr: LB expr1 RB
     | COMMENT_KW
     | META_KW
     | EQ_KW
+    | VAR_NAME
     ;
 
 expr1
@@ -37,7 +38,10 @@ RB : ']';
 EQ_KW : '=' ;
 META_KW : '$' ;
 COMMENT_KW : '#' ;
-CHAR : . ;
+CHAR : ( ESCAPED | .);
+fragment ESCAPED : ESCAPE ESCAPEE;
+fragment ESCAPEE : (LB | ESCAPE);
+fragment ESCAPE : '\\';
 USE : ':use' WS+ [a-zA-Z0-9/_.-]+ WS*;
 fragment WS : ' '|'\n';
 IF_KW : ':if' ;

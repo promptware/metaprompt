@@ -1,4 +1,5 @@
 import sys
+import re
 from antlr4 import *
 from parser.MetaPromptLexer import MetaPromptLexer
 from parser.MetaPromptParser import MetaPromptParser
@@ -15,6 +16,10 @@ class ThrowingErrorListener(ErrorListener):
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
         raise Exception(f"Syntax error at line {line}:{column} - {msg}")
 
+_pattern = r'\\([\[\\])'
+
+def _process_escaping(string):
+    return re.sub(_pattern, lambda match: match.group(1), string)
 
 class MetaPromptASTBuilder(MetaPromptVisitor):
     # TODO: consider joining text pieces
@@ -54,6 +59,8 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 items.append({"type": "text", "text": "$"})
             elif ctx.EQ_KW() is not None:
                 items.append({"type": "text", "text": "="})
+            elif ctx.VAR_NAME() is not None:
+                items.append({"type": "text", "text": ctx.VAR_NAME().getText()})
         return items
 
     def visitExpr1(self, ctx: MetaPromptParser.Expr1Context):
@@ -130,7 +137,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
     def visitText(self, ctx: MetaPromptParser.TextContext):
         # text: CHAR+
         # Collect all CHAR tokens
-        text = "".join([child.getText() for child in ctx.CHAR()])
+        text = "".join([_process_escaping(child.getText()) for child in ctx.CHAR()])
         return {"type": "text", "text": text}
 
 
