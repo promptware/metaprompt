@@ -75,15 +75,14 @@
               
                 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
 <p>Metaprompt is a template language for LLM prompt automation, reuse and structuring, with support for writing prompts with prompts.</p>
-<p>It adds a number of syntactic constructs to plaintext prompts:</p>
+<p>It adds a number of syntactic constructs to plaintext prompts, that get expanded at run time, producing textual output:</p>
 <ul>
 <li>variables</li>
 <li>conditionals</li>
+<li>LLM calls</li>
 <li>function calls</li>
-<li>meta-prompting operator</li>
 <li>etc.</li>
 </ul>
-<p>These constructs get expanded at run time, producing textual output.</p>
 <h1 id="project-status">Project status<a class="headerlink" href="#project-status" title="Permanent link">&para;</a></h1>
 <p><strong>!!! This is an early work-in-progress !!!</strong></p>
 <p>Not all of the described features have been implemented.</p>
@@ -99,27 +98,26 @@
 <ul>
 <li>Dynamically crafting task-specific prompts based on a set of high level principles</li>
 <li>Modifying prompts to increase accuracy</li>
-<li>Securing inputs from prompt injection attacks</li>
-<li>Selecting the most suitable model based on prompt contents</li>
+<li>Securing inputs from prompt injection attacks and for content moderation</li>
+<li>Selecting the most suitable model based for a task</li>
 </ul>
 <p>Quick example:</p>
 <pre class="codehilite"><code class="language-metaprompt">[$ You are an LLM prompt engineer.
-  Improve this prompt by adding specific instructions:
+  Improve this prompt by adding specific details:
   [:prompt]
 ]
 </code></pre>
 
 <h2 id="prompt-structuring">Prompt structuring<a class="headerlink" href="#prompt-structuring" title="Permanent link">&para;</a></h2>
 <p>A module system and a package system enable parameterized prompt reuse and publishing.</p>
-<p><code>hello.metaprompt</code>:</p>
-<pre class="codehilite"><code class="language-metaprompt">Hello, [:what]!
-</code></pre>
-
-<p><code>main.metaprompt</code>:</p>
-<pre class="codehilite"><code class="language-metaprompt">[:use ./hello :what=world]
-</code></pre>
-
-<p><code>main.metaprompt</code> will evaluate to <code>Hello, world!</code></p>
+<h2 id="knowledge-base-maintenance">Knowledge base maintenance<a class="headerlink" href="#knowledge-base-maintenance" title="Permanent link">&para;</a></h2>
+<p>Organize your knowledge base in the form of multiple documents loaded conditionally on demand.</p>
+<h1 id="links">Links<a class="headerlink" href="#links" title="Permanent link">&para;</a></h1>
+<ul>
+<li><a href="https://github.com/promptware/metaprompt">GitHub repo</a></li>
+<li><a href="https://docs.metaprompt-lang.org/">Documentation</a></li>
+<li><a href="https://x.com/klntsky">Author's twitter</a></li>
+</ul>
               
             </div>
           </div><footer>
@@ -172,5 +170,5 @@
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2024-11-14 19:35:22.453929+00:00
+Build Date UTC : 2024-11-15 16:34:25.226218+00:00
 -->
