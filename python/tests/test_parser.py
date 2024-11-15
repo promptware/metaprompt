@@ -26,6 +26,10 @@ def meta(exprs):
     return {"type": "meta", "exprs": exprs}
 
 
+def var(name):
+    return {"name": name, "type": "var"}
+
+
 def use(module_name, parameters):
     return {"type": "use", "module_name": module_name, "parameters": parameters}
 
@@ -65,6 +69,16 @@ def test_escaping_2():
     assert result["exprs"] == [t("[:foo]")]
 
 
+def test_escaping_2_1():
+    result = parse_metaprompt("\\\\[:foo]")
+    assert result["exprs"] == [t("\\\\"), var("foo")]
+
+
+def test_escaping_2_2():
+    result = parse_metaprompt("\\\\")
+    assert result["exprs"] == [t("\\\\")]
+
+
 def test_escaping_3():
     result = parse_metaprompt("\\[:foo")
     assert result["exprs"] == [t("[:foo")]
@@ -72,7 +86,7 @@ def test_escaping_3():
 
 def test_escaping_4():
     result = parse_metaprompt("\\\\[")
-    assert result["exprs"] == [t("\\[")]
+    assert result["exprs"] == [t("\\\\[")]
 
 
 def test_escaping_5():
@@ -92,7 +106,7 @@ def test_absence_of_comment():
 
 def test_meta():
     result = parse_metaprompt("[:test]")
-    assert result["exprs"] == [{"name": "test", "type": "var"}]
+    assert result["exprs"] == [var("test")]
 
 
 def test_meta_text():

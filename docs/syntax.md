@@ -72,6 +72,20 @@ of prompt rewriting:
 
 Notice the double nesting of `[$` - the improved prompt will be fed back into an LLM.
 
+# Escaping
+
+Normally, you would not need escaping, e.g. `[:foo` will evaluate to `[:foo` as text. But if you want to specify a MetaPrompt expression literally, use `\` before the `[` character: `\[:foo]` will evaluate to `[:foo]` as text, without special meaning. You can escape `\` with another `\`, but only if it is positioned before a `[`:
+
+`\foo` → (text `\foo`)
+
+`\\` → (text `\\`)
+
+`\[:foo]` → (text `[:foo]`)
+
+`\\[:foo]` → (text `\\`) (variable `foo`)
+
+`\[some text` -> (text `[some text`) - note that in this case the `\` character disappears, although escaping does not happen because `[some text` not a special MetaPrompt construct.
+
 # Modules
 
 Every `.metaprompt` file is a function.

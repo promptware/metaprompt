@@ -17,11 +17,25 @@ class ThrowingErrorListener(ErrorListener):
         raise Exception(f"Syntax error at line {line}:{column} - {msg}")
 
 
-_pattern = r"\\([\[\\])"
+_pattern = r"\\([\[\\])(\[)?"
+
+
+def _escape_pattern(match):
+    first = match.group(1)
+    second = match.group(2)
+    if second is None:
+        if first == "\\":
+            return "\\\\"
+        elif first == "[":
+            return "["
+        else:
+            raise ValueError("Invariant violation: _escape_pattern")
+    else:
+        return match.group(1)
 
 
 def _process_escaping(string):
-    return re.sub(_pattern, lambda match: match.group(1), string)
+    return re.sub(_pattern, _escape_pattern, string)
 
 
 def _join_text_pieces(children):

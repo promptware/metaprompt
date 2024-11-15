@@ -52,7 +52,6 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [x] return error throwing to the parser
   - [x] implement escaping
   - [x] `[:variable]` and `[:variable=some value]`
-  - [ ] `[!assertion]`
   - [x] `[:if ... :then ... :else ...]`
   - [x] `[$ meta-prompt]`
   - [x] `[:use module :param1=value1]`
