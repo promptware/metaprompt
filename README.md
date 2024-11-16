@@ -118,6 +118,7 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
 
 - [llm-lang (Racket)](https://github.com/wilbowma/llm-lang) - similar in spirit. Does not support meta-prompting, uses racket as the DSL host language.
 - [genaiscript (Microsoft)](https://github.com/microsoft/genaiscript) - a JS library, does not follow the "prompt-first" approach
+- [PLang](https://plang.is/) - a language for task automation. Uses LLMs for control flow.
 - [LangChain prompt templates](https://python.langchain.com/docs/concepts/prompt_templates/) - only supports string substitution
 - [Promptify](https://www.promptify.ai/explore) - focused on API creation.
 - [Promptor](https://github.com/pikho/ppromptor) - prompt generator agent
