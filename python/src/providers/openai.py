@@ -42,7 +42,7 @@ class OpenAILLMProvider(BaseLLMProvider):
                 "API key is required for OpenAI API. Specify OPENAI_API_KEY environment variable or provide an api_key argument"
             )
 
-    async def ainvoke(self, prompt: str) -> AsyncGenerator[str, None]:
+    async def ainvoke(self, prompt: str, role: str) -> AsyncGenerator[str, None]:
         """Asynchronously invoke the OpenAI API and yield results in chunks.
 
         Args:
@@ -56,7 +56,7 @@ class OpenAILLMProvider(BaseLLMProvider):
         # TODO: use system message role for IF_PROMPT
         stream = await client.chat.completions.create(
             model="gpt-4",
-            messages=[{"role": "user", "content": prompt}],
+            messages=[{"role": role, "content": prompt}],
             stream=True,
         )
 

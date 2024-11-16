@@ -8,5 +8,7 @@ class BaseLLMProvider(ABC):
     def __init__(self):
         pass
 
-    async def ainvoke(self, prompt: str) -> AsyncGenerator[str, None]:
+    async def ainvoke(
+        self, prompt: str, role: str
+    ) -> AsyncGenerator[str, None]:
         pass

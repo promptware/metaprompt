@@ -1,8 +1,7 @@
-class Env:
+class Env(dict):
 
-    def __init__(self, env={}, parent=None):
-        self.env = env
-        self.parent = parent
+    def __init__(self, *args, **kwargs):
+        self.env = dict(*args, **kwargs)
 
     def set(self, variable, value):
         self.env[variable] = value
@@ -10,7 +9,5 @@ class Env:
     def get(self, variable):
         if variable in self.env:
             return self.env[variable]
-        elif self.parent is not None:
-            self.parent.lookup(variable)
         else:
             return None

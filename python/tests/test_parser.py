@@ -98,9 +98,13 @@ def test_comment():
     result = parse_metaprompt("[# asd ]")
     assert result["exprs"] == [comment([{"text": " asd ", "type": "text"}])]
 
+
 def test_comment_2():
     result = parse_metaprompt("[# asd ]]")
-    assert result["exprs"] == [comment([{"text": " asd ", "type": "text"}]), t("]")]
+    assert result["exprs"] == [
+        comment([{"text": " asd ", "type": "text"}]),
+        t("]"),
+    ]
 
 
 def test_absence_of_comment():

@@ -16,11 +16,15 @@ class InteractiveProvider(ProviderConfig):
 
 
 class InteractiveLLMProvider(BaseLLMProvider):
-    def __init__(self, api_key: str = None, model: str = "gpt-4"):
+    def __init__(self, api_key: str = None):
         """Initialize the provider with API key and model name."""
         super().__init__()
 
-    async def ainvoke(self, prompt: str) -> AsyncGenerator[str, None]:
+    async def ainvoke(
+        self,
+        prompt: str,
+        role: str = "user"
+    ) -> AsyncGenerator[str, None]:
         """Asynchronously invoke the OpenAI API and yield results in chunks.
 
         Args:
@@ -29,5 +33,5 @@ class InteractiveLLMProvider(BaseLLMProvider):
         Yields:
             str: Chunks of the response as they're received.
         """
-        output = input("[Q]: " + prompt + "\n[A]: ")
+        output = input("[Q]: " + prompt + f"\n[{role}]: ")
         yield output

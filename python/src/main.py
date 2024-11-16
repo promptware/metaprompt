@@ -2,7 +2,7 @@ import asyncio
 import argparse
 from parse_metaprompt import parse_metaprompt
 from env import Env
-from runtime import Runtime
+from runtimes.cli_runtime import CliRuntime
 import os
 from config_loader import load_config
 from eval import eval_ast
@@ -82,10 +82,11 @@ async def _main():
                 metaprompt = parse_metaprompt(content)
                 env = Env(env=config.parameters)
                 config.model = args.model or "interactive"
-                runtime = Runtime(config, env)
+                runtime = CliRuntime(config, env)
                 runtime.cwd = os.path.dirname(file_path)
-                async for chunk in eval_ast(metaprompt, runtime):
-                    print(chunk, end="")
+                async for chunk in eval_ast(metaprompt, config, runtime):
+                    runtime.print_chunk(chunk)
+                runtime.finalize()
 
 
 def main():
