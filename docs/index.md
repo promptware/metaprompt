@@ -35,7 +35,7 @@ Prompt rewriting is a technique of asking an LLM to create/modify/expand an LLM 
 - Dynamically crafting task-specific prompts based on a set of high level principles
 - Modifying prompts to increase accuracy
 - Securing inputs from prompt injection attacks and for content moderation
-- Selecting the most suitable model based for a task
+- Selecting the most suitable model for a task
 
 Quick example:
 
