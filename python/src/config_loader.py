@@ -11,9 +11,7 @@ load_dotenv()
 
 def load_config():
     """Load configuration from environment variables"""
-    provider_config = ProviderConfig()
-
-    provider_config.merge(InteractiveProvider())
+    provider_config = ProviderConfig(InteractiveProvider())
 
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     if OPENAI_API_KEY is not None:

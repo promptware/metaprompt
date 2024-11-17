@@ -6,7 +6,7 @@ from typing import AsyncGenerator, List
 import os
 
 class CliRuntime(BaseRuntime):
-    def __init__(self, config, env):
+    def __init__(self):
         self.cwd = os.getcwd()
 
     def set_status(self, status: str):

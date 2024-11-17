@@ -14,6 +14,9 @@ class InteractiveProvider(ProviderConfig):
             InteractiveLLMProvider()
         )
 
+    def get_default_model(self):
+        return 'interactive'
+
 
 class InteractiveLLMProvider(BaseLLMProvider):
     def __init__(self, api_key: str = None):

@@ -25,6 +25,8 @@ class OpenAIProvider(ProviderConfig):
                 )
             )
 
+    def get_default_model(self):
+        return "gpt-4o"
 
 class OpenAILLMProvider(BaseLLMProvider):
     """Implementation of the BaseLLMProvider for OpenAI's API.

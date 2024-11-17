@@ -13,7 +13,17 @@ The statement:
 
 async def eval_ast(ast, config, runtime):
     env = Env(**config.parameters)
-    env.set("MODEL", config.model.strip())
+    default_model = config.providers.get_default_model()
+    if default_model is not None:
+        env.set("MODEL", default_model.strip())
+
+    def get_model():
+        nonlocal env
+        if env.get("MODEL") is None:
+            raise ValueError(
+                "Default model was not specified. ProviderConfig must have at least one provider"
+            )
+        return env.get("MODEL").strip()
 
     async def _eval_exprs(exprs):
         """A helper for eval_ast"""
@@ -31,7 +41,7 @@ async def eval_ast(ast, config, runtime):
 
     def get_current_model_provider():
         nonlocal env
-        model_name = env.get("MODEL").strip()  # can't be empty
+        model_name = get_model()
         provider = config.providers.get(model_name)
         if provider is None:
             raise ValueError(f"Model not available: {model_name}")
@@ -83,7 +93,7 @@ async def eval_ast(ast, config, runtime):
                 )
             old_env = env
             if "MODEL" not in evaluated_parameters:
-                evaluated_parameters["MODEL"] = old_env.get("MODEL")
+                evaluated_parameters["MODEL"] = get_model()
             env = Env(evaluated_parameters)
             async for chunk in _eval_ast(loaded_ast):
                 yield chunk
@@ -139,7 +149,7 @@ async def eval_ast(ast, config, runtime):
 async def stream_eval_metaprompt(
     metaprompt, config: Config, runtime: BaseRuntime
 ) -> AsyncGenerator[str, None]:
-    async for chunk in eval_ast(metaprompt, runtime):
+    async for chunk in eval_ast(metaprompt, config, runtime):
         yield chunk
 
 

@@ -81,8 +81,7 @@ async def _main():
                 content = file.read()
                 metaprompt = parse_metaprompt(content)
                 env = Env(env=config.parameters)
-                config.model = args.model or "interactive"
-                runtime = CliRuntime(config, env)
+                runtime = CliRuntime()
                 runtime.cwd = os.path.dirname(file_path)
                 async for chunk in eval_ast(metaprompt, config, runtime):
                     runtime.print_chunk(chunk)
