@@ -106,6 +106,7 @@ async def eval_ast(ast, config, runtime):
             env.set(var_name, value)
         elif ast["type"] == "meta":
             chunks = []
+            chat_id = ast["chat"]
             for expr in ast["exprs"]:
                 async for chunk in _eval_ast(expr):
                     chunks.append(chunk)

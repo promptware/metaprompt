@@ -3,7 +3,7 @@ null
 '['
 ']'
 '='
-'$'
+null
 '#'
 null
 null
@@ -17,7 +17,7 @@ null
 LB
 RB
 EQ_KW
-META_KW
+META_PROMPT
 COMMENT_KW
 CHAR
 USE

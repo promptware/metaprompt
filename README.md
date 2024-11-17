@@ -70,7 +70,7 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
 - [ ] Runtime system
   - [x] Support variable definition at runtime
   - [x] dynamic model switching (via `MODEL` variable - [example](./examples/model-change.metaprompt))
-  - [ ] Multiple chat instances and ability to switch between them, to distribute data between chat contexts. E.g. `[$chat1: the object is the moon][$chat2: the object is the sun][$chat1: what is the object?]`
+  - [ ] Multiple chat instances and ability to switch between them, to distribute data between chat contexts. E.g. `[chat1$ the object is the moon][chat2$ the object is the sun][chat1$ what is the object?]`
   - [ ] message role system (system, user)
   - [ ] exceptions
     - [ ] throwing exceptions

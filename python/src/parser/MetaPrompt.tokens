@@ -1,7 +1,7 @@
 LB=1
 RB=2
 EQ_KW=3
-META_KW=4
+META_PROMPT=4
 COMMENT_KW=5
 CHAR=6
 USE=7
@@ -12,7 +12,6 @@ VAR_NAME=11
 '['=1
 ']'=2
 '='=3
-'$'=4
 '#'=5
 ':if'=8
 ':then'=9

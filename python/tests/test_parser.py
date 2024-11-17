@@ -22,8 +22,11 @@ def if_then_else(c, then_, else_):
     }
 
 
-def meta(exprs):
-    return {"type": "meta", "exprs": exprs}
+def meta(exprs, chat_id=None):
+    if chat_id is None:
+        return {"type": "meta", "exprs": exprs}
+    else:
+        return {"type": "meta", "exprs": exprs, "chat": chat_id}
 
 
 def var(name):
@@ -181,6 +184,14 @@ def test_dummy_meta4():
 def test_meta2():
     result = parse_metaprompt("[$ []]")
     assert result["exprs"] == [meta([t(" []")])]
+
+def test_meta3():
+    result = parse_metaprompt("[var$ []]")
+    assert result["exprs"] == [meta([t(" []")], chat_id="var")]
+
+def test_meta4():
+    result = parse_metaprompt("[VAR_FOO$ []]")
+    assert result["exprs"] == [meta([t(" []")], chat_id="VAR_FOO")]
 
 
 def test_meta_dollar():

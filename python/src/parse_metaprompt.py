@@ -95,8 +95,8 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 exprs.append({"type": "text", "text": "["})
             if ctx.COMMENT_KW() is not None:
                 exprs.append({"type": "text", "text": "#"})
-            elif ctx.META_KW() is not None:
-                exprs.append({"type": "text", "text": "$"})
+            elif ctx.META_PROMPT() is not None:
+                exprs.append({"type": "text", "text": ctx.META_PROMPT().getText()})
             elif ctx.EQ_KW() is not None:
                 exprs.append({"type": "text", "text": "="})
             elif ctx.VAR_NAME() is not None:
@@ -169,13 +169,21 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             else:
                 return {"type": "var", "name": var_name}
 
-        elif ctx.META_KW() is not None:
-            # [$ exprs]
+        elif ctx.META_PROMPT() is not None:
+            # [foo$ exprs]
             exprs = []
             for expr in ctx.exprs():
                 expr_items = self.visit(expr)
                 exprs.extend(expr_items)
-            return {"type": "meta", "exprs": _join_text_pieces(exprs)}
+            res= {
+                "type": "meta",
+                "exprs": _join_text_pieces(exprs),
+            }
+            chat_id = ctx.META_PROMPT().getText()[:-1]
+            if chat_id != "":
+                res["chat"] = chat_id
+            return res
+
         else:
             raise ValueError("Unable to build AST:", ctx)
 

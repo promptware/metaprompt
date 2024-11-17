@@ -48,10 +48,10 @@ class MetaPromptParser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "'['", "']'", "'='", "'$'", "'#'", "<INVALID>", 
-                     "<INVALID>", "':if'", "':then'", "':else'" ]
+    literalNames = [ "<INVALID>", "'['", "']'", "'='", "<INVALID>", "'#'", 
+                     "<INVALID>", "<INVALID>", "':if'", "':then'", "':else'" ]
 
-    symbolicNames = [ "<INVALID>", "LB", "RB", "EQ_KW", "META_KW", "COMMENT_KW", 
+    symbolicNames = [ "<INVALID>", "LB", "RB", "EQ_KW", "META_PROMPT", "COMMENT_KW", 
                       "CHAR", "USE", "IF_KW", "THEN_KW", "ELSE_KW", "VAR_NAME" ]
 
     RULE_prompt = 0
@@ -69,7 +69,7 @@ class MetaPromptParser ( Parser ):
     LB=1
     RB=2
     EQ_KW=3
-    META_KW=4
+    META_PROMPT=4
     COMMENT_KW=5
     CHAR=6
     USE=7
@@ -224,8 +224,8 @@ class MetaPromptParser ( Parser ):
         def COMMENT_KW(self):
             return self.getToken(MetaPromptParser.COMMENT_KW, 0)
 
-        def META_KW(self):
-            return self.getToken(MetaPromptParser.META_KW, 0)
+        def META_PROMPT(self):
+            return self.getToken(MetaPromptParser.META_PROMPT, 0)
 
         def EQ_KW(self):
             return self.getToken(MetaPromptParser.EQ_KW, 0)
@@ -298,7 +298,7 @@ class MetaPromptParser ( Parser ):
             elif la_ == 6:
                 self.enterOuterAlt(localctx, 6)
                 self.state = 31
-                self.match(MetaPromptParser.META_KW)
+                self.match(MetaPromptParser.META_PROMPT)
                 pass
 
             elif la_ == 7:
@@ -418,8 +418,8 @@ class MetaPromptParser ( Parser ):
             return self.getTypedRuleContext(MetaPromptParser.ParametersContext,0)
 
 
-        def META_KW(self):
-            return self.getToken(MetaPromptParser.META_KW, 0)
+        def META_PROMPT(self):
+            return self.getToken(MetaPromptParser.META_PROMPT, 0)
 
         def COMMENT_KW(self):
             return self.getToken(MetaPromptParser.COMMENT_KW, 0)
@@ -504,7 +504,7 @@ class MetaPromptParser ( Parser ):
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
                 self.state = 56
-                self.match(MetaPromptParser.META_KW)
+                self.match(MetaPromptParser.META_PROMPT)
                 self.state = 57
                 self.exprs()
                 pass
