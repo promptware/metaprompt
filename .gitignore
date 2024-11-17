@@ -1,3 +1,4 @@
+# Existing entries
 .venv/
 __pycache__/
 *.pyc
@@ -5,3 +6,49 @@ __pycache__/
 **/*.egg-info/
 **/.cache/
 .env
+
+# .NET specific entries
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.vsp
+*.pdb
+*.opendb
+
+# Mono auto generated files
+mono_crash.*
+
+# VS Code settings
+.vscode/
+
+# Rider project files
+.idea/
+*.sln.iml
+
+# Logs
+*.log
+
+# Packages
+*.nupkg
+**/packages/
+# Uncomment if using NuGet package restore
+# packages/
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# JetBrains Rider
+.idea/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Additional .NET entries
+.vs/
+**/CodeChunks.db*
