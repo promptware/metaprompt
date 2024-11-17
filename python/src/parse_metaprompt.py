@@ -96,7 +96,9 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             if ctx.COMMENT_KW() is not None:
                 exprs.append({"type": "text", "text": "#"})
             elif ctx.META_PROMPT() is not None:
-                exprs.append({"type": "text", "text": ctx.META_PROMPT().getText()})
+                exprs.append(
+                    {"type": "text", "text": ctx.META_PROMPT().getText()}
+                )
             elif ctx.EQ_KW() is not None:
                 exprs.append({"type": "text", "text": "="})
             elif ctx.VAR_NAME() is not None:
@@ -175,7 +177,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             for expr in ctx.exprs():
                 expr_items = self.visit(expr)
                 exprs.extend(expr_items)
-            res= {
+            res = {
                 "type": "meta",
                 "exprs": _join_text_pieces(exprs),
             }

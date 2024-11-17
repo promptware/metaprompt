@@ -185,9 +185,11 @@ def test_meta2():
     result = parse_metaprompt("[$ []]")
     assert result["exprs"] == [meta([t(" []")])]
 
+
 def test_meta3():
     result = parse_metaprompt("[var$ []]")
     assert result["exprs"] == [meta([t(" []")], chat_id="var")]
+
 
 def test_meta4():
     result = parse_metaprompt("[VAR_FOO$ []]")
