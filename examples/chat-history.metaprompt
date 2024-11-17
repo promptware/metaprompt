@@ -1,0 +1,19 @@
+[:_=[chat1$ the $OBJECT is a car. remember this]]
+[:_=[chat2$ the $OBJECT is an apple. remember this]]
+[:_=[chat1$ the $ACTION is "ride". remember this]]
+[:_=[chat2$ the $ACTION is "eat". remember this]]
+[:question=
+  Combine the $ACTION and the $OBJECT
+  into a single phrase. Give me just the phrase,
+  no other output
+]
+chat1: [chat1$ [:question]]
+chat2: [chat2$ [:question]]
+
+Chat history for chat1:
+
+[:chat1]
+
+Chat history for chat2:
+
+[:chat2]

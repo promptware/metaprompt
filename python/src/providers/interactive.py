@@ -26,7 +26,8 @@ class InteractiveLLMProvider(BaseLLMProvider):
     async def ainvoke(
         self,
         prompt: str,
-        role: str = "user"
+        role: str = "user",
+        history = [] # TODO: make interactive provider respect history?
     ) -> AsyncGenerator[str, None]:
         """Asynchronously invoke the OpenAI API and yield results in chunks.
 

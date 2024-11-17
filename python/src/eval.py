@@ -11,8 +11,18 @@ The statement:
 """
 
 
+def serialize_chat_history(chat_history):
+    res = ""
+    for chat_item in chat_history:
+        role = chat_item["role"]
+        content = chat_item["content"]
+        res += f"[{role}]: {content}\n"
+    return res
+
+
 async def eval_ast(ast, config, runtime):
     env = Env(**config.parameters)
+    chats = dict()
     default_model = config.providers.get_default_model()
     if default_model is not None:
         env.set("MODEL", default_model.strip())
@@ -47,9 +57,11 @@ async def eval_ast(ast, config, runtime):
             raise ValueError(f"Model not available: {model_name}")
         return provider
 
-    async def stream_invoke(prompt: str) -> AsyncGenerator[str, None]:
+    async def stream_invoke(
+        prompt: str, history=[]
+    ) -> AsyncGenerator[str, None]:
         provider = get_current_model_provider()
-        async for chunk in provider.ainvoke(prompt, "user"):
+        async for chunk in provider.ainvoke(prompt, "user", history):
             yield chunk
 
     async def invoke(self, prompt: str) -> str:
@@ -59,7 +71,7 @@ async def eval_ast(ast, config, runtime):
         return res
 
     async def _eval_ast(ast):
-        nonlocal env, runtime
+        nonlocal env, runtime, chats
         if isinstance(ast, list):
             # TODO: is this case needed?
             async for chunk in _eval_exprs(ast):
@@ -91,13 +103,20 @@ async def eval_ast(ast, config, runtime):
                 evaluated_parameters[parameter] = await _collect_exprs(
                     parameters[parameter]
                 )
+            # save parent state in a closure
             old_env = env
+            old_chats = chats
+            # prepare new state
             if "MODEL" not in evaluated_parameters:
                 evaluated_parameters["MODEL"] = get_model()
             env = Env(evaluated_parameters)
+            chats = {}
+            # recurse
             async for chunk in _eval_ast(loaded_ast):
                 yield chunk
+            # restore parent state
             env = old_env
+            chats = old_chats
         elif ast["type"] == "assign":
             var_name = ast["name"]
             value = (await _collect_exprs(ast["exprs"])).strip()
@@ -105,14 +124,36 @@ async def eval_ast(ast, config, runtime):
                 runtime.set_status(value)
             env.set(var_name, value)
         elif ast["type"] == "meta":
+            # Load chat history
+            chat_id = ast["chat"] if "chat" in ast else None
+            if chat_id is not None:
+                if chat_id not in chats:
+                    chats[chat_id] = []
+            # evaluate the prompt
             chunks = []
-            chat_id = ast["chat"]
             for expr in ast["exprs"]:
                 async for chunk in _eval_ast(expr):
                     chunks.append(chunk)
             prompt = "".join(chunks)
-            async for chunk in stream_invoke(prompt):
+            # collect the assistant response
+            assistant_response = ""
+            async for chunk in stream_invoke(
+                prompt, chats[chat_id] if chat_id in chats else []
+            ):
+                assistant_response += chunk
                 yield chunk
+            # update chat history
+            if chat_id is not None:
+                chats[chat_id].append(
+                    {
+                        "role": "user",  # TODO: use current role
+                        "content": prompt,
+                    }
+                )
+                chats[chat_id].append(
+                    {"role": "assistant", "content": assistant_response}
+                )
+                env.set(chat_id, serialize_chat_history(chats[chat_id]))
         elif ast["type"] == "exprs":
             for expr in ast["exprs"]:
                 async for chunk in _eval_ast(expr):
