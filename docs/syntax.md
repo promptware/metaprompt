@@ -72,6 +72,14 @@ of prompt rewriting:
 
 Notice the double nesting of `[$` - the improved prompt will be fed back into an LLM.
 
+## Chat history
+
+Chat history can be preserved by assigning an ID to a prompt: `[some_chat_id$ ... ]`.
+
+Subsequent invocations with the same chat ID *within the same module* will have a memory of the preceding conversation.
+
+Chat IDs are actually variables that contain an entire chat history.
+
 # Escaping
 
 Normally, you would not need escaping, e.g. `[:foo` will evaluate to `[:foo` as text. But if you want to specify a MetaPrompt expression literally, use `\` before the `[` character: `\[:foo]` will evaluate to `[:foo]` as text, without special meaning. You can escape `\` with another `\`, but only if it is positioned before a `[`:
