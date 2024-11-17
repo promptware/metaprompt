@@ -128,6 +128,10 @@ of prompt rewriting:</p>
 </code></pre>
 
 <p>Notice the double nesting of <code>[$</code> - the improved prompt will be fed back into an LLM.</p>
+<h2 id="chat-history">Chat history<a class="headerlink" href="#chat-history" title="Permanent link">&para;</a></h2>
+<p>Chat history can be preserved by assigning an ID to a prompt: <code>[some_chat_id$ ... ]</code>.</p>
+<p>Subsequent invocations with the same chat ID <em>within the same module</em> will have a memory of the preceding conversation.</p>
+<p>Chat IDs are actually variables that contain an entire chat history.</p>
 <h1 id="escaping">Escaping<a class="headerlink" href="#escaping" title="Permanent link">&para;</a></h1>
 <p>Normally, you would not need escaping, e.g. <code>[:foo</code> will evaluate to <code>[:foo</code> as text. But if you want to specify a MetaPrompt expression literally, use <code>\</code> before the <code>[</code> character: <code>\[:foo]</code> will evaluate to <code>[:foo]</code> as text, without special meaning. You can escape <code>\</code> with another <code>\</code>, but only if it is positioned before a <code>[</code>:</p>
 <p><code>\foo</code> → (text <code>\foo</code>)</p>
