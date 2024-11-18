@@ -1,3 +1,4 @@
 [:MODEL=[:use ./choose-model :prompt=[:prompt]]]
 Selected model: [:MODEL]
+[:STATUS=evaluating the prompt]
 [$[:prompt]]

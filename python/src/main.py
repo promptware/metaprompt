@@ -83,6 +83,8 @@ async def _main():
                 env = Env(env=config.parameters)
                 runtime = CliRuntime()
                 runtime.cwd = os.path.dirname(file_path)
+                # TODO: use file loading from runtime
+                runtime.set_status("running " + file_path)
                 async for chunk in eval_ast(metaprompt, config, runtime):
                     runtime.print_chunk(chunk)
                 runtime.finalize()

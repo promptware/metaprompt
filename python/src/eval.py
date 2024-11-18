@@ -117,6 +117,8 @@ async def eval_ast(ast, config, runtime):
             # restore parent state
             env = old_env
             chats = old_chats
+            if "STATUS" in old_env:
+                runtime.set_status(old_env["STATUS"])
         elif ast["type"] == "assign":
             var_name = ast["name"]
             value = (await _collect_exprs(ast["exprs"])).strip()

@@ -8,9 +8,27 @@ import os
 class CliRuntime(BaseRuntime):
     def __init__(self):
         self.cwd = os.getcwd()
+        self.last_line = ""
+        self.status = ""
+        BLUE = "\033[34m"
+        RESET = "\033[0m"
+        self.status_left = BLUE
+        self.status_right = RESET
 
     def set_status(self, status: str):
-        pass
+        # normalize the status line
+        status = status.replace("\n", " ").replace("\r", "")
+
+        old_status = self.status
+        self.status = status
+        print(
+            "\r" +
+            self.status_left +
+            status +
+            self.status_right +
+            self.padding_for(old_status, status),
+            end=""
+        )
 
     def load_module(self, module_name: str):
         if module_name.startswith("./") or module_name.startswith("../"):
@@ -32,8 +50,47 @@ class CliRuntime(BaseRuntime):
                 "Package system not implemented yet. Use [:use ./relative/import] to import ./relative/import.metaprompt"
             )
 
+    def padding_for(self, previous_line, line):
+        return ' ' * (
+            len(previous_line) - len(line)
+        )
+
     def print_chunk(self, chunk: str):
-        print(chunk, end="")
+        # print(self.last_line, end="")
+
+        lines = chunk.split("\n")
+
+        if len(lines) > 1:
+            # kill status
+            print("\r", end="", flush=True)
+            # print the first line, prepending it with the leftover line
+            first_line = self.last_line + lines[0]
+            padding = self.padding_for(
+                self.status,
+                first_line
+            )
+            print(first_line + padding, flush=True)
+            # print lines except the first and the last
+            for line in lines[1:-1]:
+                print(line, flush=True)
+            # save the last line into the accumulator
+            self.last_line = lines[-1]
+            # restore the status line
+            print(
+                self.status_left + self.status + self.status_right,
+                end="",
+                flush=True
+            )
+        else:
+            self.last_line += chunk
+            # restore the status line
+            print(
+                "\r" +
+                self.status_left + self.status + self.status_right,
+                end="",
+                flush=True
+            )
 
     def finalize(self):
-        pass
+        print("\r", end="", flush=True)
+        print(self.last_line + self.padding_for(self.status, ""), flush=True)

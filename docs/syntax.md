@@ -131,3 +131,4 @@ The following expression will include `./relative-import.metaprompt` file (relat
 ## Special variables
 
 - `MODEL` - used to determine active LLM id.
+- `STATUS` - provides a way to set a status line that is visible in the terminal. Useful to make the user aware of what is happening when no output is being generated.
