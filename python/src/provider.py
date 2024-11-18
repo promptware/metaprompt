@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import AsyncGenerator
+from typing import AsyncGenerator, List
 
 
 class BaseLLMProvider(ABC):
@@ -9,6 +9,8 @@ class BaseLLMProvider(ABC):
         pass
 
     async def ainvoke(
-        self, prompt: str, role: str
+        self,
+        chat: List[{"role": str, "content": str}],
+        history: List[{"role": str, "content": str}] = [],
     ) -> AsyncGenerator[str, None]:
         pass

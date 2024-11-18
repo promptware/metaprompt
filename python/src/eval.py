@@ -1,14 +1,16 @@
 from config import Config
 from env import Env
 from runtime import BaseRuntime
-from typing import AsyncGenerator
+from typing import AsyncGenerator, List
 from loader import extract_variables
-
+from eval_utils.assignment import Assignment
 
 IF_PROMPT = """Please determine if the following statement is true.
 Do not write any other output, answer just "true" or "false".
 The statement:
 """
+
+ALLOWED_ROLES = ["system", "user", "assistant"]
 
 
 def serialize_chat_history(chat_history):
@@ -16,7 +18,7 @@ def serialize_chat_history(chat_history):
     for chat_item in chat_history:
         role = chat_item["role"]
         content = chat_item["content"]
-        res += f"[{role}]: {content}\n"
+        res += f"[:ROLE={role}]: {content}\n"
     return res
 
 
@@ -58,15 +60,16 @@ async def eval_ast(ast, config, runtime):
         return provider
 
     async def stream_invoke(
-        prompt: str, history=[]
+        chat: List[{"role": str, "content": str}],
+        history: List[{"role": str, "content": str}] = [],
     ) -> AsyncGenerator[str, None]:
         provider = get_current_model_provider()
-        async for chunk in provider.ainvoke(prompt, "user", history):
+        async for chunk in provider.ainvoke(chat, history):
             yield chunk
 
-    async def invoke(self, prompt: str) -> str:
+    async def invoke(self, chat, history) -> str:
         res = ""
-        async for chunk in self.stream_invoke(prompt):
+        async for chunk in self.stream_invoke(chat, history):
             res += chunk
         return res
 
@@ -124,6 +127,15 @@ async def eval_ast(ast, config, runtime):
             value = (await _collect_exprs(ast["exprs"])).strip()
             if var_name == "STATUS":
                 runtime.set_status(value)
+            elif var_name == "ROLE":
+                if value not in ALLOWED_ROLES:
+                    raise ValueError(
+                        "ROLE variable must be one of "
+                        + "".join([f"'{role}', " for role in ALLOWED_ROLES])
+                        + ", you specified: "
+                        + value
+                    )
+                yield Assignment("ROLE", value)
             env.set(var_name, value)
         elif ast["type"] == "meta":
             # Load chat history
@@ -131,27 +143,39 @@ async def eval_ast(ast, config, runtime):
             if chat_id is not None:
                 if chat_id not in chats:
                     chats[chat_id] = []
-            # evaluate the prompt
-            chunks = []
+            # evaluate the prompt messages
+            messages = []
+            current_message = ""
+            current_role = env.get("ROLE") or "user"  # TODO: default role?
             for expr in ast["exprs"]:
                 async for chunk in _eval_ast(expr):
-                    chunks.append(chunk)
-            prompt = "".join(chunks)
+                    if isinstance(chunk, Assignment) and chunk.name == "ROLE":
+                        # TODO: strip in a more generic fashion
+                        if len(current_message.strip()) > 0:
+                            messages.append(
+                                {
+                                    "role": current_role,
+                                    "content": current_message,
+                                }
+                            )
+                        current_message = ""
+                        current_role = chunk.value
+                    else:
+                        current_message += chunk
+            if len(current_message.strip()) > 0:
+                messages.append(
+                    {"role": current_role, "content": current_message}
+                )
             # collect the assistant response
             assistant_response = ""
             async for chunk in stream_invoke(
-                prompt, chats[chat_id] if chat_id in chats else []
+                messages, chats[chat_id] if chat_id in chats else []
             ):
                 assistant_response += chunk
                 yield chunk
             # update chat history
             if chat_id is not None:
-                chats[chat_id].append(
-                    {
-                        "role": "user",  # TODO: use current role
-                        "content": prompt,
-                    }
-                )
+                chats[chat_id].extend(messages)
                 chats[chat_id].append(
                     {"role": "assistant", "content": assistant_response}
                 )
@@ -163,7 +187,12 @@ async def eval_ast(ast, config, runtime):
         elif ast["type"] == "if_then_else":
             # evaluate the conditional
             condition = await _collect_exprs(ast["condition"])
-            prompt_result = ""
+            condition = condition.strip()
+            # short-curcuit the evaluation: if the condition text is literally
+            # 'true' or 'false', then use it to dispatch into the :if branch.
+            # That way we can use FFI functions with :if statements
+            prompt_result = "" if condition not in ["false", "true"] \
+                else condition
             MAX_RETRIES = 3
             retries = 0
             prompt = IF_PROMPT + condition
@@ -175,7 +204,14 @@ async def eval_ast(ast, config, runtime):
                         + "\nOutput: "
                         + prompt_result
                     )
-                prompt_result = (await invoke(prompt)).strip()
+                prompt_result = await invoke(
+                    [
+                        {"role": "system", "content": IF_PROMPT},
+                        {"role": "user", "content": condition},
+                    ],
+                    [],
+                )
+                prompt_result = prompt_result.strip()
                 retries += 1
             if prompt_result == "true":
                 async for chunk in _eval_ast(ast["then"]):
