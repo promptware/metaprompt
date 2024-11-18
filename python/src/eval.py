@@ -191,9 +191,10 @@ async def eval_ast(ast, config, runtime):
             # short-curcuit the evaluation: if the condition text is literally
             # 'true' or 'false', then use it to dispatch into the :if branch.
             # That way we can use FFI functions with :if statements
-            prompt_result = "" if condition not in ["false", "true"] \
-                else condition
-            MAX_RETRIES = 3
+            prompt_result = (
+                "" if condition not in ["false", "true"] else condition
+            )
+            MAX_RETRIES = 3  # TODO: move to config
             retries = 0
             prompt = IF_PROMPT + condition
             while prompt_result != "true" and prompt_result != "false":
