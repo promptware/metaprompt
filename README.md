@@ -53,12 +53,13 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [x] implement escaping
   - [x] `[:variable]` and `[:variable=some value]`
   - [x] `[:if ... :then ... :else ...]`
+    - [x] short-circuit if the condition is literally `true` or `false`
   - [x] `[$ meta-prompt]`
+    - [ ] syntax for ignoring `$` output - for now `[:_=...]` works (assignment to the `_` variable)
   - [x] `[:use module :param1=value1]`
   - [x] `[# comments]`
-  - [ ] `[:status some-status]` - to show during prompt evaluation
+  - [x] `[:STUATUS=some-status]` - to show during prompt evaluation
   - [ ] `[:call ffi-function :param1=foo :param2=bar]`
-  - [ ] syntax for ignoring `$` output
 - [ ] Implement an evaluator
   - [x] meta-prompting
   - [x] conditionals
@@ -72,7 +73,7 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [x] Support variable definition at runtime
   - [x] dynamic model switching (via `MODEL` variable - [example](./examples/model-change.metaprompt))
   - [x] Multiple chat instances and ability to switch between them, to distribute data between chat contexts. E.g. `[chat1$ the object is the moon][chat1$ what is the object?]` [(example)](./examples/chat-history.metaprompt)
-  - [ ] message role system (system, user)
+  - [x] message role system (system, user) via `ROLE` variable [(example)](./examples/roles.metaprompt)
   - [ ] exceptions
     - [ ] throwing exceptions
     - [ ] recovering from exceptions
