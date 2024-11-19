@@ -35,7 +35,7 @@ text: CHAR+ ;
 
 LB : '[';
 RB : ']';
-EQ_KW : '=' ;
+EQ_KW : '=' | '?=' ;
 META_PROMPT : [a-zA-Z_]?[a-zA-Z0-9_]* '$' ;
 COMMENT_KW : '#' ;
 CHAR : ( ESCAPED | .);

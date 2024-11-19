@@ -48,8 +48,9 @@ class MetaPromptParser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "'['", "']'", "'='", "<INVALID>", "'#'", 
-                     "<INVALID>", "<INVALID>", "':if'", "':then'", "':else'" ]
+    literalNames = [ "<INVALID>", "'['", "']'", "<INVALID>", "<INVALID>", 
+                     "'#'", "<INVALID>", "<INVALID>", "':if'", "':then'", 
+                     "':else'" ]
 
     symbolicNames = [ "<INVALID>", "LB", "RB", "EQ_KW", "META_PROMPT", "COMMENT_KW", 
                       "CHAR", "USE", "IF_KW", "THEN_KW", "ELSE_KW", "VAR_NAME" ]

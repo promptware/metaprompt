@@ -161,8 +161,10 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 for expr in ctx.exprs():
                     expr_items = self.visit(expr)
                     exprs.extend(expr_items)
+                required = ctx.EQ_KW().getText() == "="  # or "?="
                 return {
                     "type": "assign",
+                    "required": required,
                     "name": var_name,
                     "exprs": _join_text_pieces(exprs),
                 }

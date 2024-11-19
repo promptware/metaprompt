@@ -37,6 +37,15 @@ def use(module_name, parameters):
     return {"type": "use", "module_name": module_name, "parameters": parameters}
 
 
+def assign(name, exprs, required=True):
+    return {
+        "type": "assign",
+        "required": required,
+        "name": name,
+        "exprs": exprs,
+    }
+
+
 def test_empty():
     result = parse_metaprompt("")
     assert result["exprs"] == []
@@ -219,31 +228,33 @@ def test_meta_dollar2():
 
 def test_assign():
     result = parse_metaprompt("[:foo=bar]")
+    assert result["exprs"] == [assign("foo", [{"type": "text", "text": "bar"}])]
+
+
+def test_assign_optional():
+    result = parse_metaprompt("[:foo?=bar]")
     assert result["exprs"] == [
-        {
-            "type": "assign",
-            "name": "foo",
-            "exprs": [{"type": "text", "text": "bar"}],
-        }
+        assign("foo", [{"type": "text", "text": "bar"}], required=False)
     ]
 
 
 def test_assign_trailing_bracket():
     result = parse_metaprompt("[:foo=bar]]")
     assert result["exprs"] == [
-        {
-            "type": "assign",
-            "name": "foo",
-            "exprs": [{"type": "text", "text": "bar"}],
-        },
+        assign("foo", [{"type": "text", "text": "bar"}]),
         t("]"),
     ]
 
 
-def test_assign_trailing_bracket():
+def test_assign_normal():
     result = parse_metaprompt("[:foo=[$ hi ]]")
     assert result["exprs"] == [
-        {"type": "assign", "name": "foo", "exprs": [meta([t(" hi ")])]}
+        {
+            "type": "assign",
+            "required": True,
+            "name": "foo",
+            "exprs": [meta([t(" hi ")])],
+        }
     ]
 
 

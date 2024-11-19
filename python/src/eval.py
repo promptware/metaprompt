@@ -2,7 +2,7 @@ from config import Config
 from env import Env
 from runtime import BaseRuntime
 from typing import AsyncGenerator, List
-from loader import extract_variables
+from loader import extract_parameter_set
 from eval_utils.assignment import Assignment
 from eval_utils.chat_history import serialize_chat_history
 
@@ -86,7 +86,7 @@ async def eval_ast(ast, config, runtime):
             parameters = ast["parameters"]
             module_name = ast["module_name"]
             loaded_ast = runtime.load_module(module_name)
-            required_variables = extract_variables(loaded_ast)
+            required_variables = extract_parameter_set(loaded_ast).required
             for required in required_variables:
                 if required not in parameters:
                     raise ImportError(
@@ -117,18 +117,19 @@ async def eval_ast(ast, config, runtime):
         elif ast["type"] == "assign":
             var_name = ast["name"]
             value = (await _collect_exprs(ast["exprs"])).strip()
-            if var_name == "STATUS":
-                runtime.set_status(value)
-            elif var_name == "ROLE":
-                if value not in ALLOWED_ROLES:
-                    raise ValueError(
-                        "ROLE variable must be one of "
-                        + "".join([f"'{role}', " for role in ALLOWED_ROLES])
-                        + ", you specified: "
-                        + value
-                    )
-                yield Assignment("ROLE", value)
-            env.set(var_name, value)
+            if ast["required"] or env.get(var_name) is None:
+                if var_name == "STATUS":
+                    runtime.set_status(value)
+                elif var_name == "ROLE":
+                    if value not in ALLOWED_ROLES:
+                        raise ValueError(
+                            "ROLE variable must be one of "
+                            + "".join([f"'{role}', " for role in ALLOWED_ROLES])
+                            + ", you specified: "
+                            + value
+                        )
+                    yield Assignment("ROLE", value)
+                env.set(var_name, value)
         elif ast["type"] == "meta":
             # Load chat history
             chat_id = ast["chat"] if "chat" in ast else None
