@@ -69,6 +69,7 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
     - [x] OpenAI
     - [ ] Anthropic
     - [ ] llama
+    - [x] Mock for testing
 - [ ] Runtime system
   - [x] Support variable definition at runtime
   - [x] dynamic model switching (via `MODEL` variable - [example](./examples/model-change.metaprompt))
