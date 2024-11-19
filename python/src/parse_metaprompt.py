@@ -89,20 +89,18 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                     exprs.append(child)
                 exprs.append({"type": "text", "text": "]"})
         else:
-            if ctx.RB() is not None:
-                exprs.append({"type": "text", "text": "]"})
-            if ctx.LB() is not None:
-                exprs.append({"type": "text", "text": "["})
-            if ctx.COMMENT_KW() is not None:
-                exprs.append({"type": "text", "text": "#"})
-            elif ctx.META_PROMPT() is not None:
-                exprs.append(
-                    {"type": "text", "text": ctx.META_PROMPT().getText()}
-                )
-            elif ctx.EQ_KW() is not None:
-                exprs.append({"type": "text", "text": "="})
-            elif ctx.VAR_NAME() is not None:
-                exprs.append({"type": "text", "text": ctx.VAR_NAME().getText()})
+            # a token is in a standalone position and should be
+            # treaded as text
+            for part in [
+                ctx.RB(),
+                ctx.LB(),
+                ctx.COMMENT_KW(),
+                ctx.META_PROMPT(),
+                ctx.EQ_KW(),
+                ctx.VAR_NAME(),
+            ]:
+                if part is not None:
+                    exprs.append({"type": "text", "text": part.getText()})
 
         return _join_text_pieces(exprs)
 
