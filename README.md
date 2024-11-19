@@ -1,4 +1,4 @@
-# metaprompt
+# metaprompt [![CI Status](https://github.com/promptware/metaprompt/actions/workflows/test.yaml/badge.svg)](https://github.com/promptware/metaprompt/blob/main/.github/workflows/test.yaml) [![Documentation](https://img.shields.io/badge/docs-blue)](https://docs.metaprompt-lang.org/) [![Join Discord](https://img.shields.io/discord/1307356242842353664?label=discord&logo=discord&logoColor=white&color=5865F2)](https://discord.gg/bRkrhbWq)
 
 Metaprompt is a domain-specific language for LLM prompt engineering. It is a template engine for textual prompts, where expression expansion can depend on LLM outputs.
 
