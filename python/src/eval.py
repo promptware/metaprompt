@@ -59,9 +59,9 @@ async def eval_ast(ast, config, runtime):
         async for chunk in provider.ainvoke(chat, history):
             yield chunk
 
-    async def invoke(self, chat, history) -> str:
+    async def invoke(chat, history) -> str:
         res = ""
-        async for chunk in self.stream_invoke(chat, history):
+        async for chunk in stream_invoke(chat, history):
             res += chunk
         return res
 

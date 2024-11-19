@@ -45,6 +45,52 @@ async def test_if_3():
 
 
 @pytest.mark.asyncio
+async def test_if_4():
+    prompt = """
+    [:if test :then foo :else bar]
+"""
+    result = await metaprompt(
+        prompt,
+        Config(
+            providers=MockProvider(
+                rules=[
+                    (
+                        {"chat": r"test"},
+                        "true",
+                    ),
+                ]
+            )
+        ),
+    )
+
+    expected = "foo"
+    assert result.strip() == expected.strip()
+
+
+@pytest.mark.asyncio
+async def test_if_5():
+    prompt = """
+    [:if test :then foo :else bar]
+"""
+    result = await metaprompt(
+        prompt,
+        Config(
+            providers=MockProvider(
+                rules=[
+                    (
+                        {"chat": r"test"},
+                        "false",
+                    ),
+                ]
+            )
+        ),
+    )
+
+    expected = "bar"
+    assert result.strip() == expected.strip()
+
+
+@pytest.mark.asyncio
 async def test_chat_history():
     prompt = """
 [:_=[chat1$ the $OBJECT is a car. remember this]]
@@ -65,32 +111,32 @@ chat2: [chat2$ [:question]]
             providers=MockProvider(
                 rules=[
                     (
-                        {"chat": re.compile(r"is a car. remember this")},
+                        {"chat": r"is a car. remember this"},
                         "OK, remembered car",
                     ),
                     (
-                        {"chat": re.compile(r"is an apple. remember this")},
+                        {"chat": r"is an apple. remember this"},
                         "OK, remembered apple",
                     ),
                     (
-                        {"chat": re.compile(r"ride. remember this")},
+                        {"chat": r"ride. remember this"},
                         "OK, remembered ride",
                     ),
                     (
-                        {"chat": re.compile(r"eat. remember this")},
+                        {"chat": r"eat. remember this"},
                         "OK, remembered eat",
                     ),
                     (
                         {
-                            "chat": re.compile(r"Combine"),
-                            "history": re.compile(r"remembered apple"),
+                            "chat": r"Combine",
+                            "history": r"remembered apple",
                         },
                         "eat an apple",
                     ),
                     (
                         {
-                            "chat": re.compile(r"Combine"),
-                            "history": re.compile(r"remembered car"),
+                            "chat": r"Combine",
+                            "history": r"remembered car",
                         },
                         "ride a car",
                     ),
