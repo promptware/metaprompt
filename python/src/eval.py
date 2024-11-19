@@ -4,6 +4,7 @@ from runtime import BaseRuntime
 from typing import AsyncGenerator, List
 from loader import extract_variables
 from eval_utils.assignment import Assignment
+from eval_utils.chat_history import serialize_chat_history
 
 IF_PROMPT = """Please determine if the following statement is true.
 Do not write any other output, answer just "true" or "false".
@@ -11,15 +12,6 @@ The statement:
 """
 
 ALLOWED_ROLES = ["system", "user", "assistant"]
-
-
-def serialize_chat_history(chat_history):
-    res = ""
-    for chat_item in chat_history:
-        role = chat_item["role"]
-        content = chat_item["content"]
-        res += f"[:ROLE={role}]: {content}\n"
-    return res
 
 
 async def eval_ast(ast, config, runtime):

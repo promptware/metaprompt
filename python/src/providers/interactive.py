@@ -1,5 +1,6 @@
 from provider import BaseLLMProvider
 from provider_config import ProviderConfig
+from eval_utils.chat_history import serialize_chat_history
 
 from typing import AsyncGenerator, List
 
@@ -31,10 +32,11 @@ class InteractiveLLMProvider(BaseLLMProvider):
         """Asynchronously invoke the OpenAI API and yield results in chunks.
 
         Args:
-            prompt (str): The input prompt for the language model.
+            chat: The input prompt for the language model.
 
         Yields:
             str: Chunks of the response as they're received.
         """
+        prompt = serialize_chat_history(chat)
         output = input("[Q]: " + prompt + f"\n[{role}]: ")
         yield output

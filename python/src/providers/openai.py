@@ -34,7 +34,7 @@ class OpenAILLMProvider(BaseLLMProvider):
     Reads OPENAI_API_KEY if a key is not provided.
     """
 
-    def __init__(self, api_key: str = None, model: str = "gpt-4"):
+    def __init__(self, api_key: str = None, model: str):
         """Initialize the provider with API key and model name."""
         super().__init__()
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
@@ -52,7 +52,7 @@ class OpenAILLMProvider(BaseLLMProvider):
         """Asynchronously invoke the OpenAI API and yield results in chunks.
 
         Args:
-            prompt (str): The input prompt for the language model.
+            chat: The input prompt for the language model.
 
         Yields:
             str: Chunks of the response as they're received.
@@ -60,7 +60,7 @@ class OpenAILLMProvider(BaseLLMProvider):
         client = openai.AsyncOpenAI(api_key=self.api_key)
 
         stream = await client.chat.completions.create(
-            model="gpt-4",
+            model=self.model,
             messages=history + chat,
             stream=True,
         )
