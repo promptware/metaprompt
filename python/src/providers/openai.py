@@ -34,7 +34,7 @@ class OpenAILLMProvider(BaseLLMProvider):
     Reads OPENAI_API_KEY if a key is not provided.
     """
 
-    def __init__(self, api_key: str = None, model: str):
+    def __init__(self, model: str, api_key: str = None):
         """Initialize the provider with API key and model name."""
         super().__init__()
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
