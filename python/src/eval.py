@@ -73,6 +73,8 @@ async def eval_ast(ast, config, runtime):
                 yield chunk
         elif ast["type"] == "text":
             yield ast["text"]
+        elif ast["type"] == "comment":
+            return
         elif ast["type"] == "metaprompt":
             async for chunk in _eval_exprs(ast["exprs"]):
                 yield chunk

@@ -10,15 +10,11 @@ will be expanded to the same string, because it does not contain any MetaPrompt 
 
 # Variables
 
-```metaprompt
-Here's a variable: [:variable_name].
+Variables should be referenced using this sintax: `[:variable_name]`. Variable names should match `[a-zA-Z_][a-zA-Z0-9_]*`.
 
-If a variable is used before first assignment, it is treated as a required
-prompt parameter automatically.
+The syntax for assignments is `[:variable_name=any expression]`.
 
-[:variable_name=it can be reassigned to any value, however]
-[:variable_name=Including a value containing its old value: [:variable_name]]
-```
+Optional assignments use `?=` instead of `=` - they update the value only if a variable is unset.
 
 # Comments
 
@@ -96,14 +92,30 @@ Normally, you would not need escaping, e.g. `[:foo` will evaluate to `[:foo` as 
 
 # Modules
 
-Every `.metaprompt` file is a function.
+Every `.metaprompt` file is a module. Conceptually, a module is a function that accepts a number of arguments, runs the executable parts, and returns text.
 
-Unbound variables used in a file are its parameters, that must be provided.
+## Passing parameters
+
+Unbound variables used in a module are its parameters, that must be provided when calling the module.
+
+**Example**
+
+Consider a file named [`hello.metaprompt`](../examples/hello.metaprompt):
 
 ```metaprompt
-Hello, [:what]! [# `what` is a parameter ]
-[:who=you] [# `who` is NOT a parameter, because it is assigned before first use]
+Hello, [:what]! [# `what` is a required parameter ]
+[:who?=you]
+[# ^ `who` is NOT a required parameter, because it is assigned
+  before first use. However, optional assignment is used, so
+  the default value can be overridden from the caller module
+]
 How are [:who] feeling today?
+```
+
+The `hello` module can be used like this from [another module](../examples/module-demo.metaprompt):
+
+```
+[:use ./hello :what=world :who=we]
 ```
 
 ## File imports
@@ -117,16 +129,6 @@ The following expression will include `./relative-import.metaprompt` file (relat
 ## Package imports
 
 **NOT IMPLEMENTED**
-
-## Passing parameters
-
-```
-[:use ./relative-import
- :someParameter= arbitrary value, potentially using
-   any other MetaPrompt constructs
- :otherParameter= another value
-]
-```
 
 ## Special variables
 

@@ -1,0 +1,7 @@
+Hello, [:what]! [# `what` is a required parameter ]
+[:who?=you]
+[# ^ `who` is NOT a required parameter, because it is assigned
+  before first use. However, optional assignment is used, so
+  the default value can be overridden from the caller module
+]
+How are [:who] feeling today?

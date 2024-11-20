@@ -104,6 +104,8 @@ def extract_parameter_set(ast):
         elif ast["type"] == "exprs":
             for expr in ast["exprs"]:
                 extract_parameter_set(expr, assigned)
+        elif ast["type"] == "comment":
+            pass
         elif ast["type"] == "if_then_else":
             res = res.then(extract_parameter_set(ast["condition"])).then(
                 extract_parameter_set(ast["then"]).alternative(
