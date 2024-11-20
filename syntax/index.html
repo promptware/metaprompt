@@ -135,10 +135,17 @@ of prompt rewriting:</p>
 <p><code>\[some text</code> -&gt; (text <code>[some text</code>) - note that in this case the <code>\</code> character disappears, although escaping does not happen because <code>[some text</code> is not a special MetaPrompt construct.</p>
 <h1 id="modules">Modules<a class="headerlink" href="#modules" title="Permanent link">&para;</a></h1>
 <p>Every <code>.metaprompt</code> file is a module. Conceptually, a module is a function that accepts a number of arguments, runs the executable parts, and returns text.</p>
+<h2 id="file-imports">File imports<a class="headerlink" href="#file-imports" title="Permanent link">&para;</a></h2>
+<p>The following expression will include <code>./relative-import.metaprompt</code> file (relative to the directory of the file, NOT to the current working dir):</p>
+<pre class="codehilite"><code class="language-metaprompt">[:use ./relative-import]
+</code></pre>
+
+<h2 id="package-imports">Package imports<a class="headerlink" href="#package-imports" title="Permanent link">&para;</a></h2>
+<p><strong>NOT IMPLEMENTED</strong></p>
 <h2 id="passing-parameters">Passing parameters<a class="headerlink" href="#passing-parameters" title="Permanent link">&para;</a></h2>
 <p>Unbound variables used in a module are its parameters, that must be provided when calling the module.</p>
 <p><strong>Example</strong></p>
-<p>Consider a file named <a href="../examples/hello.metaprompt"><code>hello.metaprompt</code></a>:</p>
+<p>Consider a file named <a href="https://github.com/promptware/metaprompt/blob/main/examples/hello.metaprompt"><code>hello.metaprompt</code></a>:</p>
 <pre class="codehilite"><code class="language-metaprompt">Hello, [:what]! [# `what` is a required parameter ]
 [:who?=you]
 [# ^ `who` is NOT a required parameter, because it is assigned
@@ -148,22 +155,41 @@ of prompt rewriting:</p>
 How are [:who] feeling today?
 </code></pre>
 
-<p>The <code>hello</code> module can be used like this from <a href="../examples/module-demo.metaprompt">another module</a>:</p>
+<p>The <code>hello</code> module can be used from <a href="https://github.com/promptware/metaprompt/blob/main/examples/module-demo.metaprompt">another module</a>:</p>
 <pre class="codehilite"><code>[:use ./hello :what=world :who=we]
 </code></pre>
 
-<h2 id="file-imports">File imports<a class="headerlink" href="#file-imports" title="Permanent link">&para;</a></h2>
-<p>The following expression will include <code>./relative-import.metaprompt</code> file (relative to the directory of the file, NOT to the current working dir):</p>
-<pre class="codehilite"><code class="language-metaprompt">[:use ./relative-import]
+<h2 id="special-variables">Special variables<a class="headerlink" href="#special-variables" title="Permanent link">&para;</a></h2>
+<h3 id="model-switching">Model switching<a class="headerlink" href="#model-switching" title="Permanent link">&para;</a></h3>
+<p><code>MODEL</code> variable is used to switch LLM models on the fly.</p>
+<p><a href="https://github.com/promptware/metaprompt/blob/main/examples/model-selection-demo.metaprompt">(example)</a></p>
+<p><code>MODEL</code> switching only works before an <code>[:if ...</code> or a <code>[$ ... ]</code> block:</p>
+<pre class="codehilite"><code class="language-metaprompt">[:MODEL=gpt-4o]
+[$ will be run in 4o,
+  [:MODEL=gpt-3.5-turbo]
+  [$ but this prompt will run in 3.5-turbo ]
+]
 </code></pre>
 
-<h2 id="package-imports">Package imports<a class="headerlink" href="#package-imports" title="Permanent link">&para;</a></h2>
-<p><strong>NOT IMPLEMENTED</strong></p>
-<h2 id="special-variables">Special variables<a class="headerlink" href="#special-variables" title="Permanent link">&para;</a></h2>
+<h3 id="role-switching">Role switching<a class="headerlink" href="#role-switching" title="Permanent link">&para;</a></h3>
+<p><code>ROLE</code> is a special variable used to control LLM input "role".</p>
+<p><code>ROLE</code> can be assigned to one of three values:</p>
 <ul>
-<li><code>MODEL</code> - used to determine active LLM id.</li>
-<li><code>STATUS</code> - provides a way to set a status line that is visible in the terminal. Useful to make the user aware of what is happening when no output is being generated.</li>
+<li><code>system</code>: defines the behavior, scope, and context of the LLM.</li>
+<li><code>user</code>: represents the individual interacting with the LLM.</li>
+<li><code>assistant</code>: represents the LLM itself, responding to the user within the context defined by the system.</li>
 </ul>
+<p>See <a href="https://platform.openai.com/docs/guides/text-generation">OpenAI docs</a> for more info on roles.</p>
+<p><a href="https://github.com/promptware/metaprompt/blob/main/examples/roles.metaprompt">(example)</a></p>
+<h3 id="live-status-update">Live status update<a class="headerlink" href="#live-status-update" title="Permanent link">&para;</a></h3>
+<p><code>STATUS</code> variable provides a way to set a status line that is visible in the terminal. Useful to make the user aware of what is happening when no output is being generated:</p>
+<pre class="codehilite"><code class="language-metaprompt">[:STATUS=running a marathon]
+[$ ... long running task ]
+[:STATUS=launching the rockets]
+[$ ... another long running task ]
+</code></pre>
+
+<p><a href="https://github.com/promptware/metaprompt/blob/main/examples/model-selection-demo.metaprompt">(example)</a></p>
               
             </div>
           </div><footer>
