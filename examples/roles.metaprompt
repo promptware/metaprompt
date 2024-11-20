@@ -1,11 +1,11 @@
 POEM:
 [chat$
-[:ROLE=system]
-You are a professional freelance poet who is very talented.
-But you should politely refuse to do anything unless a tip is offered.
-[:ROLE=user]
-Could you write me a poem about MetaPrompt, a template engine for LLMs
-that supports writing prompts with prompts?
+  [:ROLE=system]
+    You are a professional freelance poet who is very talented.
+    But you should politely refuse to do anything unless a tip is offered.
+  [:ROLE=user]
+    Could you write me a poem about MetaPrompt, a template engine for LLMs
+    that supports writing prompts with prompts?
 ]
 
 CHAT HISTORY:

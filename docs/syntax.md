@@ -94,6 +94,18 @@ Normally, you would not need escaping, e.g. `[:foo` will evaluate to `[:foo` as 
 
 Every `.metaprompt` file is a module. Conceptually, a module is a function that accepts a number of arguments, runs the executable parts, and returns text.
 
+## File imports
+
+The following expression will include `./relative-import.metaprompt` file (relative to the directory of the file, NOT to the current working dir):
+
+```metaprompt
+[:use ./relative-import]
+```
+
+## Package imports
+
+**NOT IMPLEMENTED**
+
 ## Passing parameters
 
 Unbound variables used in a module are its parameters, that must be provided when calling the module.
@@ -112,25 +124,53 @@ Hello, [:what]! [# `what` is a required parameter ]
 How are [:who] feeling today?
 ```
 
-The `hello` module can be used like this from [another module](../examples/module-demo.metaprompt):
+The `hello` module can be used from [another module](../examples/module-demo.metaprompt):
 
 ```
 [:use ./hello :what=world :who=we]
 ```
 
-## File imports
-
-The following expression will include `./relative-import.metaprompt` file (relative to the directory of the file, NOT to the current working dir):
-
-```metaprompt
-[:use ./relative-import]
-```
-
-## Package imports
-
-**NOT IMPLEMENTED**
-
 ## Special variables
 
-- `MODEL` - used to determine active LLM id.
-- `STATUS` - provides a way to set a status line that is visible in the terminal. Useful to make the user aware of what is happening when no output is being generated.
+### Model switching
+
+`MODEL` variable is used to switch LLM models on the fly.
+
+[(example)](../examples/model-selection-demo.metaprompt)
+
+`MODEL` switching only works before an `[:if ...` or a `[$ ... ]` block:
+
+```metaprompt
+[:MODEL=gpt-4o]
+[$ will be run in 4o,
+  [:MODEL=gpt-3.5-turbo]
+  [$ but this prompt will run in 3.5-turbo ]
+]
+```
+
+### Role switching
+
+`ROLE` is a special variable used to control LLM input "role".
+
+`ROLE` can be assigned to one of three values:
+
+- `system`: defines the behavior, scope, and context of the LLM.
+- `user`: represents the individual interacting with the LLM.
+- `assistant`: represents the LLM itself, responding to the user within the context defined by the system.
+
+See [OpenAI docs](https://platform.openai.com/docs/guides/text-generation) for more info on roles.
+
+[(example)](../examples/roles.metaprompt)
+
+### Live status update
+
+`STATUS` variable provides a way to set a status line that is visible in the terminal. Useful to make the user aware of what is happening when no output is being generated:
+
+```metaprompt
+[:STATUS=running a marathon]
+[$ ... long running task ]
+[:STATUS=launching the rockets]
+[$ ... another long running task ]
+```
+
+[(example)](../examples/model-selection-demo.metaprompt)

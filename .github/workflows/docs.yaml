@@ -25,6 +25,8 @@ jobs:
 
       - name: Build MkDocs site
         run: |
+          # replace links to examples with github links
+          sed -i 's|\.\./examples/|https://github.com/promptware/metaprompt/blob/main/examples/|g' docs/*.md
           mkdocs build --clean
           echo 'docs.metaprompt-lang.org' > ./site/CNAME
 
