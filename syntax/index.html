@@ -160,7 +160,7 @@ How are [:who] feeling today?
 </code></pre>
 
 <h2 id="special-variables">Special variables<a class="headerlink" href="#special-variables" title="Permanent link">&para;</a></h2>
-<h3 id="model-switching">Model switching<a class="headerlink" href="#model-switching" title="Permanent link">&para;</a></h3>
+<h3 id="model-switching"><code>MODEL</code> switching<a class="headerlink" href="#model-switching" title="Permanent link">&para;</a></h3>
 <p><code>MODEL</code> variable is used to switch LLM models on the fly.</p>
 <p><a href="https://github.com/promptware/metaprompt/blob/main/examples/model-selection-demo.metaprompt">(example)</a></p>
 <p><code>MODEL</code> switching only works before an <code>[:if ...</code> or a <code>[$ ... ]</code> block:</p>
@@ -171,7 +171,7 @@ How are [:who] feeling today?
 ]
 </code></pre>
 
-<h3 id="role-switching">Role switching<a class="headerlink" href="#role-switching" title="Permanent link">&para;</a></h3>
+<h3 id="role-switching"><code>ROLE</code> switching<a class="headerlink" href="#role-switching" title="Permanent link">&para;</a></h3>
 <p><code>ROLE</code> is a special variable used to control LLM input "role".</p>
 <p><code>ROLE</code> can be assigned to one of three values:</p>
 <ul>
@@ -181,7 +181,7 @@ How are [:who] feeling today?
 </ul>
 <p>See <a href="https://platform.openai.com/docs/guides/text-generation">OpenAI docs</a> for more info on roles.</p>
 <p><a href="https://github.com/promptware/metaprompt/blob/main/examples/roles.metaprompt">(example)</a></p>
-<h3 id="live-status-update">Live status update<a class="headerlink" href="#live-status-update" title="Permanent link">&para;</a></h3>
+<h3 id="live-status-update">Live <code>STATUS</code> update<a class="headerlink" href="#live-status-update" title="Permanent link">&para;</a></h3>
 <p><code>STATUS</code> variable provides a way to set a status line that is visible in the terminal. Useful to make the user aware of what is happening when no output is being generated:</p>
 <pre class="codehilite"><code class="language-metaprompt">[:STATUS=running a marathon]
 [$ ... long running task ]
