@@ -80,15 +80,9 @@
 
 <p>will be expanded to the same string, because it does not contain any MetaPrompt constructs.</p>
 <h1 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">&para;</a></h1>
-<pre class="codehilite"><code class="language-metaprompt">Here's a variable: [:variable_name].
-
-If a variable is used before first assignment, it is treated as a required
-prompt parameter automatically.
-
-[:variable_name=it can be reassigned to any value, however]
-[:variable_name=Including a value containing its old value: [:variable_name]]
-</code></pre>
-
+<p>Variables should be referenced using this sintax: <code>[:variable_name]</code>. Variable names should match <code>[a-zA-Z_][a-zA-Z0-9_]*</code>.</p>
+<p>The syntax for assignments is <code>[:variable_name=any expression]</code>.</p>
+<p>Optional assignments use <code>?=</code> instead of <code>=</code> - they update the value only if a variable is unset.</p>
 <h1 id="comments">Comments<a class="headerlink" href="#comments" title="Permanent link">&para;</a></h1>
 <pre class="codehilite"><code class="language-metaprompt">[# Text for the human reader can be written like this.
 
@@ -140,11 +134,22 @@ of prompt rewriting:</p>
 <p><code>\\[:foo]</code> → (text <code>\\</code>) (variable <code>foo</code>)</p>
 <p><code>\[some text</code> -&gt; (text <code>[some text</code>) - note that in this case the <code>\</code> character disappears, although escaping does not happen because <code>[some text</code> is not a special MetaPrompt construct.</p>
 <h1 id="modules">Modules<a class="headerlink" href="#modules" title="Permanent link">&para;</a></h1>
-<p>Every <code>.metaprompt</code> file is a function.</p>
-<p>Unbound variables used in a file are its parameters, that must be provided.</p>
-<pre class="codehilite"><code class="language-metaprompt">Hello, [:what]! [# `what` is a parameter ]
-[:who=you] [# `who` is NOT a parameter, because it is assigned before first use]
+<p>Every <code>.metaprompt</code> file is a module. Conceptually, a module is a function that accepts a number of arguments, runs the executable parts, and returns text.</p>
+<h2 id="passing-parameters">Passing parameters<a class="headerlink" href="#passing-parameters" title="Permanent link">&para;</a></h2>
+<p>Unbound variables used in a module are its parameters, that must be provided when calling the module.</p>
+<p><strong>Example</strong></p>
+<p>Consider a file named <a href="../examples/hello.metaprompt"><code>hello.metaprompt</code></a>:</p>
+<pre class="codehilite"><code class="language-metaprompt">Hello, [:what]! [# `what` is a required parameter ]
+[:who?=you]
+[# ^ `who` is NOT a required parameter, because it is assigned
+  before first use. However, optional assignment is used, so
+  the default value can be overridden from the caller module
+]
 How are [:who] feeling today?
+</code></pre>
+
+<p>The <code>hello</code> module can be used like this from <a href="../examples/module-demo.metaprompt">another module</a>:</p>
+<pre class="codehilite"><code>[:use ./hello :what=world :who=we]
 </code></pre>
 
 <h2 id="file-imports">File imports<a class="headerlink" href="#file-imports" title="Permanent link">&para;</a></h2>
@@ -154,14 +159,6 @@ How are [:who] feeling today?
 
 <h2 id="package-imports">Package imports<a class="headerlink" href="#package-imports" title="Permanent link">&para;</a></h2>
 <p><strong>NOT IMPLEMENTED</strong></p>
-<h2 id="passing-parameters">Passing parameters<a class="headerlink" href="#passing-parameters" title="Permanent link">&para;</a></h2>
-<pre class="codehilite"><code>[:use ./relative-import
- :someParameter= arbitrary value, potentially using
-   any other MetaPrompt constructs
- :otherParameter= another value
-]
-</code></pre>
-
 <h2 id="special-variables">Special variables<a class="headerlink" href="#special-variables" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>MODEL</code> - used to determine active LLM id.</li>
