@@ -74,7 +74,7 @@ Chat history can be preserved by assigning an ID to a prompt: `[some_chat_id$ ..
 
 Subsequent invocations with the same chat ID *within the same module* will have a memory of the preceding conversation.
 
-Chat IDs are actually variables that contain an entire chat history.
+Chat IDs are actually variables that contain an entire chat history [(example usage)](../examples/roles.metaprompt).
 
 # Escaping
 
@@ -134,9 +134,7 @@ The `hello` module can be used from [another module](../examples/module-demo.met
 
 ### `MODEL` switching
 
-`MODEL` variable is used to switch LLM models on the fly.
-
-[(example)](../examples/model-selection-demo.metaprompt)
+`MODEL` variable is used to switch LLM models on the fly [(example)](../examples/model-change.metaprompt).
 
 `MODEL` switching only works before an `[:if ...` or a `[$ ... ]` block:
 
@@ -147,6 +145,8 @@ The `hello` module can be used from [another module](../examples/module-demo.met
   [$ but this prompt will run in 3.5-turbo ]
 ]
 ```
+
+Dynamic model selection based on a given task description allows to save costs by avoiding calls to costly models when possible [(example)](../examples/model-selection-demo.metaprompt).
 
 ### `ROLE` switching
 
