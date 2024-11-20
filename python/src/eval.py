@@ -17,7 +17,7 @@ ALLOWED_ROLES = ["system", "user", "assistant"]
 async def eval_ast(ast, config, runtime):
     env = Env(**config.parameters)
     chats = dict()
-    default_model = config.providers.get_default_model()
+    default_model = config.model or config.providers.get_default_model()
     if default_model is not None:
         env.set("MODEL", default_model.strip())
 

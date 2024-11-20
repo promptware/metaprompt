@@ -30,6 +30,7 @@ class ProviderConfig(dict):
         for model_name in other:
             self.add(model_name, other[model_name])
         self.default_model = other.get_default_model()
+        return self
 
     def get(self, model_name) -> BaseLLMProvider | None:
         return self[model_name] if model_name in self else None

@@ -91,6 +91,41 @@ async def test_if_5():
 
 
 @pytest.mark.asyncio
+async def test_model_switch():
+    prompt = """
+    [$ whoami][:MODEL=mock2][$ whoami ][:MODEL=mock1][$ whoami ]
+"""
+    result = await metaprompt(
+        prompt,
+        Config(
+            model="mock1",
+            providers=MockProvider(
+                models=["mock1"],
+                rules=[
+                    (
+                        {"chat": r"whoami"},
+                        "mock1",
+                    ),
+                ],
+            ).merge(
+                MockProvider(
+                    models=["mock2"],
+                    rules=[
+                        (
+                            {"chat": r"whoami"},
+                            "mock2",
+                        ),
+                    ],
+                )
+            ),
+        ),
+    )
+
+    expected = "mock1mock2mock1"
+    assert result.strip() == expected.strip()
+
+
+@pytest.mark.asyncio
 async def test_chat_history():
     prompt = """
 [:_=[chat1$ the $OBJECT is a car. remember this]]

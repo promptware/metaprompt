@@ -17,6 +17,9 @@ class MockProvider(ProviderConfig):
             **kwargs
     ):
         super().__init__(self, *args, **kwargs)
+        if len(models) == 0:
+            raise ValueError("MockProvider expects at least one model name")
+        self.default_model = models[0]
         for model in models:
             self.add(
                 model,
@@ -24,7 +27,7 @@ class MockProvider(ProviderConfig):
             )
 
     def get_default_model(self):
-        return 'mock'
+        return self.default_model
 
 
 class MockLLMProvider(BaseLLMProvider):
