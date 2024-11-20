@@ -132,7 +132,7 @@ The `hello` module can be used from [another module](../examples/module-demo.met
 
 ## Special variables
 
-### Model switching
+### `MODEL` switching
 
 `MODEL` variable is used to switch LLM models on the fly.
 
@@ -148,7 +148,7 @@ The `hello` module can be used from [another module](../examples/module-demo.met
 ]
 ```
 
-### Role switching
+### `ROLE` switching
 
 `ROLE` is a special variable used to control LLM input "role".
 
@@ -162,7 +162,7 @@ See [OpenAI docs](https://platform.openai.com/docs/guides/text-generation) for m
 
 [(example)](../examples/roles.metaprompt)
 
-### Live status update
+### Live `STATUS` update
 
 `STATUS` variable provides a way to set a status line that is visible in the terminal. Useful to make the user aware of what is happening when no output is being generated:
 
