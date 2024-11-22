@@ -100,6 +100,11 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             parameters[name.getText()[1:]] = self.visit(exprs)
         return parameters
 
+    def visitPositional_args(
+        self, ctx: MetaPromptParser.Positional_argsContext
+    ):
+        return [self.visit(expr) for expr in ctx.exprs()]
+
     def visitOption(self, ctx: MetaPromptParser.OptionContext):
         exprs = ctx.exprs()
         option = self.visit(exprs[0])
@@ -155,13 +160,23 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
 
         elif ctx.USE() is not None:
             module_name = ctx.USE().getText().removeprefix(":use").strip()
-            parameters = {}
-            if ctx.parameters() is not None:
-                parameters = self.visit(ctx.parameters())
+            parameters = self.visit(ctx.parameters())
             return {
                 "type": "use",
                 "module_name": module_name,
                 "parameters": parameters,
+            }
+
+        elif ctx.CALL() is not None:
+            function_name = ctx.CALL().getText().removeprefix("@").strip()
+            parameters = self.visit(ctx.parameters())
+            positional_args = self.visit(ctx.positional_args())
+
+            return {
+                "type": "call",
+                "name": function_name,
+                "named_args": parameters,
+                "positional_args": positional_args,
             }
 
         elif ctx.VAR_NAME() is not None:

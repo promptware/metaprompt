@@ -25,11 +25,12 @@ meta_body
     : IF_KW exprs THEN_KW exprs ELSE_KW exprs
     | IF_KW exprs THEN_KW exprs
     | CHOOSE_KW exprs option+ default_option?
-    | USE parameters?
+    | USE parameters
     | META_PROMPT exprs
     | COMMENT_KW exprs
     | VAR_NAME EQ_KW exprs
     | VAR_NAME
+    | CALL positional_args parameters
     ;
 
 option
@@ -40,8 +41,12 @@ default_option
     : DEFAULT_KW exprs
     ;
 
+positional_args
+    : (WITH_KW exprs)*
+    ;
+
 parameters
-    : (VAR_NAME EQ_KW exprs)+
+    : (VAR_NAME EQ_KW exprs)*
     ;
 
 text: CHAR+ ;
@@ -56,10 +61,12 @@ fragment ESCAPED : ESCAPE ESCAPEE;
 fragment ESCAPEE : (LB | ESCAPE);
 fragment ESCAPE : '\\';
 USE : ':use' WS+ [a-zA-Z0-9/_.-]+ WS*;
+CALL : '@' [a-zA-Z_][a-zA-Z0-9_]* WS*;
 fragment WS : ' '|'\n';
 IF_KW : ':if' ;
 CHOOSE_KW : ':choose' ;
 OPTION_KW : ':option' ;
+WITH_KW : ':with' ;
 DEFAULT_KW : ':default' ;
 IS_KW : ':is' ;
 THEN_KW : ':then' ;

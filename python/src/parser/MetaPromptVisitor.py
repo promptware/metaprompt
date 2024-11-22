@@ -44,6 +44,11 @@ class MetaPromptVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by MetaPromptParser#positional_args.
+    def visitPositional_args(self, ctx:MetaPromptParser.Positional_argsContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by MetaPromptParser#parameters.
     def visitParameters(self, ctx:MetaPromptParser.ParametersContext):
         return self.visitChildren(ctx)

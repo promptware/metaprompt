@@ -5,7 +5,6 @@ from parse_metaprompt import (
 from parse_utils import remove_extra_whitespace
 
 
-
 def t(text):
     return {"type": "text", "text": text}
 
@@ -62,6 +61,15 @@ def choose(criterion, options, default):
 
 def option(option, description):
     return {"option": option, "description": description}
+
+
+def call(name, pos_args, named_args):
+    return {
+        "type": "call",
+        "name": name,
+        "positional_args": pos_args,
+        "named_args": named_args,
+    }
 
 
 def test_empty():
@@ -372,16 +380,12 @@ def test_choose_no_default():
     ]
 
 
-def test_extra_ws_1():
-    assert _remove_extra_whitespace(
-        [
-            assign("asd", []),
-            t("\n"),
-            assign("asd", []),
-        ]
-    ) == [
-        assign("asd", []),
-        assign("asd", []),
+def test_call():
+    result = parse_metaprompt(
+        "[@writeFile :with filename.txt :with hello, world!]"
+    )
+    assert result["exprs"] == [
+        call("writeFile", [[t(" filename.txt ")], [t(" hello, world!")]], {})
     ]
 
 
@@ -397,6 +401,8 @@ def test_extra_ws_1():
         assign("asd", []),
     ]
 
+
+# TODO: more tests for remove_extra_whitespace
 def test_extra_ws_2():
     assert remove_extra_whitespace(
         [
