@@ -5,6 +5,7 @@ from parser.MetaPromptLexer import MetaPromptLexer
 from parser.MetaPromptParser import MetaPromptParser
 from parser.MetaPromptVisitor import MetaPromptVisitor
 from antlr4.error.ErrorListener import ErrorListener
+from parse_utils import join_text_pieces, remove_extra_whitespace
 
 
 class ThrowingErrorListener(ErrorListener):
@@ -38,30 +39,8 @@ def _process_escaping(string):
     return re.sub(_pattern, _escape_pattern, string)
 
 
-def _join_text_pieces(children):
-    """Joins multiple consequent text chunks into one:
-    '[' 'foo' ']' -> '[foo]'
-    (workaround for generated parser implementation details)
-    """
-    # TODO: move this to visit_exprs
-    buf = None
-    res = []
-    for child in children:
-        if buf is None:
-            if child["type"] == "text":
-                buf = child
-            else:
-                res.append(child)
-        else:
-            if child["type"] == "text":
-                buf["text"] += child["text"]
-            else:
-                res.append(buf)
-                buf = None
-                res.append(child)
-    if buf is not None:
-        res.append(buf)
-    return res
+def _process_expr_list(exprs):
+    return remove_extra_whitespace(join_text_pieces(exprs))
 
 
 class MetaPromptASTBuilder(MetaPromptVisitor):
@@ -74,7 +53,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
         for expr in ctx.expr():
             expr_items = self.visit(expr)
             exprs.extend(expr_items)
-        return _join_text_pieces(exprs)
+        return _process_expr_list(exprs)
 
     def visitExpr(self, ctx: MetaPromptParser.ExprContext):
         exprs = []
@@ -107,7 +86,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 if part is not None:
                     exprs.append({"type": "text", "text": part.getText()})
 
-        return _join_text_pieces(exprs)
+        return _process_expr_list(exprs)
 
     def visitExpr1(self, ctx: MetaPromptParser.Expr1Context):
         if ctx.meta_body() is not None:
@@ -199,7 +178,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                     "type": "assign",
                     "required": required,
                     "name": var_name,
-                    "exprs": _join_text_pieces(exprs),
+                    "exprs": _process_expr_list(exprs),
                 }
             else:
                 return {"type": "var", "name": var_name}
@@ -212,7 +191,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 exprs.extend(expr_items)
             res = {
                 "type": "meta",
-                "exprs": _join_text_pieces(exprs),
+                "exprs": _process_expr_list(exprs),
             }
             chat_id = ctx.META_PROMPT().getText()[:-1]
             if chat_id != "":

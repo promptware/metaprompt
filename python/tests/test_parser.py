@@ -1,4 +1,9 @@
-from parse_metaprompt import parse_metaprompt, extract_tokens
+from parse_metaprompt import (
+    parse_metaprompt,
+    extract_tokens,
+)
+from parse_utils import remove_extra_whitespace
+
 
 
 def t(text):
@@ -179,7 +184,7 @@ def test_if_nested():
     assert result["exprs"] == [
         if_then(
             [
-                t(" "),
+                # t(" "), <- removed by parse_utils.remove_extra_whitespace
                 if_then_else([t(" bar ")], [t(" baz ")], [t(" qux")]),
                 t(" "),
             ],
@@ -364,4 +369,40 @@ def test_choose_no_default():
             ],
             None,
         )
+    ]
+
+
+def test_extra_ws_1():
+    assert _remove_extra_whitespace(
+        [
+            assign("asd", []),
+            t("\n"),
+            assign("asd", []),
+        ]
+    ) == [
+        assign("asd", []),
+        assign("asd", []),
+    ]
+
+
+def test_extra_ws_1():
+    assert remove_extra_whitespace(
+        [
+            assign("asd", []),
+            t("\n"),
+            assign("asd", []),
+        ]
+    ) == [
+        assign("asd", []),
+        assign("asd", []),
+    ]
+
+def test_extra_ws_2():
+    assert remove_extra_whitespace(
+        [
+            t("\n"),
+            assign("asd", []),
+        ]
+    ) == [
+        assign("asd", []),
     ]
