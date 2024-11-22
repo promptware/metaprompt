@@ -38,5 +38,5 @@ class InteractiveLLMProvider(BaseLLMProvider):
             str: Chunks of the response as they're received.
         """
         prompt = serialize_chat_history(chat)
-        output = input("[Q]: " + prompt + f"\n[{role}]: ")
+        output = input("Input:\n" + prompt + "\nYour answer: ")
         yield output
