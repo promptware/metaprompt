@@ -107,6 +107,18 @@ def extract_parameter_set(ast):
                 extract_parameter_set(expr, assigned)
         elif ast["type"] == "comment":
             pass
+        elif ast["type"] == "choose":
+            res = res.then(extract_parameter_set(ast["criterion"]))
+            acc = ParameterSet()
+            for option in ast["options"]:
+                acc = acc.alternative(
+                    extract_parameter_set(
+                        option["option"] + option["description"]
+                    )
+                )
+            if ast["default"] is not None:
+                acc = acc.alternative(extract_parameter_set(ast["default"]))
+            res = res.then(acc)
         elif ast["type"] == "if_then_else":
             res = res.then(extract_parameter_set(ast["condition"])).then(
                 extract_parameter_set(ast["then"]).alternative(
