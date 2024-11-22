@@ -1,17 +1,17 @@
-[:STATUS=choosing model]
-[$ You must choose the best LLM for a given prompt,
-considering all the options listed below:
-
-- `gpt-3.5-turbo` - Best for tasks that don't require
-  reasoning, like data processing or generation.
-- `gpt-4o` - Will offer a very high level of intelligence
-  and strong performance. Suitable for programming tasks
-  that require reasoning about software architecture.
-- `gpt-4o-mini` - Suitable for programming tasks that
-  involve straightforward implementations, like utility
-  functions.
-
-Output format: output ONLY the model ID without qoutes.
-
-The prompt: [:prompt]
+[:STATUS=choosing a model]
+[:MODEL=interactive]
+[:choose
+   [:ROLE=system]
+     The best suitable LLM for a given prompt:
+   [:ROLE=user]
+     [:prompt]
+ :option gpt-3.5-turbo :is
+   Best for tasks that don't require reasoning, like data
+   processing or generation.
+ :option gpt-4o :is
+   Suitable for programming tasks that require reasoning
+   about software architecture.
+ :option gpt-4o-mini :is
+   Suitable for programming tasks that involve straightforward
+   implementations, like utility functions.
 ]

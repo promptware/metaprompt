@@ -11,6 +11,11 @@ Do not write any other output, answer just "true" or "false".
 The statement:
 """
 
+CHOOSE_PROMPT_1 = (
+    """You must choose an option according to the following criterion:"""
+)
+CHOOSE_PROMPT_2 = """If none of the options are suitable, explain why. Otherwise, do not produce any other output, just write the suitable option name. The list of options is provided below:"""
+
 ALLOWED_ROLES = ["system", "user", "assistant"]
 
 
@@ -43,6 +48,28 @@ async def eval_ast(ast, config, runtime):
                 res += chunk
         return res
 
+    async def _collect_chat(exprs, current_role):
+        messages = []
+        current_message = ""
+        for expr in exprs:
+            async for chunk in _eval_ast(expr):
+                if isinstance(chunk, Assignment) and chunk.name == "ROLE":
+                    # TODO: strip in a more generic fashion
+                    if len(current_message.strip()) > 0:
+                        messages.append(
+                            {
+                                "role": current_role,
+                                "content": current_message,
+                            }
+                        )
+                    current_message = ""
+                    current_role = chunk.value
+                else:
+                    current_message += chunk
+        if len(current_message.strip()) > 0:
+            messages.append({"role": current_role, "content": current_message})
+        return messages
+
     def get_current_model_provider():
         nonlocal env
         model_name = get_model()
@@ -68,23 +95,97 @@ async def eval_ast(ast, config, runtime):
 
     async def _eval_ast(ast):
         nonlocal env, runtime, chats
+
         if isinstance(ast, list):
             # TODO: is this case needed?
             async for chunk in _eval_exprs(ast):
                 yield chunk
+
         elif ast["type"] == "text":
             yield ast["text"]
+
         elif ast["type"] == "comment":
             return
+
         elif ast["type"] == "metaprompt":
             async for chunk in _eval_exprs(ast["exprs"]):
                 yield chunk
+
         elif ast["type"] == "var":
             value = env.get(ast["name"])
             if value is None:
                 raise ValueError(f"Failed to look up: {ast['name']}")
             else:
                 yield value
+
+        elif ast["type"] == "choose":
+            criterion = ast["criterion"]
+            options = ast["options"]
+            default = ast["default"]
+
+            choices = set()
+            option_messages = []
+
+            # evaluate option expressions
+            for option in options:
+                option_text = (await _collect_exprs(option["option"])).strip()
+                description_text = (
+                    await _collect_exprs(option["description"])
+                ).strip()
+                if option_text in choices:
+                    raise ValueError(
+                        f"Option {option_text} has already been used!"
+                    )
+
+                choices.add(option_text)
+                option_messages.append(
+                    {
+                        "role": "system",
+                        "content": f'"{option_text}" option description:',
+                    }
+                )
+                option_messages.append(
+                    {"role": "user", "content": description_text}
+                )
+
+            # evaluate choice criterion expressions
+            current_role = env.get("ROLE") or "user"  # TODO: default role?
+            criterion_messages = await _collect_chat(criterion, current_role)
+
+            messages = (
+                [{"role": "system", "content": CHOOSE_PROMPT_1}]
+                + criterion_messages
+                + [{"role": "system", "content": CHOOSE_PROMPT_2}]
+                + option_messages
+            )
+
+            # TODO: allow for some reasoning by using the last line only
+            # here and in :if
+            raw_response = await invoke(messages, [])
+
+            def extract_choice_option(raw_response):
+                raw_response = raw_response.strip()
+                # TODO: change the prompt to make this hack
+                # unneeded
+                # raw_response = raw_response.removeprefix("option ID is")
+                # raw_response = raw_response.removesuffix(";")
+                # raw_response = raw_response.removesuffix("; description:")
+                raw_response = raw_response.strip()
+                if raw_response in choices:
+                    return raw_response
+                return None
+
+            chosen_option = extract_choice_option(raw_response)
+            if chosen_option is None:
+                if default is None:
+                    raise ValueError(
+                        f"Failed to choose an option. LLM responded with: {raw_response}"
+                    )
+                else:
+                    chosen_option = (await _collect_exprs(default)).strip()
+
+            yield chosen_option
+
         elif ast["type"] == "use":
             parameters = ast["parameters"]
             module_name = ast["module_name"]
@@ -117,6 +218,7 @@ async def eval_ast(ast, config, runtime):
             chats = old_chats
             if "STATUS" in old_env:
                 runtime.set_status(old_env["STATUS"])
+
         elif ast["type"] == "assign":
             var_name = ast["name"]
             value = (await _collect_exprs(ast["exprs"])).strip()
@@ -133,6 +235,7 @@ async def eval_ast(ast, config, runtime):
                         )
                     yield Assignment("ROLE", value)
                 env.set(var_name, value)
+
         elif ast["type"] == "meta":
             # Load chat history
             chat_id = ast["chat"] if "chat" in ast else None
@@ -140,33 +243,17 @@ async def eval_ast(ast, config, runtime):
                 if chat_id not in chats:
                     chats[chat_id] = []
             # evaluate the prompt messages
-            messages = []
-            current_message = ""
             current_role = env.get("ROLE") or "user"  # TODO: default role?
-            for expr in ast["exprs"]:
-                async for chunk in _eval_ast(expr):
-                    if isinstance(chunk, Assignment) and chunk.name == "ROLE":
-                        # TODO: strip in a more generic fashion
-                        if len(current_message.strip()) > 0:
-                            messages.append(
-                                {
-                                    "role": current_role,
-                                    "content": current_message,
-                                }
-                            )
-                        current_message = ""
-                        current_role = chunk.value
-                    else:
-                        current_message += chunk
-            if len(current_message.strip()) > 0:
-                messages.append(
-                    {"role": current_role, "content": current_message}
-                )
+            messages = await _collect_chat(ast["exprs"], current_role)
             # collect the assistant response
             assistant_response = ""
             async for chunk in stream_invoke(
-                messages, chats[chat_id] if chat_id in chats else []
+                messages,
+                # include chat history only if there is a named chat
+                # with the same name in memory
+                chats[chat_id] if chat_id in chats else [],
             ):
+                # collect assistant response chunk to save it in history
                 assistant_response += chunk
                 yield chunk
             # update chat history
@@ -175,11 +262,14 @@ async def eval_ast(ast, config, runtime):
                 chats[chat_id].append(
                     {"role": "assistant", "content": assistant_response}
                 )
+                # TODO: rethink the ordering of updates after exceptions are implemented
                 env.set(chat_id, serialize_chat_history(chats[chat_id]))
+
         elif ast["type"] == "exprs":
             for expr in ast["exprs"]:
                 async for chunk in _eval_ast(expr):
                     yield chunk
+
         elif ast["type"] == "if_then_else":
             # evaluate the conditional
             condition = await _collect_exprs(ast["condition"])
