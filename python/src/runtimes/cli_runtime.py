@@ -15,20 +15,23 @@ class CliRuntime(BaseRuntime):
         self.status_left = BLUE
         self.status_right = RESET
 
-    def set_status(self, status: str):
-        # normalize the status line
-        status = status.replace("\n", " ").replace("\r", "")
-
-        old_status = self.status
-        self.status = status
+    def print_status(self, old_status=""):
         print(
             "\r" +
             self.status_left +
-            status +
+            self.status +
             self.status_right +
-            self.padding_for(old_status, status),
-            end=""
+            self.padding_for(old_status, self.status),
+            end="",
+            flush=True
         )
+
+    def set_status(self, status: str):
+        # normalize the status line
+        status = status.replace("\n", " ").replace("\r", "")
+        old_status = self.status
+        self.status = status
+        self.print_status(old_status)
 
     def load_module(self, module_name: str):
         if module_name.startswith("./") or module_name.startswith("../"):
@@ -75,21 +78,17 @@ class CliRuntime(BaseRuntime):
                 print(line, flush=True)
             # save the last line into the accumulator
             self.last_line = lines[-1]
-            # restore the status line
-            print(
-                self.status_left + self.status + self.status_right,
-                end="",
-                flush=True
-            )
         else:
             self.last_line += chunk
-            # restore the status line
-            print(
-                "\r" +
-                self.status_left + self.status + self.status_right,
-                end="",
-                flush=True
-            )
+        # restore the status line
+        self.print_status()
+
+    def input(self, prompt):
+        print("\r", end="", flush=True)
+        res = input(prompt)
+        self.print_status()
+        return res
+
 
     def finalize(self):
         print("\r", end="", flush=True)
