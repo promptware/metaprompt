@@ -53,6 +53,24 @@ class MetaPromptListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by MetaPromptParser#option.
+    def enterOption(self, ctx:MetaPromptParser.OptionContext):
+        pass
+
+    # Exit a parse tree produced by MetaPromptParser#option.
+    def exitOption(self, ctx:MetaPromptParser.OptionContext):
+        pass
+
+
+    # Enter a parse tree produced by MetaPromptParser#default_option.
+    def enterDefault_option(self, ctx:MetaPromptParser.Default_optionContext):
+        pass
+
+    # Exit a parse tree produced by MetaPromptParser#default_option.
+    def exitDefault_option(self, ctx:MetaPromptParser.Default_optionContext):
+        pass
+
+
     # Enter a parse tree produced by MetaPromptParser#parameters.
     def enterParameters(self, ctx:MetaPromptParser.ParametersContext):
         pass

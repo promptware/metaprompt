@@ -43,6 +43,7 @@ def _join_text_pieces(children):
     '[' 'foo' ']' -> '[foo]'
     (workaround for generated parser implementation details)
     """
+    # TODO: move this to visit_exprs
     buf = None
     res = []
     for child in children:
@@ -98,6 +99,10 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 ctx.META_PROMPT(),
                 ctx.EQ_KW(),
                 ctx.VAR_NAME(),
+                ctx.CHOOSE_KW(),
+                ctx.OPTION_KW(),
+                ctx.DEFAULT_KW(),
+                ctx.IS_KW(),
             ]:
                 if part is not None:
                     exprs.append({"type": "text", "text": part.getText()})
@@ -116,6 +121,15 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             parameters[name.getText()[1:]] = self.visit(exprs)
         return parameters
 
+    def visitOption(self, ctx: MetaPromptParser.OptionContext):
+        exprs = ctx.exprs()
+        option = self.visit(exprs[0])
+        description = self.visit(exprs[1])
+        return {"option": option, "description": description}
+
+    def visitDefault_option(self, ctx: MetaPromptParser.Default_optionContext):
+        return self.visit(ctx.exprs())
+
     def visitMeta_body(self, ctx: MetaPromptParser.Meta_bodyContext):
         exprs_list = ctx.exprs()
         if ctx.ELSE_KW() is not None:
@@ -129,6 +143,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 "then": then_node,
                 "else": else_node,
             }
+
         elif ctx.IF_KW() is not None:
             # IF_KW exprs THEN_KW exprs
             condition_node = self.visit(exprs_list[0])
@@ -139,9 +154,26 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 "then": then_node,
                 "else": [],
             }
+
         elif ctx.COMMENT_KW() is not None:
             exprs = self.visit(exprs_list[0])
             return {"type": "comment", "exprs": exprs}
+
+        elif ctx.CHOOSE_KW() is not None:
+            # :choose criterion
+            # :option foo :is description
+            # :option bar :is description
+            # :default baz
+            criterion = self.visit(exprs_list[0])
+            options = [self.visit(option) for option in ctx.option()]
+            default = ctx.default_option() and self.visit(ctx.default_option())
+            return {
+                "type": "choose",
+                "criterion": criterion,
+                "options": options,
+                "default": default,
+            }
+
         elif ctx.USE() is not None:
             module_name = ctx.USE().getText().removeprefix(":use").strip()
             parameters = {}
@@ -152,6 +184,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 "module_name": module_name,
                 "parameters": parameters,
             }
+
         elif ctx.VAR_NAME() is not None:
             # slice the ":"
             var_name = ctx.VAR_NAME().getText()[1:]

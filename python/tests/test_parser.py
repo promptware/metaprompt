@@ -46,6 +46,19 @@ def assign(name, exprs, required=True):
     }
 
 
+def choose(criterion, options, default):
+    return {
+        "criterion": criterion,
+        "options": options,
+        "default": default,
+        "type": "choose",
+    }
+
+
+def option(option, description):
+    return {"option": option, "description": description}
+
+
 def test_empty():
     result = parse_metaprompt("")
     assert result["exprs"] == []
@@ -64,6 +77,11 @@ def test_text_1():
 def test_text_2():
     result = parse_metaprompt("$=")
     assert result["exprs"] == [t("$=")]
+
+
+def test_text_kw_is():
+    result = parse_metaprompt(":is")
+    assert result["exprs"] == [t(":is")]
 
 
 def test_escaping():
@@ -314,4 +332,36 @@ def test_use_nested_2():
                 "foo": [{"type": "text", "text": "bar"}],
             },
         }
+    ]
+
+
+def test_choose():
+    result = parse_metaprompt(
+        "[:choose foo :option o1 :is d1 :option o2 :is d2 :default bar]"
+    )
+    assert result["exprs"] == [
+        choose(
+            [t(" foo ")],
+            [
+                option([t(" o1 ")], [t(" d1 ")]),
+                option([t(" o2 ")], [t(" d2 ")]),
+            ],
+            [t(" bar")],
+        )
+    ]
+
+
+def test_choose_no_default():
+    result = parse_metaprompt(
+        "[:choose foo :option o1 :is d1 :option o2 :is d2]"
+    )
+    assert result["exprs"] == [
+        choose(
+            [t(" foo ")],
+            [
+                option([t(" o1 ")], [t(" d1 ")]),
+                option([t(" o2 ")], [t(" d2")]),
+            ],
+            None,
+        )
     ]

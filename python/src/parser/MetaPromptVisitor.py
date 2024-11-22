@@ -34,6 +34,16 @@ class MetaPromptVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by MetaPromptParser#option.
+    def visitOption(self, ctx:MetaPromptParser.OptionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MetaPromptParser#default_option.
+    def visitDefault_option(self, ctx:MetaPromptParser.Default_optionContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by MetaPromptParser#parameters.
     def visitParameters(self, ctx:MetaPromptParser.ParametersContext):
         return self.visitChildren(ctx)

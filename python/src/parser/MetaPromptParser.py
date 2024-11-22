@@ -10,32 +10,41 @@ else:
 
 def serializedATN():
     return [
-        4,1,11,79,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
-        6,1,0,1,0,1,0,1,1,5,1,19,8,1,10,1,12,1,22,9,1,1,2,1,2,1,2,1,2,1,
-        2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,35,8,2,1,3,1,3,3,3,39,8,3,1,4,1,4,
-        1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,55,8,4,1,4,1,
-        4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,65,8,4,1,5,1,5,1,5,4,5,70,8,5,11,5,
-        12,5,71,1,6,4,6,75,8,6,11,6,12,6,76,1,6,1,20,0,7,0,2,4,6,8,10,12,
-        0,0,89,0,14,1,0,0,0,2,20,1,0,0,0,4,34,1,0,0,0,6,38,1,0,0,0,8,64,
-        1,0,0,0,10,69,1,0,0,0,12,74,1,0,0,0,14,15,3,2,1,0,15,16,5,0,0,1,
-        16,1,1,0,0,0,17,19,3,4,2,0,18,17,1,0,0,0,19,22,1,0,0,0,20,21,1,0,
-        0,0,20,18,1,0,0,0,21,3,1,0,0,0,22,20,1,0,0,0,23,24,5,1,0,0,24,25,
-        3,6,3,0,25,26,5,2,0,0,26,35,1,0,0,0,27,35,3,12,6,0,28,35,5,2,0,0,
-        29,35,5,1,0,0,30,35,5,5,0,0,31,35,5,4,0,0,32,35,5,3,0,0,33,35,5,
-        11,0,0,34,23,1,0,0,0,34,27,1,0,0,0,34,28,1,0,0,0,34,29,1,0,0,0,34,
-        30,1,0,0,0,34,31,1,0,0,0,34,32,1,0,0,0,34,33,1,0,0,0,35,5,1,0,0,
-        0,36,39,3,8,4,0,37,39,3,2,1,0,38,36,1,0,0,0,38,37,1,0,0,0,39,7,1,
-        0,0,0,40,41,5,8,0,0,41,42,3,2,1,0,42,43,5,9,0,0,43,44,3,2,1,0,44,
-        45,5,10,0,0,45,46,3,2,1,0,46,65,1,0,0,0,47,48,5,8,0,0,48,49,3,2,
-        1,0,49,50,5,9,0,0,50,51,3,2,1,0,51,65,1,0,0,0,52,54,5,7,0,0,53,55,
-        3,10,5,0,54,53,1,0,0,0,54,55,1,0,0,0,55,65,1,0,0,0,56,57,5,4,0,0,
-        57,65,3,2,1,0,58,59,5,5,0,0,59,65,3,2,1,0,60,61,5,11,0,0,61,62,5,
-        3,0,0,62,65,3,2,1,0,63,65,5,11,0,0,64,40,1,0,0,0,64,47,1,0,0,0,64,
-        52,1,0,0,0,64,56,1,0,0,0,64,58,1,0,0,0,64,60,1,0,0,0,64,63,1,0,0,
-        0,65,9,1,0,0,0,66,67,5,11,0,0,67,68,5,3,0,0,68,70,3,2,1,0,69,66,
-        1,0,0,0,70,71,1,0,0,0,71,69,1,0,0,0,71,72,1,0,0,0,72,11,1,0,0,0,
-        73,75,5,6,0,0,74,73,1,0,0,0,75,76,1,0,0,0,76,74,1,0,0,0,76,77,1,
-        0,0,0,77,13,1,0,0,0,7,20,34,38,54,64,71,76
+        4,1,15,105,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        6,2,7,7,7,2,8,7,8,1,0,1,0,1,0,1,1,5,1,23,8,1,10,1,12,1,26,9,1,1,
+        2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,43,
+        8,2,1,3,1,3,3,3,47,8,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,
+        4,1,4,1,4,1,4,1,4,4,4,64,8,4,11,4,12,4,65,1,4,3,4,69,8,4,1,4,1,4,
+        3,4,73,8,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,83,8,4,1,5,1,5,1,
+        5,1,5,1,5,1,6,1,6,1,6,1,7,1,7,1,7,4,7,96,8,7,11,7,12,7,97,1,8,4,
+        8,101,8,8,11,8,12,8,102,1,8,1,24,0,9,0,2,4,6,8,10,12,14,16,0,0,120,
+        0,18,1,0,0,0,2,24,1,0,0,0,4,42,1,0,0,0,6,46,1,0,0,0,8,82,1,0,0,0,
+        10,84,1,0,0,0,12,89,1,0,0,0,14,95,1,0,0,0,16,100,1,0,0,0,18,19,3,
+        2,1,0,19,20,5,0,0,1,20,1,1,0,0,0,21,23,3,4,2,0,22,21,1,0,0,0,23,
+        26,1,0,0,0,24,25,1,0,0,0,24,22,1,0,0,0,25,3,1,0,0,0,26,24,1,0,0,
+        0,27,28,5,1,0,0,28,29,3,6,3,0,29,30,5,2,0,0,30,43,1,0,0,0,31,43,
+        3,16,8,0,32,43,5,2,0,0,33,43,5,1,0,0,34,43,5,5,0,0,35,43,5,4,0,0,
+        36,43,5,3,0,0,37,43,5,15,0,0,38,43,5,9,0,0,39,43,5,10,0,0,40,43,
+        5,11,0,0,41,43,5,12,0,0,42,27,1,0,0,0,42,31,1,0,0,0,42,32,1,0,0,
+        0,42,33,1,0,0,0,42,34,1,0,0,0,42,35,1,0,0,0,42,36,1,0,0,0,42,37,
+        1,0,0,0,42,38,1,0,0,0,42,39,1,0,0,0,42,40,1,0,0,0,42,41,1,0,0,0,
+        43,5,1,0,0,0,44,47,3,8,4,0,45,47,3,2,1,0,46,44,1,0,0,0,46,45,1,0,
+        0,0,47,7,1,0,0,0,48,49,5,8,0,0,49,50,3,2,1,0,50,51,5,13,0,0,51,52,
+        3,2,1,0,52,53,5,14,0,0,53,54,3,2,1,0,54,83,1,0,0,0,55,56,5,8,0,0,
+        56,57,3,2,1,0,57,58,5,13,0,0,58,59,3,2,1,0,59,83,1,0,0,0,60,61,5,
+        9,0,0,61,63,3,2,1,0,62,64,3,10,5,0,63,62,1,0,0,0,64,65,1,0,0,0,65,
+        63,1,0,0,0,65,66,1,0,0,0,66,68,1,0,0,0,67,69,3,12,6,0,68,67,1,0,
+        0,0,68,69,1,0,0,0,69,83,1,0,0,0,70,72,5,7,0,0,71,73,3,14,7,0,72,
+        71,1,0,0,0,72,73,1,0,0,0,73,83,1,0,0,0,74,75,5,4,0,0,75,83,3,2,1,
+        0,76,77,5,5,0,0,77,83,3,2,1,0,78,79,5,15,0,0,79,80,5,3,0,0,80,83,
+        3,2,1,0,81,83,5,15,0,0,82,48,1,0,0,0,82,55,1,0,0,0,82,60,1,0,0,0,
+        82,70,1,0,0,0,82,74,1,0,0,0,82,76,1,0,0,0,82,78,1,0,0,0,82,81,1,
+        0,0,0,83,9,1,0,0,0,84,85,5,10,0,0,85,86,3,2,1,0,86,87,5,12,0,0,87,
+        88,3,2,1,0,88,11,1,0,0,0,89,90,5,11,0,0,90,91,3,2,1,0,91,13,1,0,
+        0,0,92,93,5,15,0,0,93,94,5,3,0,0,94,96,3,2,1,0,95,92,1,0,0,0,96,
+        97,1,0,0,0,97,95,1,0,0,0,97,98,1,0,0,0,98,15,1,0,0,0,99,101,5,6,
+        0,0,100,99,1,0,0,0,101,102,1,0,0,0,102,100,1,0,0,0,102,103,1,0,0,
+        0,103,17,1,0,0,0,9,24,42,46,65,68,72,82,97,102
     ]
 
 class MetaPromptParser ( Parser ):
@@ -49,22 +58,25 @@ class MetaPromptParser ( Parser ):
     sharedContextCache = PredictionContextCache()
 
     literalNames = [ "<INVALID>", "'['", "']'", "<INVALID>", "<INVALID>", 
-                     "'#'", "<INVALID>", "<INVALID>", "':if'", "':then'", 
-                     "':else'" ]
+                     "'#'", "<INVALID>", "<INVALID>", "':if'", "':choose'", 
+                     "':option'", "':default'", "':is'", "':then'", "':else'" ]
 
     symbolicNames = [ "<INVALID>", "LB", "RB", "EQ_KW", "META_PROMPT", "COMMENT_KW", 
-                      "CHAR", "USE", "IF_KW", "THEN_KW", "ELSE_KW", "VAR_NAME" ]
+                      "CHAR", "USE", "IF_KW", "CHOOSE_KW", "OPTION_KW", 
+                      "DEFAULT_KW", "IS_KW", "THEN_KW", "ELSE_KW", "VAR_NAME" ]
 
     RULE_prompt = 0
     RULE_exprs = 1
     RULE_expr = 2
     RULE_expr1 = 3
     RULE_meta_body = 4
-    RULE_parameters = 5
-    RULE_text = 6
+    RULE_option = 5
+    RULE_default_option = 6
+    RULE_parameters = 7
+    RULE_text = 8
 
-    ruleNames =  [ "prompt", "exprs", "expr", "expr1", "meta_body", "parameters", 
-                   "text" ]
+    ruleNames =  [ "prompt", "exprs", "expr", "expr1", "meta_body", "option", 
+                   "default_option", "parameters", "text" ]
 
     EOF = Token.EOF
     LB=1
@@ -75,9 +87,13 @@ class MetaPromptParser ( Parser ):
     CHAR=6
     USE=7
     IF_KW=8
-    THEN_KW=9
-    ELSE_KW=10
-    VAR_NAME=11
+    CHOOSE_KW=9
+    OPTION_KW=10
+    DEFAULT_KW=11
+    IS_KW=12
+    THEN_KW=13
+    ELSE_KW=14
+    VAR_NAME=15
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -128,9 +144,9 @@ class MetaPromptParser ( Parser ):
         self.enterRule(localctx, 0, self.RULE_prompt)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 14
+            self.state = 18
             self.exprs()
-            self.state = 15
+            self.state = 19
             self.match(MetaPromptParser.EOF)
         except RecognitionException as re:
             localctx.exception = re
@@ -181,14 +197,14 @@ class MetaPromptParser ( Parser ):
         self.enterRule(localctx, 2, self.RULE_exprs)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 20
+            self.state = 24
             self._errHandler.sync(self)
             _alt = self._interp.adaptivePredict(self._input,0,self._ctx)
             while _alt!=1 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt==1+1:
-                    self.state = 17
+                    self.state = 21
                     self.expr() 
-                self.state = 22
+                self.state = 26
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,0,self._ctx)
 
@@ -234,6 +250,18 @@ class MetaPromptParser ( Parser ):
         def VAR_NAME(self):
             return self.getToken(MetaPromptParser.VAR_NAME, 0)
 
+        def CHOOSE_KW(self):
+            return self.getToken(MetaPromptParser.CHOOSE_KW, 0)
+
+        def OPTION_KW(self):
+            return self.getToken(MetaPromptParser.OPTION_KW, 0)
+
+        def DEFAULT_KW(self):
+            return self.getToken(MetaPromptParser.DEFAULT_KW, 0)
+
+        def IS_KW(self):
+            return self.getToken(MetaPromptParser.IS_KW, 0)
+
         def getRuleIndex(self):
             return MetaPromptParser.RULE_expr
 
@@ -259,59 +287,83 @@ class MetaPromptParser ( Parser ):
         localctx = MetaPromptParser.ExprContext(self, self._ctx, self.state)
         self.enterRule(localctx, 4, self.RULE_expr)
         try:
-            self.state = 34
+            self.state = 42
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,1,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 23
+                self.state = 27
                 self.match(MetaPromptParser.LB)
-                self.state = 24
+                self.state = 28
                 self.expr1()
-                self.state = 25
+                self.state = 29
                 self.match(MetaPromptParser.RB)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 27
+                self.state = 31
                 self.text()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 28
+                self.state = 32
                 self.match(MetaPromptParser.RB)
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 29
+                self.state = 33
                 self.match(MetaPromptParser.LB)
                 pass
 
             elif la_ == 5:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 30
+                self.state = 34
                 self.match(MetaPromptParser.COMMENT_KW)
                 pass
 
             elif la_ == 6:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 31
+                self.state = 35
                 self.match(MetaPromptParser.META_PROMPT)
                 pass
 
             elif la_ == 7:
                 self.enterOuterAlt(localctx, 7)
-                self.state = 32
+                self.state = 36
                 self.match(MetaPromptParser.EQ_KW)
                 pass
 
             elif la_ == 8:
                 self.enterOuterAlt(localctx, 8)
-                self.state = 33
+                self.state = 37
                 self.match(MetaPromptParser.VAR_NAME)
+                pass
+
+            elif la_ == 9:
+                self.enterOuterAlt(localctx, 9)
+                self.state = 38
+                self.match(MetaPromptParser.CHOOSE_KW)
+                pass
+
+            elif la_ == 10:
+                self.enterOuterAlt(localctx, 10)
+                self.state = 39
+                self.match(MetaPromptParser.OPTION_KW)
+                pass
+
+            elif la_ == 11:
+                self.enterOuterAlt(localctx, 11)
+                self.state = 40
+                self.match(MetaPromptParser.DEFAULT_KW)
+                pass
+
+            elif la_ == 12:
+                self.enterOuterAlt(localctx, 12)
+                self.state = 41
+                self.match(MetaPromptParser.IS_KW)
                 pass
 
 
@@ -364,18 +416,18 @@ class MetaPromptParser ( Parser ):
         localctx = MetaPromptParser.Expr1Context(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_expr1)
         try:
-            self.state = 38
+            self.state = 46
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 36
+                self.state = 44
                 self.meta_body()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 37
+                self.state = 45
                 self.exprs()
                 pass
 
@@ -411,6 +463,20 @@ class MetaPromptParser ( Parser ):
 
         def ELSE_KW(self):
             return self.getToken(MetaPromptParser.ELSE_KW, 0)
+
+        def CHOOSE_KW(self):
+            return self.getToken(MetaPromptParser.CHOOSE_KW, 0)
+
+        def option(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(MetaPromptParser.OptionContext)
+            else:
+                return self.getTypedRuleContext(MetaPromptParser.OptionContext,i)
+
+
+        def default_option(self):
+            return self.getTypedRuleContext(MetaPromptParser.Default_optionContext,0)
+
 
         def USE(self):
             return self.getToken(MetaPromptParser.USE, 0)
@@ -457,84 +523,228 @@ class MetaPromptParser ( Parser ):
         self.enterRule(localctx, 8, self.RULE_meta_body)
         self._la = 0 # Token type
         try:
-            self.state = 64
+            self.state = 82
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,4,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,6,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 40
+                self.state = 48
                 self.match(MetaPromptParser.IF_KW)
-                self.state = 41
+                self.state = 49
                 self.exprs()
-                self.state = 42
+                self.state = 50
                 self.match(MetaPromptParser.THEN_KW)
-                self.state = 43
+                self.state = 51
                 self.exprs()
-                self.state = 44
+                self.state = 52
                 self.match(MetaPromptParser.ELSE_KW)
-                self.state = 45
+                self.state = 53
                 self.exprs()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 47
+                self.state = 55
                 self.match(MetaPromptParser.IF_KW)
-                self.state = 48
+                self.state = 56
                 self.exprs()
-                self.state = 49
+                self.state = 57
                 self.match(MetaPromptParser.THEN_KW)
-                self.state = 50
+                self.state = 58
                 self.exprs()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 52
-                self.match(MetaPromptParser.USE)
-                self.state = 54
+                self.state = 60
+                self.match(MetaPromptParser.CHOOSE_KW)
+                self.state = 61
+                self.exprs()
+                self.state = 63 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
+                    self.state = 62
+                    self.option()
+                    self.state = 65 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not (_la==10):
+                        break
+
+                self.state = 68
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==11:
-                    self.state = 53
-                    self.parameters()
+                    self.state = 67
+                    self.default_option()
 
 
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 56
-                self.match(MetaPromptParser.META_PROMPT)
-                self.state = 57
-                self.exprs()
+                self.state = 70
+                self.match(MetaPromptParser.USE)
+                self.state = 72
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                if _la==15:
+                    self.state = 71
+                    self.parameters()
+
+
                 pass
 
             elif la_ == 5:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 58
-                self.match(MetaPromptParser.COMMENT_KW)
-                self.state = 59
+                self.state = 74
+                self.match(MetaPromptParser.META_PROMPT)
+                self.state = 75
                 self.exprs()
                 pass
 
             elif la_ == 6:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 60
-                self.match(MetaPromptParser.VAR_NAME)
-                self.state = 61
-                self.match(MetaPromptParser.EQ_KW)
-                self.state = 62
+                self.state = 76
+                self.match(MetaPromptParser.COMMENT_KW)
+                self.state = 77
                 self.exprs()
                 pass
 
             elif la_ == 7:
                 self.enterOuterAlt(localctx, 7)
-                self.state = 63
+                self.state = 78
+                self.match(MetaPromptParser.VAR_NAME)
+                self.state = 79
+                self.match(MetaPromptParser.EQ_KW)
+                self.state = 80
+                self.exprs()
+                pass
+
+            elif la_ == 8:
+                self.enterOuterAlt(localctx, 8)
+                self.state = 81
                 self.match(MetaPromptParser.VAR_NAME)
                 pass
 
 
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class OptionContext(ParserRuleContext):
+        __slots__ = 'parser'
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def OPTION_KW(self):
+            return self.getToken(MetaPromptParser.OPTION_KW, 0)
+
+        def exprs(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(MetaPromptParser.ExprsContext)
+            else:
+                return self.getTypedRuleContext(MetaPromptParser.ExprsContext,i)
+
+
+        def IS_KW(self):
+            return self.getToken(MetaPromptParser.IS_KW, 0)
+
+        def getRuleIndex(self):
+            return MetaPromptParser.RULE_option
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterOption" ):
+                listener.enterOption(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitOption" ):
+                listener.exitOption(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitOption" ):
+                return visitor.visitOption(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+
+
+    def option(self):
+
+        localctx = MetaPromptParser.OptionContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 10, self.RULE_option)
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 84
+            self.match(MetaPromptParser.OPTION_KW)
+            self.state = 85
+            self.exprs()
+            self.state = 86
+            self.match(MetaPromptParser.IS_KW)
+            self.state = 87
+            self.exprs()
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class Default_optionContext(ParserRuleContext):
+        __slots__ = 'parser'
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def DEFAULT_KW(self):
+            return self.getToken(MetaPromptParser.DEFAULT_KW, 0)
+
+        def exprs(self):
+            return self.getTypedRuleContext(MetaPromptParser.ExprsContext,0)
+
+
+        def getRuleIndex(self):
+            return MetaPromptParser.RULE_default_option
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterDefault_option" ):
+                listener.enterDefault_option(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitDefault_option" ):
+                listener.exitDefault_option(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitDefault_option" ):
+                return visitor.visitDefault_option(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+
+
+    def default_option(self):
+
+        localctx = MetaPromptParser.Default_optionContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 12, self.RULE_default_option)
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 89
+            self.match(MetaPromptParser.DEFAULT_KW)
+            self.state = 90
+            self.exprs()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -593,24 +803,24 @@ class MetaPromptParser ( Parser ):
     def parameters(self):
 
         localctx = MetaPromptParser.ParametersContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 10, self.RULE_parameters)
+        self.enterRule(localctx, 14, self.RULE_parameters)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 69 
+            self.state = 95 
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
-                self.state = 66
+                self.state = 92
                 self.match(MetaPromptParser.VAR_NAME)
-                self.state = 67
+                self.state = 93
                 self.match(MetaPromptParser.EQ_KW)
-                self.state = 68
+                self.state = 94
                 self.exprs()
-                self.state = 71 
+                self.state = 97 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                if not (_la==11):
+                if not (_la==15):
                     break
 
         except RecognitionException as re:
@@ -658,22 +868,22 @@ class MetaPromptParser ( Parser ):
     def text(self):
 
         localctx = MetaPromptParser.TextContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 12, self.RULE_text)
+        self.enterRule(localctx, 16, self.RULE_text)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 74 
+            self.state = 100 
             self._errHandler.sync(self)
             _alt = 1
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt == 1:
-                    self.state = 73
+                    self.state = 99
                     self.match(MetaPromptParser.CHAR)
 
                 else:
                     raise NoViableAltException(self)
-                self.state = 76 
+                self.state = 102 
                 self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,6,self._ctx)
+                _alt = self._interp.adaptivePredict(self._input,8,self._ctx)
 
         except RecognitionException as re:
             localctx.exception = re
