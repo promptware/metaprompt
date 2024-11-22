@@ -89,7 +89,8 @@ def extract_parameter_set(ast):
             for expr in ast["exprs"]:
                 res = res.then(extract_parameter_set(expr))
         elif ast["type"] == "var":
-            res.use_var(ast["name"])
+            if ast["name"] != "MODEL":
+                res.use_var(ast["name"])
         elif ast["type"] == "use":
             for _, expr in ast["exprs"]:
                 res = res.then(extract_parameter_set(expr))
