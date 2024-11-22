@@ -55,8 +55,9 @@ async def eval_ast(ast, config, runtime):
         chat: List[{"role": str, "content": str}],
         history: List[{"role": str, "content": str}] = [],
     ) -> AsyncGenerator[str, None]:
+        nonlocal runtime
         provider = get_current_model_provider()
-        async for chunk in provider.ainvoke(chat, history):
+        async for chunk in provider.ainvoke(chat, history, runtime=runtime):
             yield chunk
 
     async def invoke(chat, history) -> str:

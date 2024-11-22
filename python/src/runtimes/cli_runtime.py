@@ -84,8 +84,14 @@ class CliRuntime(BaseRuntime):
         self.print_status()
 
     def input(self, prompt):
-        print("\r", end="", flush=True)
-        res = input(prompt)
+        self.print_chunk(prompt + "\n")
+        print(
+            "\r" + self.padding_for(self.status, "") + "\r",
+            end="",
+            flush=True
+        )
+        print("$ ", end="", flush=True)
+        res = input()
         self.print_status()
         return res
 

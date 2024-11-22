@@ -56,7 +56,8 @@ class MockLLMProvider(BaseLLMProvider):
     async def ainvoke(
         self,
         chat: List[{ "role": str, "content": str }],
-        history = [] # TODO: make interactive provider respect history?
+        history: List[{ "role": str, "content": str }] = [],
+        runtime = None,
     ) -> AsyncGenerator[str, None]:
         """Asynchronously invoke the OpenAI API and yield results in chunks.
 

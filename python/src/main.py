@@ -78,13 +78,13 @@ async def _main():
     for file_path in args.INPUT_FILES:
         if os.path.isfile(file_path):
             with open(file_path, "r") as file:
+                runtime = CliRuntime()
+                # TODO: use file loading from runtime
+                runtime.set_status("running " + file_path)
+                runtime.cwd = os.path.dirname(file_path)
                 content = file.read()
                 metaprompt = parse_metaprompt(content)
                 env = Env(env=config.parameters)
-                runtime = CliRuntime()
-                runtime.cwd = os.path.dirname(file_path)
-                # TODO: use file loading from runtime
-                runtime.set_status("running " + file_path)
                 async for chunk in eval_ast(metaprompt, config, runtime):
                     runtime.print_chunk(chunk)
                 runtime.finalize()

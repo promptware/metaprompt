@@ -27,7 +27,8 @@ class InteractiveLLMProvider(BaseLLMProvider):
     async def ainvoke(
         self,
         chat: List[{ "role": str, "content": str }],
-        history = [] # TODO: make interactive provider respect history?
+        history = [], # TODO: make interactive provider respect history?
+        runtime = None,
     ) -> AsyncGenerator[str, None]:
         """Asynchronously invoke the OpenAI API and yield results in chunks.
 
@@ -38,5 +39,5 @@ class InteractiveLLMProvider(BaseLLMProvider):
             str: Chunks of the response as they're received.
         """
         prompt = serialize_chat_history(chat)
-        output = input("Input:\n" + prompt + "\nYour answer: ")
+        output = (input if runtime is None else runtime.input)(prompt)
         yield output

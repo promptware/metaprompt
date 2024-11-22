@@ -17,3 +17,10 @@ class BaseRuntime(ABC):
     @abstractmethod
     def print_chunk(self, chunk: str):
         pass
+
+    @abstractmethod
+    def input(self, prompt):
+        """Used to request input from the user, which can be done by some BaseLLMProvider
+        subclasses
+        """
+        pass
