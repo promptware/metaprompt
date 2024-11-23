@@ -22,6 +22,8 @@ setup(
         "openai>=1.54.3",
         "python-dotenv>=1.0.1",
         "setuptools>=68.1.2",
+        "requests>=2.32.2",
+        "html2text",
     ],
     extras_require={
         "dev": [

@@ -1,0 +1,55 @@
+[:goal?=
+  [:model=[:MODEL]]
+  [:MODEL=interactive]
+  [$ enter your goal: ]
+  [:MODEL=[:model]]
+]
+
+[:STATUS=composing a google query]
+[:improved_query=[chat$
+  [:ROLE=system]
+    The year is 2024.
+    You are a professional google user. Your task is to
+    formulate google queries based on a provided goal.
+    Do not write any output except of a google query for
+    the following user goal:
+  [:ROLE=user]
+    [:goal]
+]]
+
+[:STATUS=googling...]
+Google query: [:improved_query]
+[:google_results=[@google [:improved_query]]]
+
+[:STATUS=selecting the most suitable URL]
+[:result_url=[chat$
+  [:ROLE=system]
+    You are given the following google search results:
+  [:ROLE=assistant]
+    [:google_results]
+  [:ROLE=system]
+    Select the best suitable URL for the goal.
+    Do not write any other output, except of the URL itself.
+]]
+URL [:result_url]
+
+[:STATUS=visiting [:result_url]]
+[:page_contents=[@read_web [:result_url]]]
+length [@length [:page_contents]]
+[:page_contents]
+
+[#
+[:STATUS=summarizing contents]
+[:page_contents]
+[:summary=[chat$
+  [:ROLE=system]
+    The contents of the page at that URL:
+  [:ROLE=assistant]
+    [:page_contents]
+  [:ROLE=system]
+    Based on this info, write a summary that corresponds to the given goal:
+  [:ROLE=user]
+    [:goal]
+]]
+[:summary]
+]

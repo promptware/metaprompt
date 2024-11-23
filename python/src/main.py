@@ -80,10 +80,11 @@ async def _main():
             with open(file_path, "r") as file:
                 runtime = CliRuntime()
                 # TODO: use file loading from runtime
-                runtime.set_status("running " + file_path)
                 runtime.cwd = os.path.dirname(file_path)
                 content = file.read()
+                runtime.set_status("parsing " + file_path)
                 metaprompt = parse_metaprompt(content)
+                runtime.set_status("running " + file_path)
                 env = Env(env=config.parameters)
                 async for chunk in eval_ast(metaprompt, config, runtime):
                     runtime.print_chunk(chunk)
