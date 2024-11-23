@@ -4,6 +4,8 @@ from parse_metaprompt import (
 )
 from parse_utils import remove_extra_whitespace
 
+def parse(text):
+    return parse_metaprompt(text)["exprs"]
 
 def t(text):
     return {"type": "text", "text": text}
@@ -73,104 +75,104 @@ def call(name, pos_args, named_args):
 
 
 def test_empty():
-    result = parse_metaprompt("")
-    assert result["exprs"] == []
+    result = parse("")
+    assert result == []
 
 
 def test_text_0():
-    result = parse_metaprompt("asd")
-    assert result["exprs"] == [{"text": "asd", "type": "text"}]
+    result = parse("asd")
+    assert result == [{"text": "asd", "type": "text"}]
 
 
 def test_text_1():
-    result = parse_metaprompt("$$")
-    assert result["exprs"] == [t("$$")]
+    result = parse("$$")
+    assert result == [t("$$")]
 
 
 def test_text_2():
-    result = parse_metaprompt("$=")
-    assert result["exprs"] == [t("$=")]
+    result = parse("$=")
+    assert result == [t("$=")]
 
 
 def test_text_kw_is():
-    result = parse_metaprompt(":is")
-    assert result["exprs"] == [t(":is")]
+    result = parse(":is")
+    assert result == [t(":is")]
 
 
 def test_escaping():
-    result = parse_metaprompt("\\")
-    assert result["exprs"] == [t("\\")]
+    result = parse("\\")
+    assert result == [t("\\")]
 
 
 def test_escaping_1():
-    result = parse_metaprompt("\\[")
-    assert result["exprs"] == [t("[")]
+    result = parse("\\[")
+    assert result == [t("[")]
 
 
 def test_escaping_2():
-    result = parse_metaprompt("\\[:foo]")
-    assert result["exprs"] == [t("[:foo]")]
+    result = parse("\\[:foo]")
+    assert result == [t("[:foo]")]
 
 
 def test_escaping_2_1():
-    result = parse_metaprompt("\\\\[:foo]")
-    assert result["exprs"] == [t("\\\\"), var("foo")]
+    result = parse("\\\\[:foo]")
+    assert result == [t("\\\\"), var("foo")]
 
 
 def test_escaping_2_2():
-    result = parse_metaprompt("\\\\")
-    assert result["exprs"] == [t("\\\\")]
+    result = parse("\\\\")
+    assert result == [t("\\\\")]
 
 
 def test_escaping_3():
-    result = parse_metaprompt("\\[:foo")
-    assert result["exprs"] == [t("[:foo")]
+    result = parse("\\[:foo")
+    assert result == [t("[:foo")]
 
 
 def test_escaping_4():
-    result = parse_metaprompt("\\\\[")
-    assert result["exprs"] == [t("\\\\[")]
+    result = parse("\\\\[")
+    assert result == [t("\\\\[")]
 
 
 def test_escaping_5():
-    result = parse_metaprompt("\\  \\")
-    assert result["exprs"] == [t("\\  \\")]
+    result = parse("\\  \\")
+    assert result == [t("\\  \\")]
 
 
 def test_comment():
-    result = parse_metaprompt("[# asd ]")
-    assert result["exprs"] == [comment([{"text": " asd ", "type": "text"}])]
+    result = parse("[# asd ]")
+    assert result == [comment([{"text": " asd ", "type": "text"}])]
 
 
 def test_comment_2():
-    result = parse_metaprompt("[# asd ]]")
-    assert result["exprs"] == [
+    result = parse("[# asd ]]")
+    assert result == [
         comment([{"text": " asd ", "type": "text"}]),
         t("]"),
     ]
 
 
 def test_absence_of_comment():
-    result = parse_metaprompt("# asd")
-    assert result["exprs"] == [t("# asd")]
+    result = parse("# asd")
+    assert result == [t("# asd")]
 
 
 def test_meta():
-    result = parse_metaprompt("[:test]")
-    assert result["exprs"] == [var("test")]
+    result = parse("[:test]")
+    assert result == [var("test")]
 
 
 def test_meta_text():
-    result = parse_metaprompt("[:test]asd")
-    assert result["exprs"] == [
+    result = parse("[:test]asd")
+    assert result == [
         {"name": "test", "type": "var"},
         {"text": "asd", "type": "text"},
     ]
 
 
 def test_meta_text2():
-    result = parse_metaprompt("asd[:test]asd")
-    assert result["exprs"] == [
+    result = parse("asd[:test]asd")
+    assert result == [
         {"text": "asd", "type": "text"},
         {"name": "test", "type": "var"},
         {"text": "asd", "type": "text"},
@@ -178,8 +180,8 @@ def test_meta_text2():
 
 
 def test_if():
-    result = parse_metaprompt("[:if foo :then bar]")
-    assert result["exprs"] == [
+    result = parse("[:if foo :then bar]")
+    assert result == [
         if_then(
             [{"type": "text", "text": " foo "}],
             [{"type": "text", "text": " bar"}],
@@ -188,8 +190,8 @@ def test_if():
 
 
 def test_if_nested():
-    result = parse_metaprompt("[:if [:if bar :then baz :else qux] :then bar]")
-    assert result["exprs"] == [
+    result = parse("[:if [:if bar :then baz :else qux] :then bar]")
+    assert result == [
         if_then(
             [
                 # t(" "), <- removed by parse_utils.remove_extra_whitespace
@@ -202,84 +204,84 @@ def test_if_nested():
 
 
 def test_dummy_meta():
-    result = parse_metaprompt("[test]")
-    assert result["exprs"] == [t("[test]")]
+    result = parse("[test]")
+    assert result == [t("[test]")]
 
 
 def test_dummy_meta2():
-    result = parse_metaprompt("[[]]")
-    assert result["exprs"] == [t("[[]]")]
+    result = parse("[[]]")
+    assert result == [t("[[]]")]
 
 
 def test_dummy_meta3():
-    result = parse_metaprompt("[a")
-    assert result["exprs"] == [t("[a")]
+    result = parse("[a")
+    assert result == [t("[a")]
 
 
 def test_dummy_meta4():
-    result = parse_metaprompt("[[][]]")
-    assert result["exprs"] == [t("[[][]]")]
+    result = parse("[[][]]")
+    assert result == [t("[[][]]")]
 
 
 def test_meta2():
-    result = parse_metaprompt("[$ []]")
-    assert result["exprs"] == [meta([t(" []")])]
+    result = parse("[$ []]")
+    assert result == [meta([t(" []")])]
 
 
 def test_meta3():
-    result = parse_metaprompt("[var$ []]")
-    assert result["exprs"] == [meta([t(" []")], chat_id="var")]
+    result = parse("[var$ []]")
+    assert result == [meta([t(" []")], chat_id="var")]
 
 
 def test_meta4():
-    result = parse_metaprompt("[VAR_FOO$ []]")
-    assert result["exprs"] == [meta([t(" []")], chat_id="VAR_FOO")]
+    result = parse("[VAR_FOO$ []]")
+    assert result == [meta([t(" []")], chat_id="VAR_FOO")]
 
 
 def test_meta_dollar():
-    result = parse_metaprompt("[$ foo]")
-    assert result["exprs"] == [meta([t(" foo")])]
+    result = parse("[$ foo]")
+    assert result == [meta([t(" foo")])]
 
 
 def test_meta_dollar2():
-    result = parse_metaprompt("[$ foo][$ foo]")
-    assert result["exprs"] == [
+    result = parse("[$ foo][$ foo]")
+    assert result == [
         meta([t(" foo")]),
         meta([t(" foo")]),
     ]
 
 
 def test_meta_dollar2():
-    result = parse_metaprompt("[$ foo]]")
-    assert result["exprs"] == [
+    result = parse("[$ foo]]")
+    assert result == [
         meta([t(" foo")]),
         t("]"),
     ]
 
 
 def test_assign():
-    result = parse_metaprompt("[:foo=bar]")
-    assert result["exprs"] == [assign("foo", [{"type": "text", "text": "bar"}])]
+    result = parse("[:foo=bar]")
+    assert result == [assign("foo", [{"type": "text", "text": "bar"}])]
 
 
 def test_assign_optional():
-    result = parse_metaprompt("[:foo?=bar]")
-    assert result["exprs"] == [
+    result = parse("[:foo?=bar]")
+    assert result == [
         assign("foo", [{"type": "text", "text": "bar"}], required=False)
     ]
 
 
 def test_assign_trailing_bracket():
-    result = parse_metaprompt("[:foo=bar]]")
-    assert result["exprs"] == [
+    result = parse("[:foo=bar]]")
+    assert result == [
         assign("foo", [{"type": "text", "text": "bar"}]),
         t("]"),
     ]
 
 
 def test_assign_normal():
-    result = parse_metaprompt("[:foo=[$ hi ]]")
-    assert result["exprs"] == [
+    result = parse("[:foo=[$ hi ]]")
+    assert result == [
         {
             "type": "assign",
             "required": True,
@@ -290,13 +292,13 @@ def test_assign_normal():
 
 
 def test_use_1():
-    result = parse_metaprompt("[:use foo]")
-    assert result["exprs"] == [use("foo", {})]
+    result = parse("[:use foo]")
+    assert result == [use("foo", {})]
 
 
 def test_use_2():
-    result = parse_metaprompt("[:use foo :asd=hey :foo=bar]")
-    assert result["exprs"] == [
+    result = parse("[:use foo :asd=hey :foo=bar]")
+    assert result == [
         use(
             "foo",
             {
@@ -308,15 +310,15 @@ def test_use_2():
 
 
 def test_use_3():
-    result = parse_metaprompt("[:use\nfoo\n]")
-    assert result["exprs"] == [
+    result = parse("[:use\nfoo\n]")
+    assert result == [
         {"type": "use", "module_name": "foo", "parameters": {}}
     ]
 
 
 def test_use_nested():
-    result = parse_metaprompt("[:use foo :asd=[:use bar] hiii :foo=bar]")
-    assert result["exprs"] == [
+    result = parse("[:use foo :asd=[:use bar] hiii :foo=bar]")
+    assert result == [
         {
             "type": "use",
             "module_name": "foo",
@@ -329,10 +331,10 @@ def test_use_nested():
 
 
 def test_use_nested_2():
-    result = parse_metaprompt(
+    result = parse(
         "[:use foo :asd=[hiiii [:use bar :qux=asd]] hiii :foo=bar]"
     )
-    assert result["exprs"] == [
+    assert result == [
         {
             "type": "use",
             "module_name": "foo",
@@ -349,10 +351,10 @@ def test_use_nested_2():
 
 
 def test_choose():
-    result = parse_metaprompt(
+    result = parse(
         "[:choose foo :option o1 :is d1 :option o2 :is d2 :default bar]"
     )
-    assert result["exprs"] == [
+    assert result == [
         choose(
             [t(" foo ")],
             [
@@ -365,10 +367,10 @@ def test_choose():
 
 
 def test_choose_no_default():
-    result = parse_metaprompt(
+    result = parse(
         "[:choose foo :option o1 :is d1 :option o2 :is d2]"
     )
-    assert result["exprs"] == [
+    assert result == [
         choose(
             [t(" foo ")],
             [
@@ -381,47 +383,53 @@ def test_choose_no_default():
 
 
 def test_call():
-    result = parse_metaprompt("[@writeFile filename.txt :with hello, world!]")
-    assert result["exprs"] == [
+    result = parse("[@writeFile filename.txt :with hello, world!]")
+    assert result == [
         call("writeFile", [[t("filename.txt ")], [t(" hello, world!")]], {})
     ]
 
 
 def test_call_1():
-    result = parse_metaprompt("[@writeFile]")
-    assert result["exprs"] == [
+    result = parse("[@writeFile]")
+    assert result == [
         call("writeFile", [], {})
     ]
 
 def test_call_2():
-    result = parse_metaprompt("[@writeFile:file=file.txt]")
-    assert result["exprs"] == [
+    result = parse("[@writeFile:file=file.txt]")
+    assert result == [
         call("writeFile", [], {"file": [t("file.txt")]})
     ]
 
 def test_call_3():
-    result = parse_metaprompt("[@cite hello]")
-    assert result["exprs"] == [
+    result = parse("[@cite hello]")
+    assert result == [
         call("cite", [[t("hello")]], {})
     ]
 
 def test_call_4():
-    result = parse_metaprompt("[@cite hello :with hi]")
-    assert result["exprs"] == [
+    result = parse("[@cite hello :with hi]")
+    assert result == [
         call("cite", [[t("hello ")], [t(" hi")]], {})
     ]
 
 def test_call_5():
-    result = parse_metaprompt("[@cite :param=1 :with hi]")
-    assert result["exprs"] == [
+    result = parse("[@cite :param=1 :with hi]")
+    assert result == [
         call("cite", [[t(" hi")]], {"param": [t("1 ")]})
     ]
 
+def test_call_6():
+    result = parse("[@cite :with hi]")
+    assert result == [
+        call("cite", [[t(" hi")]], {})
+    ]
+
 def test_call_named():
-    result = parse_metaprompt(
+    result = parse(
         "[@writeFile :file=filename.txt :content=hello, world!]"
     )
-    assert result["exprs"] == [
+    assert result == [
         call(
             "writeFile",
             [],
