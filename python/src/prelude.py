@@ -63,6 +63,7 @@ async def cite(string, prefix="> "):
 async def strip(string):
     return string.strip()
 
+
 # TODO: strip lines
 # TODO: replace
 # TODO: strip suffix/prefix

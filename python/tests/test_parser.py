@@ -4,8 +4,10 @@ from parse_metaprompt import (
 )
 from parse_utils import remove_extra_whitespace
 
+
 def parse(text):
     return parse_metaprompt(text)["exprs"]
+
 
 def t(text):
     return {"type": "text", "text": text}
@@ -311,9 +313,7 @@ def test_use_2():
 
 def test_use_3():
     result = parse("[:use\nfoo\n]")
-    assert result == [
-        {"type": "use", "module_name": "foo", "parameters": {}}
-    ]
+    assert result == [{"type": "use", "module_name": "foo", "parameters": {}}]
 
 
 def test_use_nested():
@@ -331,9 +331,7 @@ def test_use_nested():
 
 
 def test_use_nested_2():
-    result = parse(
-        "[:use foo :asd=[hiiii [:use bar :qux=asd]] hiii :foo=bar]"
-    )
+    result = parse("[:use foo :asd=[hiiii [:use bar :qux=asd]] hiii :foo=bar]")
     assert result == [
         {
             "type": "use",
@@ -367,9 +365,7 @@ def test_choose():
 
 
 def test_choose_no_default():
-    result = parse(
-        "[:choose foo :option o1 :is d1 :option o2 :is d2]"
-    )
+    result = parse("[:choose foo :option o1 :is d1 :option o2 :is d2]")
     assert result == [
         choose(
             [t(" foo ")],
@@ -391,44 +387,36 @@ def test_call():
 
 def test_call_1():
     result = parse("[@writeFile]")
-    assert result == [
-        call("writeFile", [], {})
-    ]
+    assert result == [call("writeFile", [], {})]
+
 
 def test_call_2():
     result = parse("[@writeFile:file=file.txt]")
-    assert result == [
-        call("writeFile", [], {"file": [t("file.txt")]})
-    ]
+    assert result == [call("writeFile", [], {"file": [t("file.txt")]})]
+
 
 def test_call_3():
     result = parse("[@cite hello]")
-    assert result == [
-        call("cite", [[t("hello")]], {})
-    ]
+    assert result == [call("cite", [[t("hello")]], {})]
+
 
 def test_call_4():
     result = parse("[@cite hello :with hi]")
-    assert result == [
-        call("cite", [[t("hello ")], [t(" hi")]], {})
-    ]
+    assert result == [call("cite", [[t("hello ")], [t(" hi")]], {})]
+
 
 def test_call_5():
     result = parse("[@cite :param=1 :with hi]")
-    assert result == [
-        call("cite", [[t(" hi")]], {"param": [t("1 ")]})
-    ]
+    assert result == [call("cite", [[t(" hi")]], {"param": [t("1 ")]})]
+
 
 def test_call_6():
     result = parse("[@cite :with hi]")
-    assert result == [
-        call("cite", [[t(" hi")]], {})
-    ]
+    assert result == [call("cite", [[t(" hi")]], {})]
+
 
 def test_call_named():
-    result = parse(
-        "[@writeFile :file=filename.txt :content=hello, world!]"
-    )
+    result = parse("[@writeFile :file=filename.txt :content=hello, world!]")
     assert result == [
         call(
             "writeFile",

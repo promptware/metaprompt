@@ -103,7 +103,9 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
         else:
             return {"type": "exprs", "exprs": self.visit(ctx.exprs())}
 
-    def visitVar_optional_assignment(self, ctx: MetaPromptParser.Var_optional_assignmentContext):
+    def visitVar_optional_assignment(
+        self, ctx: MetaPromptParser.Var_optional_assignmentContext
+    ):
         name = ctx.VAR_NAME().getText()[1:]
         exprs = self.visit(ctx.exprs())
         return name, exprs
@@ -113,7 +115,9 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
         exprs = self.visit(ctx.exprs())
         return name, exprs
 
-    def visitNamed_parameters(self, ctx: MetaPromptParser.Named_parametersContext):
+    def visitNamed_parameters(
+        self, ctx: MetaPromptParser.Named_parametersContext
+    ):
         parameters = {}
         for assignment in ctx.var_assignment():
             name, exprs = self.visit(assignment)
@@ -123,17 +127,17 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
     def visitCall_arg1(self, ctx: MetaPromptParser.Call_arg1Context):
         if ctx.var_assignment() is not None:
             name, exprs = self.visit(ctx.var_assignment())
-            return { "type": "named", "name": name, "exprs": exprs }
+            return {"type": "named", "name": name, "exprs": exprs}
         else:
-            return { "type": "positional", "exprs": self.visit(ctx.exprs()) }
+            return {"type": "positional", "exprs": self.visit(ctx.exprs())}
 
     # differs from the above only by the presence of WITH_KW that we ignore.
     def visitCall_arg(self, ctx: MetaPromptParser.Call_argContext):
         if ctx.var_assignment() is not None:
             name, exprs = self.visit(ctx.var_assignment())
-            return { "type": "named", "name": name, "exprs": exprs }
+            return {"type": "named", "name": name, "exprs": exprs}
         else:
-            return { "type": "positional", "exprs": self.visit(ctx.exprs()) }
+            return {"type": "positional", "exprs": self.visit(ctx.exprs())}
 
     def visitOption(self, ctx: MetaPromptParser.OptionContext):
         exprs = ctx.exprs()
@@ -215,9 +219,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 use_arg(self.visit(ctx.call_arg1()))
             if ctx.call_arg() is not None:
                 for call_arg in ctx.call_arg():
-                    use_arg(
-                        self.visit(call_arg)
-                    )
+                    use_arg(self.visit(call_arg))
 
             return {
                 "type": "call",
