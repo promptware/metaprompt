@@ -4,17 +4,19 @@ prompt:	exprs EOF ;
 exprs: expr*? ;
 expr: meta_body
     | text
-    | COMMENT_KW
-    | META_PROMPT
     | EQ_KW
-    | VAR_NAME
-    | CHOOSE_KW
+    | EQ_OPTIONAL_KW
     | OPTION_KW
+    | WITH_KW
     | DEFAULT_KW
     | IS_KW
-    | CALL
-    | WITH_KW
+    | IF_KW
+    | THEN_KW
+    | ELSE_KW
+    | VAR_NAME
     ;
+
+
 
 meta_body
     : IF_KW exprs THEN_KW exprs ELSE_KW exprs RB

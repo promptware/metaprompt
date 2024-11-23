@@ -55,16 +55,16 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             # a token is in a standalone position and should be
             # treaded as text
             for part in [
-                ctx.COMMENT_KW(),
-                ctx.META_PROMPT(),
                 ctx.EQ_KW(),
-                ctx.VAR_NAME(),
-                ctx.CHOOSE_KW(),
+                ctx.EQ_OPTIONAL_KW(),
                 ctx.OPTION_KW(),
+                ctx.WITH_KW(),
                 ctx.DEFAULT_KW(),
                 ctx.IS_KW(),
-                ctx.CALL(),
-                ctx.WITH_KW(),
+                ctx.IF_KW(),
+                ctx.THEN_KW(),
+                ctx.ELSE_KW(),
+                ctx.VAR_NAME(),
             ]:
                 if part is not None:
                     return {"type": "text", "text": part.getText()}

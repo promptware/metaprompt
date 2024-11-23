@@ -118,12 +118,12 @@ def test_escaping_2():
 
 def test_escaping_2_1():
     result = parse("\\\\[:foo]")
-    assert result == [t("\\\\"), var("foo")]
+    assert result == [t("\\"), var("foo")]
 
 
 def test_escaping_2_2():
     result = parse("\\\\")
-    assert result == [t("\\\\")]
+    assert result == [t("\\")]
 
 
 def test_escaping_3():
@@ -132,7 +132,7 @@ def test_escaping_3():
 
 
 def test_escaping_4():
-    bs="\\"
+    bs = "\\"
     result = parse(f"{bs}{bs}{bs}[")
     assert result == [t(f"{bs}[")]
 
@@ -148,7 +148,7 @@ def test_comment():
 
 
 def test_comment_2():
-    result = parse("[# asd ]]")
+    result = parse("[# asd ]\\]")
     assert result == [
         comment([{"text": " asd ", "type": "text"}]),
         t("]"),
@@ -158,6 +158,61 @@ def test_comment_2():
 def test_absence_of_comment():
     result = parse("# asd")
     assert result == [t("# asd")]
+
+
+def test_kw_EQ_KW():
+    result = parse("==")
+    assert result == [t("==")]
+
+
+def test_kw_EQ_OPTIONAL_KW():
+    result = parse("?=")
+    assert result == [t("?=")]
+
+
+def test_kw_dollar():
+    result = parse("$")
+    assert result == [t("$")]
+
+
+def test_kw_OPTION_KW():
+    result = parse(":option:option")
+    assert result == [t(":option:option")]
+
+
+def test_kw_DEFAULT_KW():
+    result = parse(":default:default")
+    assert result == [t(":default:default")]
+
+
+def test_kw_WITH_KW():
+    result = parse(":with:with")
+    assert result == [t(":with:with")]
+
+
+def test_kw_IS_KW():
+    result = parse(":is:is")
+    assert result == [t(":is:is")]
+
+
+def test_kw_IF_KW():
+    result = parse(":if:if")
+    assert result == [t(":if:if")]
+
+
+def test_kw_THEN_KW():
+    result = parse(":then:then")
+    assert result == [t(":then:then")]
+
+
+def test_kw_ELSE_KW():
+    result = parse(":else:else")
+    assert result == [t(":else:else")]
+
+
+def test_kw_VAR_NAME():
+    result = parse(":foo")
+    assert result == [t(":foo")]
 
 
 def test_meta():
@@ -207,7 +262,7 @@ def test_if_nested():
 
 
 def test_dummy_meta():
-    result = parse("\[test\]")
+    result = parse("\\[test\\]")
     assert result == [t("[test]")]
 
 
@@ -218,7 +273,7 @@ def test_dummy_meta2():
 
 def test_dummy_meta3():
     result = parse("\\[a")
-    assert result == [t("\\[a")]
+    assert result == [t("[a")]
 
 
 def test_dummy_meta4():
@@ -232,12 +287,12 @@ def test_meta2():
 
 
 def test_meta3():
-    result = parse("[var$ []]")
+    result = parse("[var$ \\[\\]]")
     assert result == [meta([t(" []")], chat_id="var")]
 
 
 def test_meta4():
-    result = parse("[VAR_FOO$ []]")
+    result = parse("[VAR_FOO$ \\[\\]]")
     assert result == [meta([t(" []")], chat_id="VAR_FOO")]
 
 
@@ -254,8 +309,8 @@ def test_meta_dollar2():
     ]
 
 
-def test_meta_dollar2():
-    result = parse("[$ foo]]")
+def test_meta_dollar3():
+    result = parse("[$ foo]\\]")
     assert result == [
         meta([t(" foo")]),
         t("]"),
@@ -275,7 +330,7 @@ def test_assign_optional():
 
 
 def test_assign_trailing_bracket():
-    result = parse("[:foo=bar]]")
+    result = parse("[:foo=bar]\\]")
     assert result == [
         assign("foo", [{"type": "text", "text": "bar"}]),
         t("]"),
@@ -332,7 +387,9 @@ def test_use_nested():
 
 
 def test_use_nested_2():
-    result = parse("[:use foo :asd=\\[hiiii [:use bar :qux=asd]\\] hiii :foo=bar]")
+    result = parse(
+        "[:use foo :asd=\\[hiiii [:use bar :qux=asd]\\] hiii :foo=bar]"
+    )
     assert result == [
         {
             "type": "use",

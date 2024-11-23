@@ -66,9 +66,11 @@ async def cite(string, prefix="> "):
 def strip(string):
     return string.strip()
 
+
 @foreign_function(eager)
 def length(string):
     return str(len(string))
+
 
 # TODO: strip lines
 # TODO: replace
@@ -77,17 +79,18 @@ def length(string):
 
 # Web
 
+
 @foreign_function(eager)
 async def google(query):
 
     GOOGLE_SEARCH_API_KEY = os.getenv("GOOGLE_SEARCH_API_KEY")
     GOOGLE_SEARCH_ENGINE_ID = os.getenv("GOOGLE_SEARCH_ENGINE_ID")
 
-    url = f'https://www.googleapis.com/customsearch/v1'
+    url = f"https://www.googleapis.com/customsearch/v1"
     params = {
-        'key': GOOGLE_SEARCH_API_KEY,
-        'cx': GOOGLE_SEARCH_ENGINE_ID,
-        'q': query
+        "key": GOOGLE_SEARCH_API_KEY,
+        "cx": GOOGLE_SEARCH_ENGINE_ID,
+        "q": query,
     }
 
     response = requests.get(url, params=params)
@@ -98,7 +101,7 @@ async def google(query):
         results = response.json()
 
         i = 1
-        for item in results.get('items', []):
+        for item in results.get("items", []):
             res += f"[result #{str(i)}]\n"
             res += f"Title: {item['title']}\n"
             res += f"URL: {item['link']}\n"
@@ -108,6 +111,7 @@ async def google(query):
         raise ValueError(f"@google: {response.status_code} error")
 
     return res
+
 
 @foreign_function(eager)
 def read_web(url):
@@ -129,14 +133,19 @@ def read_web(url):
         html_content = response.text
         markdown_converter = html2text.HTML2Text()
         markdown_converter.ignore_links = True  # Keep links in the Markdown
-        markdown_converter.skip_internal_links = True  # Skip internal anchors (optional)
+        markdown_converter.skip_internal_links = (
+            True  # Skip internal anchors (optional)
+        )
         markdown_converter.ignore_images = True  # Remove image links
         markdown_content = markdown_converter.handle(html_content)
 
         return markdown_content
     except requests.exceptions.RequestException as e:
-        raise ValueError(f"@read_web: An error occurred while fetching the URL: {e}")
+        raise ValueError(
+            f"@read_web: An error occurred while fetching the URL: {e}"
+        )
         return None
+
 
 prelude = {
     "and": _and,
