@@ -1,21 +1,21 @@
-\[@and false :with true ] = [@and false :with true]
-\[@and true  :with true ] = [@and true :with true]
-\[@and true  :with false] = [@and true :with false]
-\[@and false :with false] = [@and false :with false]
-      \[@and]             = [@and]
+\[@and false :with true \] = [@and false :with true]
+\[@and true  :with true \] = [@and true :with true]
+\[@and true  :with false\] = [@and true :with false]
+\[@and false :with false\] = [@and false :with false]
+      \[@and\]             = [@and]
 
 
-\[@or false :with true ] = [@or false :with true]
-\[@or true  :with true ] = [@or true :with true]
-\[@or true  :with false] = [@or true :with false]
-\[@or false :with false] = [@or false :with false]
-      \[@or]             = [@or]
+\[@or false :with true \] = [@or false :with true]
+\[@or true  :with true \] = [@or true :with true]
+\[@or true  :with false\] = [@or true :with false]
+\[@or false :with false\] = [@or false :with false]
+      \[@or\]             = [@or]
 
-\[@xor false :with true ] = [@xor false :with true]
-\[@xor true  :with true ] = [@xor true :with true]
-\[@xor true  :with false] = [@xor true :with false]
-\[@xor false :with false] = [@xor false :with false]
-      \[@xor]             = [@xor]
+\[@xor false :with true \] = [@xor false :with true]
+\[@xor true  :with true \] = [@xor true :with true]
+\[@xor true  :with false\] = [@xor true :with false]
+\[@xor false :with false\] = [@xor false :with false]
+      \[@xor\]             = [@xor]
 
 [@cite :prefix=>>> :with
 [@strip
