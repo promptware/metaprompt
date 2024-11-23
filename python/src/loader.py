@@ -77,6 +77,8 @@ class ParameterSet:
 
 def extract_parameter_set(ast):
     # TODO: special handling of ROLE, MODEL variables
+    # TODO: check parameters that are passed:
+    #   optional assignment operator is lazy in its RHS
     res = ParameterSet()
 
     if isinstance(ast, list):

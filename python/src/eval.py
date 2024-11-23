@@ -247,8 +247,8 @@ async def eval_ast(ast, config, runtime):
 
         elif ast["type"] == "assign":
             var_name = ast["name"]
-            value = (await _collect_exprs(ast["exprs"])).strip()
             if ast["required"] or env.get(var_name) is None:
+                value = (await _collect_exprs(ast["exprs"])).strip()
                 if var_name == "STATUS":
                     runtime.set_status(value)
                 elif var_name == "ROLE":
