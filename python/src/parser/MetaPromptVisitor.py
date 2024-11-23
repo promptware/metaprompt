@@ -19,6 +19,11 @@ class MetaPromptVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by MetaPromptParser#exprs1.
+    def visitExprs1(self, ctx:MetaPromptParser.Exprs1Context):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by MetaPromptParser#expr.
     def visitExpr(self, ctx:MetaPromptParser.ExprContext):
         return self.visitChildren(ctx)
@@ -34,6 +39,26 @@ class MetaPromptVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by MetaPromptParser#var_assignment.
+    def visitVar_assignment(self, ctx:MetaPromptParser.Var_assignmentContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MetaPromptParser#var_optional_assignment.
+    def visitVar_optional_assignment(self, ctx:MetaPromptParser.Var_optional_assignmentContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MetaPromptParser#call_arg1.
+    def visitCall_arg1(self, ctx:MetaPromptParser.Call_arg1Context):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MetaPromptParser#call_arg.
+    def visitCall_arg(self, ctx:MetaPromptParser.Call_argContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by MetaPromptParser#option.
     def visitOption(self, ctx:MetaPromptParser.OptionContext):
         return self.visitChildren(ctx)
@@ -44,13 +69,8 @@ class MetaPromptVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MetaPromptParser#positional_args.
-    def visitPositional_args(self, ctx:MetaPromptParser.Positional_argsContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MetaPromptParser#parameters.
-    def visitParameters(self, ctx:MetaPromptParser.ParametersContext):
+    # Visit a parse tree produced by MetaPromptParser#named_parameters.
+    def visitNamed_parameters(self, ctx:MetaPromptParser.Named_parametersContext):
         return self.visitChildren(ctx)
 
 

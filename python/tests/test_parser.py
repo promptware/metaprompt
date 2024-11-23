@@ -381,11 +381,55 @@ def test_choose_no_default():
 
 
 def test_call():
+    result = parse_metaprompt("[@writeFile filename.txt :with hello, world!]")
+    assert result["exprs"] == [
+        call("writeFile", [[t("filename.txt ")], [t(" hello, world!")]], {})
+    ]
+
+
+def test_call_1():
+    result = parse_metaprompt("[@writeFile]")
+    assert result["exprs"] == [
+        call("writeFile", [], {})
+    ]
+
+def test_call_2():
+    result = parse_metaprompt("[@writeFile:file=file.txt]")
+    assert result["exprs"] == [
+        call("writeFile", [], {"file": [t("file.txt")]})
+    ]
+
+def test_call_3():
+    result = parse_metaprompt("[@cite hello]")
+    assert result["exprs"] == [
+        call("cite", [[t("hello")]], {})
+    ]
+
+def test_call_4():
+    result = parse_metaprompt("[@cite hello :with hi]")
+    assert result["exprs"] == [
+        call("cite", [[t("hello ")], [t(" hi")]], {})
+    ]
+
+def test_call_5():
+    result = parse_metaprompt("[@cite :param=1 :with hi]")
+    assert result["exprs"] == [
+        call("cite", [[t(" hi")]], {"param": [t("1 ")]})
+    ]
+
+def test_call_named():
     result = parse_metaprompt(
-        "[@writeFile :with filename.txt :with hello, world!]"
+        "[@writeFile :file=filename.txt :content=hello, world!]"
     )
     assert result["exprs"] == [
-        call("writeFile", [[t(" filename.txt ")], [t(" hello, world!")]], {})
+        call(
+            "writeFile",
+            [],
+            {
+                "file": [t("filename.txt ")],
+                "content": [t("hello, world!")],
+            },
+        )
     ]
 
 

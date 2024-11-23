@@ -59,7 +59,7 @@ This is an early work-in-progress. Follow [me on twitter](https://x.com/klntsky)
   - [x] `[:use module :param1=value1]`
   - [x] `[# comments]`
   - [x] `[:STUATUS=some-status]` - to show during prompt evaluation
-  - [ ] `[:call ffi-function :param1=foo :param2=bar]`
+  - [x] `[@foreign_function arg1 :with arg2 :param1=foo :param2=bar]`
 - [ ] Implement an evaluator
   - [x] meta-prompting
   - [x] conditionals

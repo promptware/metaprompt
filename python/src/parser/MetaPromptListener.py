@@ -26,6 +26,15 @@ class MetaPromptListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by MetaPromptParser#exprs1.
+    def enterExprs1(self, ctx:MetaPromptParser.Exprs1Context):
+        pass
+
+    # Exit a parse tree produced by MetaPromptParser#exprs1.
+    def exitExprs1(self, ctx:MetaPromptParser.Exprs1Context):
+        pass
+
+
     # Enter a parse tree produced by MetaPromptParser#expr.
     def enterExpr(self, ctx:MetaPromptParser.ExprContext):
         pass
@@ -53,6 +62,42 @@ class MetaPromptListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by MetaPromptParser#var_assignment.
+    def enterVar_assignment(self, ctx:MetaPromptParser.Var_assignmentContext):
+        pass
+
+    # Exit a parse tree produced by MetaPromptParser#var_assignment.
+    def exitVar_assignment(self, ctx:MetaPromptParser.Var_assignmentContext):
+        pass
+
+
+    # Enter a parse tree produced by MetaPromptParser#var_optional_assignment.
+    def enterVar_optional_assignment(self, ctx:MetaPromptParser.Var_optional_assignmentContext):
+        pass
+
+    # Exit a parse tree produced by MetaPromptParser#var_optional_assignment.
+    def exitVar_optional_assignment(self, ctx:MetaPromptParser.Var_optional_assignmentContext):
+        pass
+
+
+    # Enter a parse tree produced by MetaPromptParser#call_arg1.
+    def enterCall_arg1(self, ctx:MetaPromptParser.Call_arg1Context):
+        pass
+
+    # Exit a parse tree produced by MetaPromptParser#call_arg1.
+    def exitCall_arg1(self, ctx:MetaPromptParser.Call_arg1Context):
+        pass
+
+
+    # Enter a parse tree produced by MetaPromptParser#call_arg.
+    def enterCall_arg(self, ctx:MetaPromptParser.Call_argContext):
+        pass
+
+    # Exit a parse tree produced by MetaPromptParser#call_arg.
+    def exitCall_arg(self, ctx:MetaPromptParser.Call_argContext):
+        pass
+
+
     # Enter a parse tree produced by MetaPromptParser#option.
     def enterOption(self, ctx:MetaPromptParser.OptionContext):
         pass
@@ -71,21 +116,12 @@ class MetaPromptListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MetaPromptParser#positional_args.
-    def enterPositional_args(self, ctx:MetaPromptParser.Positional_argsContext):
+    # Enter a parse tree produced by MetaPromptParser#named_parameters.
+    def enterNamed_parameters(self, ctx:MetaPromptParser.Named_parametersContext):
         pass
 
-    # Exit a parse tree produced by MetaPromptParser#positional_args.
-    def exitPositional_args(self, ctx:MetaPromptParser.Positional_argsContext):
-        pass
-
-
-    # Enter a parse tree produced by MetaPromptParser#parameters.
-    def enterParameters(self, ctx:MetaPromptParser.ParametersContext):
-        pass
-
-    # Exit a parse tree produced by MetaPromptParser#parameters.
-    def exitParameters(self, ctx:MetaPromptParser.ParametersContext):
+    # Exit a parse tree produced by MetaPromptParser#named_parameters.
+    def exitNamed_parameters(self, ctx:MetaPromptParser.Named_parametersContext):
         pass
 
 

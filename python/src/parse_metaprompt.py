@@ -55,6 +55,13 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             exprs.extend(expr_items)
         return _process_expr_list(exprs)
 
+    def visitExprs1(self, ctx: MetaPromptParser.Exprs1Context):
+        exprs = []
+        for expr in ctx.expr():
+            expr_items = self.visit(expr)
+            exprs.extend(expr_items)
+        return _process_expr_list(exprs)
+
     def visitExpr(self, ctx: MetaPromptParser.ExprContext):
         exprs = []
         if ctx.text() is not None:
@@ -96,16 +103,37 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
         else:
             return {"type": "exprs", "exprs": self.visit(ctx.exprs())}
 
-    def visitParameters(self, ctx: MetaPromptParser.ParametersContext):
+    def visitVar_optional_assignment(self, ctx: MetaPromptParser.Var_optional_assignmentContext):
+        name = ctx.VAR_NAME().getText()[1:]
+        exprs = self.visit(ctx.exprs())
+        return name, exprs
+
+    def visitVar_assignment(self, ctx: MetaPromptParser.Var_assignmentContext):
+        name = ctx.VAR_NAME().getText()[1:]
+        exprs = self.visit(ctx.exprs())
+        return name, exprs
+
+    def visitNamed_parameters(self, ctx: MetaPromptParser.Named_parametersContext):
         parameters = {}
-        for name, exprs in zip(ctx.VAR_NAME(), ctx.exprs()):
-            parameters[name.getText()[1:]] = self.visit(exprs)
+        for assignment in ctx.var_assignment():
+            name, exprs = self.visit(assignment)
+            parameters[name] = exprs
         return parameters
 
-    def visitPositional_args(
-        self, ctx: MetaPromptParser.Positional_argsContext
-    ):
-        return [self.visit(expr) for expr in ctx.exprs()]
+    def visitCall_arg1(self, ctx: MetaPromptParser.Call_arg1Context):
+        if ctx.var_assignment() is not None:
+            name, exprs = self.visit(ctx.var_assignment())
+            return { "type": "named", "name": name, "exprs": exprs }
+        else:
+            return { "type": "positional", "exprs": self.visit(ctx.exprs()) }
+
+    # differs from the above only by the presence of WITH_KW that we ignore.
+    def visitCall_arg(self, ctx: MetaPromptParser.Call_argContext):
+        if ctx.var_assignment() is not None:
+            name, exprs = self.visit(ctx.var_assignment())
+            return { "type": "named", "name": name, "exprs": exprs }
+        else:
+            return { "type": "positional", "exprs": self.visit(ctx.exprs()) }
 
     def visitOption(self, ctx: MetaPromptParser.OptionContext):
         exprs = ctx.exprs()
@@ -162,7 +190,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
 
         elif ctx.USE() is not None:
             module_name = ctx.USE().getText().removeprefix(":use").strip()
-            parameters = self.visit(ctx.parameters())
+            parameters = self.visit(ctx.named_parameters())
             return {
                 "type": "use",
                 "module_name": module_name,
@@ -171,34 +199,54 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
 
         elif ctx.CALL() is not None:
             function_name = ctx.CALL().getText().removeprefix("@").strip()
-            parameters = self.visit(ctx.parameters())
-            positional_args = self.visit(ctx.positional_args())
+            positional_args = []
+            named_args = {}
+
+            def use_arg(arg):
+                if arg["type"] == "named":
+                    named_args[arg["name"]] = arg["exprs"]
+                elif arg["type"] == "positional":
+                    if len(arg["exprs"]) > 0:
+                        positional_args.append(arg["exprs"])
+                else:
+                    raise ValueError("impossible")
+
+            if ctx.call_arg1() is not None:
+                use_arg(self.visit(ctx.call_arg1()))
+            if ctx.call_arg() is not None:
+                for call_arg in ctx.call_arg():
+                    use_arg(
+                        self.visit(call_arg)
+                    )
 
             return {
                 "type": "call",
                 "name": function_name,
-                "named_args": parameters,
+                "named_args": named_args,
                 "positional_args": positional_args,
             }
 
         elif ctx.VAR_NAME() is not None:
-            # slice the ":"
             var_name = ctx.VAR_NAME().getText()[1:]
-            if ctx.EQ_KW() is not None:
-                # [:var_name= value]
-                exprs = []
-                for expr in ctx.exprs():
-                    expr_items = self.visit(expr)
-                    exprs.extend(expr_items)
-                required = ctx.EQ_KW().getText() == "="  # or "?="
-                return {
-                    "type": "assign",
-                    "required": required,
-                    "name": var_name,
-                    "exprs": _process_expr_list(exprs),
-                }
-            else:
-                return {"type": "var", "name": var_name}
+            return {"type": "var", "name": var_name}
+
+        elif ctx.var_assignment() is not None:
+            var_name, exprs = self.visit(ctx.var_assignment())
+            return {
+                "type": "assign",
+                "required": True,
+                "name": var_name,
+                "exprs": _process_expr_list(exprs),
+            }
+
+        elif ctx.var_optional_assignment() is not None:
+            var_name, exprs = self.visit(ctx.var_optional_assignment())
+            return {
+                "type": "assign",
+                "required": False,
+                "name": var_name,
+                "exprs": _process_expr_list(exprs),
+            }
 
         elif ctx.META_PROMPT() is not None:
             # [foo$ exprs]

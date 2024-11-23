@@ -1,15 +1,24 @@
-false and true  = [@and :with false :with true]
-true  and true  = [@and :with true :with true]
-true  and false = [@and :with true :with false]
-false and false = [@and :with false :with false]
+\[@and false :with true ] = [@and false :with true]
+\[@and true  :with true ] = [@and true :with true]
+\[@and true  :with false] = [@and true :with false]
+\[@and false :with false] = [@and false :with false]
+      \[@and]             = [@and]
 
-false xor true  = [@xor :with false :with true]
-true  xor true  = [@xor :with true :with true]
-true  xor false = [@xor :with true :with false]
-false xor false = [@xor :with false :with false]
 
-[@cite :with
-[@strip :with
+\[@or false :with true ] = [@or false :with true]
+\[@or true  :with true ] = [@or true :with true]
+\[@or true  :with false] = [@or true :with false]
+\[@or false :with false] = [@or false :with false]
+      \[@or]             = [@or]
+
+\[@xor false :with true ] = [@xor false :with true]
+\[@xor true  :with true ] = [@xor true :with true]
+\[@xor true  :with false] = [@xor true :with false]
+\[@xor false :with false] = [@xor false :with false]
+      \[@xor]             = [@xor]
+
+[@cite :prefix=>>> :with
+[@strip
 
 autonomous AI agent
 look inside

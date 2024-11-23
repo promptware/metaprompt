@@ -2,6 +2,7 @@ grammar MetaPrompt;
 
 prompt:	exprs EOF ;
 exprs: expr*? ;
+exprs1: expr+? ;
 expr: LB expr1 RB
     | text
     | RB
@@ -27,12 +28,32 @@ meta_body
     : IF_KW exprs THEN_KW exprs ELSE_KW exprs
     | IF_KW exprs THEN_KW exprs
     | CHOOSE_KW exprs option+ default_option?
-    | USE parameters
+    | USE named_parameters
     | META_PROMPT exprs
     | COMMENT_KW exprs
-    | VAR_NAME EQ_KW exprs
+    | var_assignment
+    | var_optional_assignment
     | VAR_NAME
-    | CALL positional_args parameters
+    | CALL call_arg1 call_arg*
+    | CALL call_arg*
+    ;
+
+var_assignment
+    : VAR_NAME EQ_KW exprs
+    ;
+
+var_optional_assignment
+    : VAR_NAME EQ_OPTIONAL_KW exprs
+    ;
+
+call_arg1
+    : var_assignment
+    | exprs
+    ;
+
+call_arg
+    : var_assignment
+    | WITH_KW exprs
     ;
 
 option
@@ -43,19 +64,16 @@ default_option
     : DEFAULT_KW exprs
     ;
 
-positional_args
-    : (WITH_KW exprs)*
-    ;
-
-parameters
-    : (VAR_NAME EQ_KW exprs)*
+named_parameters
+    : var_assignment*
     ;
 
 text: CHAR+ ;
 
 LB : '[';
 RB : ']';
-EQ_KW : '=' | '?=' ;
+EQ_KW : '=' ;
+EQ_OPTIONAL_KW : '?=' ;
 META_PROMPT : [a-zA-Z_]?[a-zA-Z0-9_]* '$' ;
 COMMENT_KW : '#' ;
 CHAR : ( ESCAPED | .);
