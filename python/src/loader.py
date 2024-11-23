@@ -94,7 +94,7 @@ def extract_parameter_set(ast):
             if ast["name"] != "MODEL":
                 res.use_var(ast["name"])
         elif ast["type"] == "use":
-            for _, expr in ast["exprs"]:
+            for _, expr in ast["parameters"].items():
                 res = res.then(extract_parameter_set(expr))
         elif ast["type"] == "assign":
             if ast["required"]:

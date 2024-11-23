@@ -1,6 +1,7 @@
 from metaprompt import metaprompt
 from config import Config
 from providers.mock import MockProvider
+from runtimes.mock import MockRuntime
 
 import pytest
 import re
@@ -183,5 +184,49 @@ chat2: [chat2$ [:question]]
     expected = """
 chat1: ride a car
 chat2: eat an apple
+"""
+    assert result.strip() == expected.strip()
+
+
+@pytest.mark.asyncio
+async def test_counter():
+    prompt = """
+counter is: [:number]
+[:if [:number] is zero or less
+ :then done!
+ :else [:use ./counter
+    :number=[$ subtract one from [:number].
+    just give me the resulting number, no other output]]
+]"""
+    result = await metaprompt(
+        prompt,
+        Config(
+            providers=MockProvider(
+                rules=[
+                    ({"chat": r"3 is zero"}, "false"),
+                    ({"chat": r"subtract one from 3"}, "2"),
+                    ({"chat": r"2 is zero"}, "false"),
+                    ({"chat": r"subtract one from 2"}, "1"),
+                    ({"chat": r"1 is zero"}, "false"),
+                    ({"chat": r"subtract one from 1"}, "0"),
+                    ({"chat": r"0 is zero"}, "true"),
+                ]
+            ),
+            parameters={"number": "3"},
+        ),
+        runtime=MockRuntime(
+            modules={"./counter": prompt},
+        ),
+    )
+
+    expected = """
+counter is: 3
+
+counter is: 2
+
+counter is: 1
+
+counter is: 0
+ done!
 """
     assert result.strip() == expected.strip()
