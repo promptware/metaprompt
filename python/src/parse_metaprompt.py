@@ -18,21 +18,12 @@ class ThrowingErrorListener(ErrorListener):
         raise Exception(f"Syntax error at line {line}:{column} - {msg}")
 
 
-_pattern = r"\\([\[\\])(\[)?"
+_pattern = r"\\([\[\\\]])"
 
 
 def _escape_pattern(match):
     first = match.group(1)
-    second = match.group(2)
-    if second is None:
-        if first == "\\":
-            return "\\\\"
-        elif first == "[":
-            return "["
-        else:
-            raise ValueError("Invariant violation: _escape_pattern")
-    else:
-        return match.group(1)
+    return first
 
 
 def _process_escaping(string):
@@ -52,35 +43,18 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
         exprs = []
         for expr in ctx.expr():
             expr_items = self.visit(expr)
-            exprs.extend(expr_items)
-        return _process_expr_list(exprs)
-
-    def visitExprs1(self, ctx: MetaPromptParser.Exprs1Context):
-        exprs = []
-        for expr in ctx.expr():
-            expr_items = self.visit(expr)
-            exprs.extend(expr_items)
+            exprs.append(expr_items)
         return _process_expr_list(exprs)
 
     def visitExpr(self, ctx: MetaPromptParser.ExprContext):
-        exprs = []
         if ctx.text() is not None:
-            exprs.append(self.visit(ctx.text()))
-        if ctx.expr1() is not None:
-            expr1 = self.visit(ctx.expr1())
-            if expr1["type"] == "meta":
-                exprs.append(expr1["meta"])
-            elif expr1["type"] == "exprs":
-                exprs.append({"type": "text", "text": "["})
-                for child in expr1["exprs"]:
-                    exprs.append(child)
-                exprs.append({"type": "text", "text": "]"})
+            return self.visit(ctx.text())
+        if ctx.meta_body() is not None:
+            return self.visit(ctx.meta_body())
         else:
             # a token is in a standalone position and should be
             # treaded as text
             for part in [
-                ctx.RB(),
-                ctx.LB(),
                 ctx.COMMENT_KW(),
                 ctx.META_PROMPT(),
                 ctx.EQ_KW(),
@@ -93,15 +67,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 ctx.WITH_KW(),
             ]:
                 if part is not None:
-                    exprs.append({"type": "text", "text": part.getText()})
-
-        return _process_expr_list(exprs)
-
-    def visitExpr1(self, ctx: MetaPromptParser.Expr1Context):
-        if ctx.meta_body() is not None:
-            return {"type": "meta", "meta": self.visit(ctx.meta_body())}
-        else:
-            return {"type": "exprs", "exprs": self.visit(ctx.exprs())}
+                    return {"type": "text", "text": part.getText()}
 
     def visitVar_optional_assignment(
         self, ctx: MetaPromptParser.Var_optional_assignmentContext
@@ -193,7 +159,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             }
 
         elif ctx.USE() is not None:
-            module_name = ctx.USE().getText().removeprefix(":use").strip()
+            module_name = ctx.USE().getText().removeprefix("[:use").strip()
             parameters = self.visit(ctx.named_parameters())
             return {
                 "type": "use",
@@ -202,7 +168,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
             }
 
         elif ctx.CALL() is not None:
-            function_name = ctx.CALL().getText().removeprefix("@").strip()
+            function_name = ctx.CALL().getText().removeprefix("[@").strip()
             positional_args = []
             named_args = {}
 
@@ -260,7 +226,7 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 "type": "meta",
                 "exprs": _process_expr_list(exprs),
             }
-            chat_id = ctx.META_PROMPT().getText()[:-1]
+            chat_id = ctx.META_PROMPT().getText()[1:-1]
             if chat_id != "":
                 res["chat"] = chat_id
             return res

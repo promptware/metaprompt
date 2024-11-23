@@ -2,11 +2,8 @@ grammar MetaPrompt;
 
 prompt:	exprs EOF ;
 exprs: expr*? ;
-exprs1: expr+? ;
-expr: LB expr1 RB
+expr: meta_body
     | text
-    | RB
-    | LB
     | COMMENT_KW
     | META_PROMPT
     | EQ_KW
@@ -19,23 +16,18 @@ expr: LB expr1 RB
     | WITH_KW
     ;
 
-expr1
-    : meta_body
-    | exprs
-    ;
-
 meta_body
-    : IF_KW exprs THEN_KW exprs ELSE_KW exprs
-    | IF_KW exprs THEN_KW exprs
-    | CHOOSE_KW exprs option+ default_option?
-    | USE named_parameters
-    | META_PROMPT exprs
-    | COMMENT_KW exprs
-    | var_assignment
+    : IF_KW exprs THEN_KW exprs ELSE_KW exprs RB
+    | IF_KW exprs THEN_KW exprs RB
+    | CHOOSE_KW exprs option+ default_option? RB
+    | USE named_parameters RB
+    | META_PROMPT exprs RB
+    | COMMENT_KW exprs RB
+    | LB var_assignment RB
     | var_optional_assignment
-    | VAR_NAME
-    | CALL call_arg1 call_arg*
-    | CALL call_arg*
+    | LB VAR_NAME RB
+    | CALL call_arg1 call_arg* RB
+    | CALL call_arg* RB
     ;
 
 var_assignment
@@ -43,7 +35,7 @@ var_assignment
     ;
 
 var_optional_assignment
-    : VAR_NAME EQ_OPTIONAL_KW exprs
+    : LB VAR_NAME EQ_OPTIONAL_KW exprs RB
     ;
 
 call_arg1
@@ -74,17 +66,17 @@ LB : '[';
 RB : ']';
 EQ_KW : '=' ;
 EQ_OPTIONAL_KW : '?=' ;
-META_PROMPT : [a-zA-Z_]?[a-zA-Z0-9_]* '$' ;
-COMMENT_KW : '#' ;
+META_PROMPT : LB [a-zA-Z_]?[a-zA-Z0-9_]* '$' ;
+COMMENT_KW : LB '#' ;
 CHAR : ( ESCAPED | .);
 fragment ESCAPED : ESCAPE ESCAPEE;
-fragment ESCAPEE : (LB | ESCAPE);
+fragment ESCAPEE : (LB | ESCAPE | RB);
 fragment ESCAPE : '\\';
-USE : ':use' WS+ [a-zA-Z0-9/_.-]+ WS*;
-CALL : '@' [a-zA-Z_][a-zA-Z0-9_]* WS*;
+USE : LB ':use' WS+ [a-zA-Z0-9/_.-]+ WS*;
+CALL : LB '@' [a-zA-Z_][a-zA-Z0-9_]* WS*;
 fragment WS : ' '|'\n';
-IF_KW : ':if' ;
-CHOOSE_KW : ':choose' ;
+IF_KW : LB ':if' ;
+CHOOSE_KW : LB ':choose' ;
 OPTION_KW : ':option' ;
 WITH_KW : ':with' ;
 DEFAULT_KW : ':default' ;

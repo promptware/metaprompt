@@ -26,30 +26,12 @@ class MetaPromptListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MetaPromptParser#exprs1.
-    def enterExprs1(self, ctx:MetaPromptParser.Exprs1Context):
-        pass
-
-    # Exit a parse tree produced by MetaPromptParser#exprs1.
-    def exitExprs1(self, ctx:MetaPromptParser.Exprs1Context):
-        pass
-
-
     # Enter a parse tree produced by MetaPromptParser#expr.
     def enterExpr(self, ctx:MetaPromptParser.ExprContext):
         pass
 
     # Exit a parse tree produced by MetaPromptParser#expr.
     def exitExpr(self, ctx:MetaPromptParser.ExprContext):
-        pass
-
-
-    # Enter a parse tree produced by MetaPromptParser#expr1.
-    def enterExpr1(self, ctx:MetaPromptParser.Expr1Context):
-        pass
-
-    # Exit a parse tree produced by MetaPromptParser#expr1.
-    def exitExpr1(self, ctx:MetaPromptParser.Expr1Context):
         pass
 
 

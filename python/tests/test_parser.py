@@ -112,7 +112,7 @@ def test_escaping_1():
 
 
 def test_escaping_2():
-    result = parse("\\[:foo]")
+    result = parse("\\[:foo\\]")
     assert result == [t("[:foo]")]
 
 
@@ -132,8 +132,9 @@ def test_escaping_3():
 
 
 def test_escaping_4():
-    result = parse("\\\\[")
-    assert result == [t("\\\\[")]
+    bs="\\"
+    result = parse(f"{bs}{bs}{bs}[")
+    assert result == [t(f"{bs}[")]
 
 
 def test_escaping_5():
@@ -206,27 +207,27 @@ def test_if_nested():
 
 
 def test_dummy_meta():
-    result = parse("[test]")
+    result = parse("\[test\]")
     assert result == [t("[test]")]
 
 
 def test_dummy_meta2():
-    result = parse("[[]]")
+    result = parse("\\[\\[\\]\\]")
     assert result == [t("[[]]")]
 
 
 def test_dummy_meta3():
-    result = parse("[a")
-    assert result == [t("[a")]
+    result = parse("\\[a")
+    assert result == [t("\\[a")]
 
 
 def test_dummy_meta4():
-    result = parse("[[][]]")
+    result = parse("\\[\\[\\]\\[\\]\\]")
     assert result == [t("[[][]]")]
 
 
 def test_meta2():
-    result = parse("[$ []]")
+    result = parse("[$ \\[\\]]")
     assert result == [meta([t(" []")])]
 
 
@@ -331,7 +332,7 @@ def test_use_nested():
 
 
 def test_use_nested_2():
-    result = parse("[:use foo :asd=[hiiii [:use bar :qux=asd]] hiii :foo=bar]")
+    result = parse("[:use foo :asd=\\[hiiii [:use bar :qux=asd]\\] hiii :foo=bar]")
     assert result == [
         {
             "type": "use",

@@ -19,18 +19,8 @@ class MetaPromptVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MetaPromptParser#exprs1.
-    def visitExprs1(self, ctx:MetaPromptParser.Exprs1Context):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MetaPromptParser#expr.
     def visitExpr(self, ctx:MetaPromptParser.ExprContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MetaPromptParser#expr1.
-    def visitExpr1(self, ctx:MetaPromptParser.Expr1Context):
         return self.visitChildren(ctx)
 
 
