@@ -1,5 +1,4 @@
 [:STATUS=choosing a model]
-[:MODEL=interactive]
 [:choose
    [:ROLE=system]
      The best suitable LLM for a given prompt:
