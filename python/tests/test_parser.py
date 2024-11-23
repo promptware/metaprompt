@@ -1,3 +1,4 @@
+# TODO: add negative tests
 from parse_metaprompt import (
     parse_metaprompt,
     extract_tokens,
@@ -158,6 +159,11 @@ def test_comment_2():
 def test_absence_of_comment():
     result = parse("# asd")
     assert result == [t("# asd")]
+
+
+def test_bslash():
+    result = parse("\\")
+    assert result == [t("\\")]
 
 
 def test_kw_EQ_KW():
