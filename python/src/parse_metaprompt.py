@@ -82,6 +82,8 @@ class MetaPromptASTBuilder(MetaPromptVisitor):
                 ctx.OPTION_KW(),
                 ctx.DEFAULT_KW(),
                 ctx.IS_KW(),
+                ctx.CALL(),
+                ctx.WITH_KW(),
             ]:
                 if part is not None:
                     exprs.append({"type": "text", "text": part.getText()})

@@ -1,0 +1,18 @@
+false and true  = [@and :with false :with true]
+true  and true  = [@and :with true :with true]
+true  and false = [@and :with true :with false]
+false and false = [@and :with false :with false]
+
+false xor true  = [@xor :with false :with true]
+true  xor true  = [@xor :with true :with true]
+true  xor false = [@xor :with true :with false]
+false xor false = [@xor :with false :with false]
+
+[@cite :with
+[@strip :with
+
+autonomous AI agent
+look inside
+chatgpt prompt in a loop
+
+]]

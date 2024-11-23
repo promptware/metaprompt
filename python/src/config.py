@@ -1,5 +1,6 @@
 from provider_config import ProviderConfig
 from typing import Dict
+from prelude import prelude
 
 
 class Config:
@@ -10,9 +11,11 @@ class Config:
             ProviderConfig | None
         ) = None,  # TODO: add List[ProviderConfig] option
         model: str | None = None,
-        parameters: Dict[str, str] = {},
+        parameters: Dict[str, str] = None,
+        foreign_functions=None,
     ):
         self.providers = providers or ProviderConfig()
-        self.parameters = parameters
+        self.parameters = parameters or {}
         self.model = model
+        self.foreign_functions = {**prelude, **(foreign_functions or {})}
         # TODO: add logger

@@ -10,45 +10,46 @@ else:
 
 def serializedATN():
     return [
-        4,1,17,117,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,17,119,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,1,0,1,0,1,0,1,1,5,1,25,8,1,10,1,12,1,28,
         9,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
-        3,2,45,8,2,1,3,1,3,3,3,49,8,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,
-        4,1,4,1,4,1,4,1,4,1,4,1,4,4,4,66,8,4,11,4,12,4,67,1,4,3,4,71,8,4,
-        1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,87,8,
-        4,1,5,1,5,1,5,1,5,1,5,1,6,1,6,1,6,1,7,1,7,5,7,99,8,7,10,7,12,7,102,
-        9,7,1,8,1,8,1,8,5,8,107,8,8,10,8,12,8,110,9,8,1,9,4,9,113,8,9,11,
-        9,12,9,114,1,9,1,26,0,10,0,2,4,6,8,10,12,14,16,18,0,0,132,0,20,1,
-        0,0,0,2,26,1,0,0,0,4,44,1,0,0,0,6,48,1,0,0,0,8,86,1,0,0,0,10,88,
-        1,0,0,0,12,93,1,0,0,0,14,100,1,0,0,0,16,108,1,0,0,0,18,112,1,0,0,
-        0,20,21,3,2,1,0,21,22,5,0,0,1,22,1,1,0,0,0,23,25,3,4,2,0,24,23,1,
-        0,0,0,25,28,1,0,0,0,26,27,1,0,0,0,26,24,1,0,0,0,27,3,1,0,0,0,28,
-        26,1,0,0,0,29,30,5,1,0,0,30,31,3,6,3,0,31,32,5,2,0,0,32,45,1,0,0,
-        0,33,45,3,18,9,0,34,45,5,2,0,0,35,45,5,1,0,0,36,45,5,5,0,0,37,45,
-        5,4,0,0,38,45,5,3,0,0,39,45,5,17,0,0,40,45,5,10,0,0,41,45,5,11,0,
-        0,42,45,5,13,0,0,43,45,5,14,0,0,44,29,1,0,0,0,44,33,1,0,0,0,44,34,
-        1,0,0,0,44,35,1,0,0,0,44,36,1,0,0,0,44,37,1,0,0,0,44,38,1,0,0,0,
-        44,39,1,0,0,0,44,40,1,0,0,0,44,41,1,0,0,0,44,42,1,0,0,0,44,43,1,
-        0,0,0,45,5,1,0,0,0,46,49,3,8,4,0,47,49,3,2,1,0,48,46,1,0,0,0,48,
-        47,1,0,0,0,49,7,1,0,0,0,50,51,5,9,0,0,51,52,3,2,1,0,52,53,5,15,0,
-        0,53,54,3,2,1,0,54,55,5,16,0,0,55,56,3,2,1,0,56,87,1,0,0,0,57,58,
-        5,9,0,0,58,59,3,2,1,0,59,60,5,15,0,0,60,61,3,2,1,0,61,87,1,0,0,0,
-        62,63,5,10,0,0,63,65,3,2,1,0,64,66,3,10,5,0,65,64,1,0,0,0,66,67,
-        1,0,0,0,67,65,1,0,0,0,67,68,1,0,0,0,68,70,1,0,0,0,69,71,3,12,6,0,
-        70,69,1,0,0,0,70,71,1,0,0,0,71,87,1,0,0,0,72,73,5,7,0,0,73,87,3,
-        16,8,0,74,75,5,4,0,0,75,87,3,2,1,0,76,77,5,5,0,0,77,87,3,2,1,0,78,
-        79,5,17,0,0,79,80,5,3,0,0,80,87,3,2,1,0,81,87,5,17,0,0,82,83,5,8,
-        0,0,83,84,3,14,7,0,84,85,3,16,8,0,85,87,1,0,0,0,86,50,1,0,0,0,86,
-        57,1,0,0,0,86,62,1,0,0,0,86,72,1,0,0,0,86,74,1,0,0,0,86,76,1,0,0,
-        0,86,78,1,0,0,0,86,81,1,0,0,0,86,82,1,0,0,0,87,9,1,0,0,0,88,89,5,
-        11,0,0,89,90,3,2,1,0,90,91,5,14,0,0,91,92,3,2,1,0,92,11,1,0,0,0,
-        93,94,5,13,0,0,94,95,3,2,1,0,95,13,1,0,0,0,96,97,5,12,0,0,97,99,
-        3,2,1,0,98,96,1,0,0,0,99,102,1,0,0,0,100,98,1,0,0,0,100,101,1,0,
-        0,0,101,15,1,0,0,0,102,100,1,0,0,0,103,104,5,17,0,0,104,105,5,3,
-        0,0,105,107,3,2,1,0,106,103,1,0,0,0,107,110,1,0,0,0,108,106,1,0,
-        0,0,108,109,1,0,0,0,109,17,1,0,0,0,110,108,1,0,0,0,111,113,5,6,0,
-        0,112,111,1,0,0,0,113,114,1,0,0,0,114,112,1,0,0,0,114,115,1,0,0,
-        0,115,19,1,0,0,0,9,26,44,48,67,70,86,100,108,114
+        1,2,1,2,3,2,47,8,2,1,3,1,3,3,3,51,8,3,1,4,1,4,1,4,1,4,1,4,1,4,1,
+        4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,4,4,68,8,4,11,4,12,4,69,1,4,3,
+        4,73,8,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,
+        3,4,89,8,4,1,5,1,5,1,5,1,5,1,5,1,6,1,6,1,6,1,7,1,7,5,7,101,8,7,10,
+        7,12,7,104,9,7,1,8,1,8,1,8,5,8,109,8,8,10,8,12,8,112,9,8,1,9,4,9,
+        115,8,9,11,9,12,9,116,1,9,1,26,0,10,0,2,4,6,8,10,12,14,16,18,0,0,
+        136,0,20,1,0,0,0,2,26,1,0,0,0,4,46,1,0,0,0,6,50,1,0,0,0,8,88,1,0,
+        0,0,10,90,1,0,0,0,12,95,1,0,0,0,14,102,1,0,0,0,16,110,1,0,0,0,18,
+        114,1,0,0,0,20,21,3,2,1,0,21,22,5,0,0,1,22,1,1,0,0,0,23,25,3,4,2,
+        0,24,23,1,0,0,0,25,28,1,0,0,0,26,27,1,0,0,0,26,24,1,0,0,0,27,3,1,
+        0,0,0,28,26,1,0,0,0,29,30,5,1,0,0,30,31,3,6,3,0,31,32,5,2,0,0,32,
+        47,1,0,0,0,33,47,3,18,9,0,34,47,5,2,0,0,35,47,5,1,0,0,36,47,5,5,
+        0,0,37,47,5,4,0,0,38,47,5,3,0,0,39,47,5,17,0,0,40,47,5,10,0,0,41,
+        47,5,11,0,0,42,47,5,13,0,0,43,47,5,14,0,0,44,47,5,8,0,0,45,47,5,
+        12,0,0,46,29,1,0,0,0,46,33,1,0,0,0,46,34,1,0,0,0,46,35,1,0,0,0,46,
+        36,1,0,0,0,46,37,1,0,0,0,46,38,1,0,0,0,46,39,1,0,0,0,46,40,1,0,0,
+        0,46,41,1,0,0,0,46,42,1,0,0,0,46,43,1,0,0,0,46,44,1,0,0,0,46,45,
+        1,0,0,0,47,5,1,0,0,0,48,51,3,8,4,0,49,51,3,2,1,0,50,48,1,0,0,0,50,
+        49,1,0,0,0,51,7,1,0,0,0,52,53,5,9,0,0,53,54,3,2,1,0,54,55,5,15,0,
+        0,55,56,3,2,1,0,56,57,5,16,0,0,57,58,3,2,1,0,58,89,1,0,0,0,59,60,
+        5,9,0,0,60,61,3,2,1,0,61,62,5,15,0,0,62,63,3,2,1,0,63,89,1,0,0,0,
+        64,65,5,10,0,0,65,67,3,2,1,0,66,68,3,10,5,0,67,66,1,0,0,0,68,69,
+        1,0,0,0,69,67,1,0,0,0,69,70,1,0,0,0,70,72,1,0,0,0,71,73,3,12,6,0,
+        72,71,1,0,0,0,72,73,1,0,0,0,73,89,1,0,0,0,74,75,5,7,0,0,75,89,3,
+        16,8,0,76,77,5,4,0,0,77,89,3,2,1,0,78,79,5,5,0,0,79,89,3,2,1,0,80,
+        81,5,17,0,0,81,82,5,3,0,0,82,89,3,2,1,0,83,89,5,17,0,0,84,85,5,8,
+        0,0,85,86,3,14,7,0,86,87,3,16,8,0,87,89,1,0,0,0,88,52,1,0,0,0,88,
+        59,1,0,0,0,88,64,1,0,0,0,88,74,1,0,0,0,88,76,1,0,0,0,88,78,1,0,0,
+        0,88,80,1,0,0,0,88,83,1,0,0,0,88,84,1,0,0,0,89,9,1,0,0,0,90,91,5,
+        11,0,0,91,92,3,2,1,0,92,93,5,14,0,0,93,94,3,2,1,0,94,11,1,0,0,0,
+        95,96,5,13,0,0,96,97,3,2,1,0,97,13,1,0,0,0,98,99,5,12,0,0,99,101,
+        3,2,1,0,100,98,1,0,0,0,101,104,1,0,0,0,102,100,1,0,0,0,102,103,1,
+        0,0,0,103,15,1,0,0,0,104,102,1,0,0,0,105,106,5,17,0,0,106,107,5,
+        3,0,0,107,109,3,2,1,0,108,105,1,0,0,0,109,112,1,0,0,0,110,108,1,
+        0,0,0,110,111,1,0,0,0,111,17,1,0,0,0,112,110,1,0,0,0,113,115,5,6,
+        0,0,114,113,1,0,0,0,115,116,1,0,0,0,116,114,1,0,0,0,116,117,1,0,
+        0,0,117,19,1,0,0,0,9,26,46,50,69,72,88,102,110,116
     ]
 
 class MetaPromptParser ( Parser ):
@@ -271,6 +272,12 @@ class MetaPromptParser ( Parser ):
         def IS_KW(self):
             return self.getToken(MetaPromptParser.IS_KW, 0)
 
+        def CALL(self):
+            return self.getToken(MetaPromptParser.CALL, 0)
+
+        def WITH_KW(self):
+            return self.getToken(MetaPromptParser.WITH_KW, 0)
+
         def getRuleIndex(self):
             return MetaPromptParser.RULE_expr
 
@@ -296,7 +303,7 @@ class MetaPromptParser ( Parser ):
         localctx = MetaPromptParser.ExprContext(self, self._ctx, self.state)
         self.enterRule(localctx, 4, self.RULE_expr)
         try:
-            self.state = 44
+            self.state = 46
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,1,self._ctx)
             if la_ == 1:
@@ -375,6 +382,18 @@ class MetaPromptParser ( Parser ):
                 self.match(MetaPromptParser.IS_KW)
                 pass
 
+            elif la_ == 13:
+                self.enterOuterAlt(localctx, 13)
+                self.state = 44
+                self.match(MetaPromptParser.CALL)
+                pass
+
+            elif la_ == 14:
+                self.enterOuterAlt(localctx, 14)
+                self.state = 45
+                self.match(MetaPromptParser.WITH_KW)
+                pass
+
 
         except RecognitionException as re:
             localctx.exception = re
@@ -425,18 +444,18 @@ class MetaPromptParser ( Parser ):
         localctx = MetaPromptParser.Expr1Context(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_expr1)
         try:
-            self.state = 48
+            self.state = 50
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 46
+                self.state = 48
                 self.meta_body()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 47
+                self.state = 49
                 self.exprs()
                 pass
 
@@ -539,60 +558,60 @@ class MetaPromptParser ( Parser ):
         self.enterRule(localctx, 8, self.RULE_meta_body)
         self._la = 0 # Token type
         try:
-            self.state = 86
+            self.state = 88
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,5,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 50
-                self.match(MetaPromptParser.IF_KW)
-                self.state = 51
-                self.exprs()
                 self.state = 52
-                self.match(MetaPromptParser.THEN_KW)
+                self.match(MetaPromptParser.IF_KW)
                 self.state = 53
                 self.exprs()
                 self.state = 54
-                self.match(MetaPromptParser.ELSE_KW)
+                self.match(MetaPromptParser.THEN_KW)
                 self.state = 55
+                self.exprs()
+                self.state = 56
+                self.match(MetaPromptParser.ELSE_KW)
+                self.state = 57
                 self.exprs()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 57
-                self.match(MetaPromptParser.IF_KW)
-                self.state = 58
-                self.exprs()
                 self.state = 59
-                self.match(MetaPromptParser.THEN_KW)
+                self.match(MetaPromptParser.IF_KW)
                 self.state = 60
+                self.exprs()
+                self.state = 61
+                self.match(MetaPromptParser.THEN_KW)
+                self.state = 62
                 self.exprs()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 62
+                self.state = 64
                 self.match(MetaPromptParser.CHOOSE_KW)
-                self.state = 63
+                self.state = 65
                 self.exprs()
-                self.state = 65 
+                self.state = 67 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 64
+                    self.state = 66
                     self.option()
-                    self.state = 67 
+                    self.state = 69 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==11):
                         break
 
-                self.state = 70
+                self.state = 72
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==13:
-                    self.state = 69
+                    self.state = 71
                     self.default_option()
 
 
@@ -600,51 +619,51 @@ class MetaPromptParser ( Parser ):
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 72
+                self.state = 74
                 self.match(MetaPromptParser.USE)
-                self.state = 73
+                self.state = 75
                 self.parameters()
                 pass
 
             elif la_ == 5:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 74
+                self.state = 76
                 self.match(MetaPromptParser.META_PROMPT)
-                self.state = 75
+                self.state = 77
                 self.exprs()
                 pass
 
             elif la_ == 6:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 76
+                self.state = 78
                 self.match(MetaPromptParser.COMMENT_KW)
-                self.state = 77
+                self.state = 79
                 self.exprs()
                 pass
 
             elif la_ == 7:
                 self.enterOuterAlt(localctx, 7)
-                self.state = 78
-                self.match(MetaPromptParser.VAR_NAME)
-                self.state = 79
-                self.match(MetaPromptParser.EQ_KW)
                 self.state = 80
+                self.match(MetaPromptParser.VAR_NAME)
+                self.state = 81
+                self.match(MetaPromptParser.EQ_KW)
+                self.state = 82
                 self.exprs()
                 pass
 
             elif la_ == 8:
                 self.enterOuterAlt(localctx, 8)
-                self.state = 81
+                self.state = 83
                 self.match(MetaPromptParser.VAR_NAME)
                 pass
 
             elif la_ == 9:
                 self.enterOuterAlt(localctx, 9)
-                self.state = 82
-                self.match(MetaPromptParser.CALL)
-                self.state = 83
-                self.positional_args()
                 self.state = 84
+                self.match(MetaPromptParser.CALL)
+                self.state = 85
+                self.positional_args()
+                self.state = 86
                 self.parameters()
                 pass
 
@@ -704,13 +723,13 @@ class MetaPromptParser ( Parser ):
         self.enterRule(localctx, 10, self.RULE_option)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 88
-            self.match(MetaPromptParser.OPTION_KW)
-            self.state = 89
-            self.exprs()
             self.state = 90
-            self.match(MetaPromptParser.IS_KW)
+            self.match(MetaPromptParser.OPTION_KW)
             self.state = 91
+            self.exprs()
+            self.state = 92
+            self.match(MetaPromptParser.IS_KW)
+            self.state = 93
             self.exprs()
         except RecognitionException as re:
             localctx.exception = re
@@ -761,9 +780,9 @@ class MetaPromptParser ( Parser ):
         self.enterRule(localctx, 12, self.RULE_default_option)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 93
+            self.state = 95
             self.match(MetaPromptParser.DEFAULT_KW)
-            self.state = 94
+            self.state = 96
             self.exprs()
         except RecognitionException as re:
             localctx.exception = re
@@ -821,15 +840,15 @@ class MetaPromptParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 100
+            self.state = 102
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==12:
-                self.state = 96
+                self.state = 98
                 self.match(MetaPromptParser.WITH_KW)
-                self.state = 97
+                self.state = 99
                 self.exprs()
-                self.state = 102
+                self.state = 104
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -895,17 +914,17 @@ class MetaPromptParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 108
+            self.state = 110
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==17:
-                self.state = 103
-                self.match(MetaPromptParser.VAR_NAME)
-                self.state = 104
-                self.match(MetaPromptParser.EQ_KW)
                 self.state = 105
+                self.match(MetaPromptParser.VAR_NAME)
+                self.state = 106
+                self.match(MetaPromptParser.EQ_KW)
+                self.state = 107
                 self.exprs()
-                self.state = 110
+                self.state = 112
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -957,17 +976,17 @@ class MetaPromptParser ( Parser ):
         self.enterRule(localctx, 18, self.RULE_text)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 112 
+            self.state = 114 
             self._errHandler.sync(self)
             _alt = 1
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt == 1:
-                    self.state = 111
+                    self.state = 113
                     self.match(MetaPromptParser.CHAR)
 
                 else:
                     raise NoViableAltException(self)
-                self.state = 114 
+                self.state = 116 
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,8,self._ctx)
 

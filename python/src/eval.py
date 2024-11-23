@@ -5,6 +5,7 @@ from typing import AsyncGenerator, List
 from loader import extract_parameter_set
 from eval_utils.assignment import Assignment
 from eval_utils.chat_history import serialize_chat_history
+from eval_utils.arguments import Argument
 
 IF_PROMPT = """Please determine if the following statement is true.
 Do not write any other output, answer just "true" or "false".
@@ -185,6 +186,31 @@ async def eval_ast(ast, config, runtime):
                     chosen_option = (await _collect_exprs(default)).strip()
 
             yield chosen_option
+
+        elif ast["type"] == "call":
+            name = ast["name"]
+            if name not in config.foreign_functions:
+                raise ValueError(f"Name {name} is not a foreign function")
+
+            fn = config.foreign_functions[name]
+
+            def capture(expr):
+                async def cb():
+                    return await _collect_exprs(expr)
+
+                return cb
+
+            positional_args = [
+                Argument(capture(pos_arg), pos_arg)
+                for pos_arg in ast["positional_args"]
+            ]
+
+            named_args = {
+                name: Argument(capture(expr), expr)
+                for name, expr in ast["named_args"].items()
+            }
+
+            yield await fn(*positional_args, **named_args)
 
         elif ast["type"] == "use":
             parameters = ast["parameters"]

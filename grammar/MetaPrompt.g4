@@ -14,6 +14,8 @@ expr: LB expr1 RB
     | OPTION_KW
     | DEFAULT_KW
     | IS_KW
+    | CALL
+    | WITH_KW
     ;
 
 expr1
