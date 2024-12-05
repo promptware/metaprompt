@@ -35,7 +35,7 @@
       Hello, [:stranger_name]!
     </h1>
     <p>
-      This page is about MetaPrompt, a template engine for LLM prompts that supports writing prompts with prompts.
+      This page introduces MetaPrompt, a template engine for LLM prompts with LLM-powered control flow, supporting prompt rewriting natively.
     </p>
     <h1>Project status
     </h1>
@@ -47,21 +47,31 @@
     </h1>
     <p>
       <ul>
-        <li><b>Templating</b> - variable substitution</li>
+        <li><b>Templating</b> - variable substitution and managing prompt boilerplate</li>
         <li><b>Prompt rewriting</b> - crafting prompts suitable for a given task based on a set of high-level rules, moderating input contents, or selecting the most suitable model for a task automatically</li>
+        <li><b>Input moderation</b> - implementing LLM-powered content filters.</li>
         <li><b>Prompt structuring</b> - using modules and packages to organize parameterized prompts</li>
-        <li><b>Knowledge base maintenance</b> - store your handcrafted prompts and include them conditionally</li>
-        <li><b>AI agents</b> - interact with the outside world</li>
+        <li><b>Knowledge bases</b> - store your handcrafted prompts and include them conditionally</li>
+        <li><b>Human-in-the-loop workflows</b> - delegate control flow to humans when needed</li>
+        <li><b>AI agents</b> - interact with the outside world using foreign function interface</li>
       </ul>
     </p>
+    <h1>Examples</h1>
+    <ul>
+      <li><a href="https://github.com/promptware/metaprompt/blob/main/examples/model-selection-demo.metaprompt">Automatic model selection</a></li>
+      <li><a href="https://github.com/promptware/metaprompt/blob/main/examples/foreign_functions.metaprompt">Foreign function interface</a></li>
+      <li><a href="https://github.com/promptware/metaprompt/blob/main/examples/roles.metaprompt">Switching chat API roles</a></li>
+      <li><a href="https://github.com/promptware/metaprompt/blob/main/examples/googler.metaprompt">Google search + summarization agent</a></li>
+      <li><a href="https://github.com/promptware/metaprompt/blob/main/examples/chat-history.metaprompt">Multiple chat instances</a></li>
+    </ul>
     <h1>
       Links
     </h1>
     <ul>
-      <li><a href="https://github.com/promptware/metaprompt/tree/main/examples">Examples</a></li>
+      <li><a href="https://discord.gg/eUmznEVNtF">Discord</a></li>
+      <li><a href="https://github.com/promptware/metaprompt/tree/main/examples">All examples</a></li>
       <li><a href="https://docs.metaprompt-lang.org/">Documentation</a></li>
       <li><a href="https://github.com/promptware/metaprompt">Source code</a></li>
-      <li><a href="https://discord.gg/eUmznEVNtF">Discord</a></li>
     </ul>
   </body>
 </html>
