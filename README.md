@@ -4,6 +4,12 @@ Metaprompt is a domain-specific language for LLM prompt engineering. It is a tem
 
 The goal is to extend the usual techniques of parametrized prompts with programmability, reusability and meta-prompting abilities.
 
+## ⚠️ Current status
+
+This project is abandoned, because there is not enough value in using something like this to justify the learning curve.
+
+Real LLM pipelines need tooling to help tackling various problems, like context management, retrieval and the like - but these are addressable by libraries or frameworks that do not introduce any new semantics to the language.
+
 ## Quick example
 
 ```metaprompt
